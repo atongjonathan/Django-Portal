@@ -1,0 +1,642 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="icon" href="{% static 'portal/dist/img/AdminLTELogo.png' %}">
+
+
+    <!-- Styles -->
+
+    <link rel="stylesheet"
+        href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://adminlte.io/themes/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/jvectormap/jquery-jvectormap.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/skins/_all-skins.min.css">
+
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{% static 'portal/styles.css' %}">
+
+        <style>
+            .img
+            {
+                width: 60%;
+                height: 60%;
+                margin: 0 auto;
+            }
+            .img > img
+            {
+                width: 100%;
+            }
+            footer
+            {
+                text-align: center;
+            }
+            .preloader
+            {
+                display: none;
+            }
+        </style>
+</head>
+
+
+
+
+
+<body class="layout-fixed layout-navbar-fixed skin-green">
+
+    <div class="wrapper" style="height: auto; min-height: 100%;">
+
+        
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+          </div>
+          
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a href="index2.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>LOGO</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>LOGO</b></span>
+            </a>
+    
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{% static 'portal/dist/img/AdminLTELogo.png' %}" class="user-image"
+                                    alt="User Image">
+                                <span class="hidden-xs">Jonathan Atong</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="{% static 'portal/dist/img/AdminLTELogo.png' %}"
+                                        class="img-circle" alt="User Image">
+    
+                                    <p>
+                                        Jonathan Atong - Student
+                                        <small>Since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <!-- <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li> -->
+                    </ul>
+                </div>
+    
+            </nav>
+        </header>
+    
+    
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar" style="height: auto;">
+              <!-- Sidebar user panel -->
+              <div class="user-panel">
+                <div class="pull-left image">
+                  <img src="{% static 'portal/dist/img/AdminLTELogo.png' %}" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                  <p>Jonathan Atong</p>
+                  <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+              </div>
+              <!-- search form -->
+              <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                  <input type="text" name="q" class="form-control" placeholder="Search...">
+                  <span class="input-group-btn">
+                        <button title="Search" type="submit" name="search" id="search-btn" class="btn btn-flat">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                </div>
+              </form>
+              <!-- /.search form -->
+              <!-- sidebar menu: : style can be found in sidebar.less -->
+              <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">MAIN NAVIGATION</li>
+                <li>
+                    <a href="">
+                        <i class=" fa fa-dashboard text-blue"></i><span>  Dashboard</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-pie-chart text-red"></i>
+                        <span>Financials</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+    
+                        <li><a href=""><i class=" fa fa-circle-o"></i>Fee Payment</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Fees Statement</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Fees Statement - PDF</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Receipts</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Fee Structure</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-graduation-cap text-green"></i>
+                        <span>Academics</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href=""><i class="fa fa-circle-o"></i>ePortfolio</a>
+                        </li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Termly
+                                Report</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>Assssment
+                                Report</a></li>
+                        <!-- <li><a href=""><i class="fa fa-circle-o"></i>Exam Cards</a></li> -->
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-microphone text-yellow"></i>
+                        <span>Invite</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href=""><i class="fa fa-circle-o"></i>Invite a Parent</a></li>
+    
+    
+    
+                    </ul>
+                </li>
+    
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-check-circle-o text-success"></i>
+                        <span>Students Clearance</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+                        <li><a href=""><i class="fa fa-circle-o"></i>Student Clearance</a></li>
+    
+                    </ul>
+                </li>
+                <li id="sttt" class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cogs  text-blue"></i>
+                        <span>Settings</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu" style="display: none;">
+    
+                        <li><a href=""><i class="fa fa-circle-o"></i>Change password</a></li>
+                    </ul>
+                </li>
+                <li class="header">PERIODIC ACTIVITIES</li>
+    
+    
+                <li><a href=""><i class="fa fa-microphone text-yellow"></i><span> Term Activities
+                            </span></a></li>
+                <!-- <li><a href=""><i class="fa fa-volume-up text-aqua"></i><span>  KarU
+                            Election</span></a></li> -->
+            </ul>
+            </section>
+            <!-- /.sidebar -->
+          </aside>
+    
+    
+        <div class="content-wrapper" style="min-height: 926.032px;">
+    
+            <section class="content-header">
+                <h1>
+                  Dashboard
+                  <!-- <small>Version 2.0</small> -->
+                </h1>
+                <ol class="breadcrumb">
+                  <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                  <li class="active">Dashboard</li>
+                </ol>
+              </section>
+    
+            
+            <section class="content">
+    
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box bg-yellow">
+                            <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+    
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Billed:</span>
+                                <span class="info-box-number">Ksh.
+                                    <span id="Main1_lblDR">162,520.00</span></span>
+    
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 50%"></div>
+                                </div>
+                                <a href="" class="small-box-footer white" style="color: white">View
+                                    Details <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+            
+                    <!-- fix for small devices only -->
+                    <div class="clearfix visible-sm-block"></div>
+            
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
+    
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Paid:</span>
+                                <span class="info-box-number">Ksh.
+                                    <span id="Main1_lblCR">102,882.00</span></span>
+    
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 20%"></div>
+                                </div>
+                                <a href="" class="small-box-footer white" style="color: white">View
+                                    Details <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <!-- /.info-box -->
+                        <div class="info-box bg-aqua">
+                            <span class="info-box-icon"><i class="ion-ios-chatbubble-outline"></i></span>
+    
+                            <div class="info-box-content">
+                                <span class="info-box-text">Balance:</span>
+                                <span class="info-box-number">Ksh.
+                                    <span id="Main1_lblBal">59,638.00</span></span>
+    
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 40%"></div>
+                                </div>
+                                <a href="" class="small-box-footer white" style="color: white">View
+                                    Details <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                            
+                            <!-- /.info-box-content -->
+                        </div>
+                        
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+    
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="box">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Details</h3>
+            
+                          <div class="box-tools pull-right">
+                            <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                              <button title="Drop Down" type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Settings</a></li>
+                                <!-- <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li> -->
+                              </ul>
+                            </div>
+                            <button title="Remove" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                          </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                          <div class="row">
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                      <h3 class="box-title">User Details</h3>
+                        
+                                      <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                      </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <div class="img">
+                                            <img src="{% static 'portal/dist/img/reading.png' %}" alt="readiing img" srcset="">
+                                          </div>
+                                        </div>
+                                        <!-- /.col -->
+                                      </div>
+                                      <!-- /.row -->
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <div class="box-footer no-padding">
+                                      <ul class="nav nav-pills nav-stacked">
+                                        <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> CBC</span></a>
+                                        </li>
+                                        <li><a href="#">My Current Stage <span class="pull-right text-red">  GRADE8TI</span></a>
+                                        </li>
+                                    </div>
+                                    <!-- /.footer -->
+                                  </div>
+                              </div>
+                              <!-- Father Details -->
+                            <div class="col-md-4">
+                                <div class="box box-warning">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Father's Information</h3>
+    
+                                        <!-- <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default"><i class="fa fa-edit"></i>Update
+                                                Profile</button>
+                                        </div> -->
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                          </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Name:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblNames">BRIAN, Ochieng </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Phone Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Tel Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">I.D. No:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">12345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Nationality:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">Kenyan</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Occupation:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPostalAddress">Teacher</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+    
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.box-body -->
+    
+                                    <!-- /.box-footer -->
+                                </div>
+                            </div>
+
+                            <!-- Mother Details -->
+
+                            <div class="col-md-4">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Mother's Information</h3>
+    
+                                        <!-- <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default"><i class="fa fa-edit"></i>Update
+                                                Profile</button>
+                                        </div> -->
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                          </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Name:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblNames">BRIAN, Ochieng </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Phone Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Tel Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">I.D. No:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">12345678</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Nationality:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">Kenyan</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Occupation:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPostalAddress">Teacher</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+    
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.box-body -->
+    
+                                    <!-- /.box-footer -->
+                                </div>
+                            </div>
+                            
+                           
+                            <!-- /.col -->
+                          </div>
+                          <!-- /.row -->
+                        </div>
+                        <!-- ./box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+    
+    
+    
+    
+                    
+        </div>
+
+
+        <footer class="main-footer">
+            <!-- <div class="pull-right hidden-xs">
+              <b>Version</b> 2.4.0
+            </div> -->
+            <strong>Copyright © 2024 <a href="#">Jonathan Atong</a>.</strong> All rights
+            reserved.
+          </footer>
+     
+    
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- Scripts -->
+
+    <!-- jQuery 3 -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://adminlte.io/themes/AdminLTE/dist/js/adminlte.min.js"></script>
+    <!-- Sparkline -->
+    <script
+        src="https://adminlte.io/themes/AdminLTE/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- jvectormap  -->
+    <script src="https://adminlte.io/themes/AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="https://adminlte.io/themes/AdminLTE/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- SlimScroll -->
+    <script
+        src="https://adminlte.io/themes/AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ChartJS -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/chart.js/Chart.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="https://adminlte.io/themes/AdminLTE/dist/js/pages/dashboard2.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="https://adminlte.io/themes/AdminLTE/dist/js/demo.js"></script>
+
+    <script>
+        $(document).ready(function() {
+    // Hide preloader and show content when the page is fully loaded
+    $(window).on('load', function() {
+        const preloader = $('.preloader');
+        const content = $('.wrapper');
+
+        // Hide preloader
+        preloader.fadeOut(500);
+
+        // Show content
+        content.fadeIn(500);
+    });
+});
+
+    </script>
+</body>
+
+</html>
