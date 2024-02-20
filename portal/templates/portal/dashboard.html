@@ -72,7 +72,7 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Balance:</span>
                         <span class="info-box-number">Ksh.
-                            <span id="Main1_lblBal">{{ data }}</span></span>
+                            <span id="Main1_lblBal">{{ data.balance }}</span></span>
 
                         <div class="progress">
                             <div class="progress-bar" style="width: 40%"></div>
@@ -142,9 +142,15 @@
                             <!-- /.box-body -->
                             <div class="box-footer no-padding">
                               <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> CBC</span></a>
+                                <li><a href="#">Admission No <span class="pull-right text-red">  {{data.id}}</span></a>
                                 </li>
-                                <li><a href="#">My Current Stage <span class="pull-right text-red">  GRADE8TI</span></a>
+                                <li><a href="#">Name<span class="pull-right text-red">  {{data.name}}</span></a>
+                                </li>
+                                <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> {{ data.programme }}</span></a>
+                                </li>
+                                <li><a href="#">My Current Stage <span class="pull-right text-red">  {{data.stage}}</span></a>
+                                </li>
+                                <li><a href="#">Phone  <span class="pull-right text-red">  {{data.no}}</span></a>
                                 </li>
                             </div>
                             <!-- /.footer -->
@@ -175,7 +181,7 @@
                                                 <td><a href="#">Name:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblNames">BRIAN, Ochieng </span>
+                                                        <span id="Main1_lblNames">{{data.f_name}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -183,7 +189,7 @@
                                                 <td><a href="#">Phone Number:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                        <span id="Main1_lblPhoneNo1">{{data.f_no}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -191,7 +197,15 @@
                                                 <td><a href="#">Tel Number:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                        <span id="Main1_lblPhoneNo1">{{data.f_tel}}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="#">Email:</a></td>
+                                                <td>
+                                                    <div>
+                                                        <span id="Main1_lblPhoneNo1">{{data.f_email}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -199,7 +213,7 @@
                                                 <td><a href="#">I.D. No:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblEmail">12345678</span>
+                                                        <span id="Main1_lblEmail">{{data.f_id}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -207,7 +221,7 @@
                                                 <td><a href="#">Nationality:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblEmail">Kenyan</span>
+                                                        <span id="Main1_lblEmail">{{data.f_nation}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -215,7 +229,7 @@
                                                 <td><a href="#">Occupation:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPostalAddress">Teacher</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
+                                                        <span id="Main1_lblPostalAddress">{{data.f_occupation}}</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -257,7 +271,7 @@
                                                 <td><a href="#">Name:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblNames">BRIAN, Ochieng </span>
+                                                        <span id="Main1_lblNames">{{data.m_name}} </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -265,7 +279,7 @@
                                                 <td><a href="#">Phone Number:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                        <span id="Main1_lblPhoneNo1">{{data.m_no}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -273,7 +287,7 @@
                                                 <td><a href="#">Tel Number:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPhoneNo1">0712345678</span>
+                                                        <span id="Main1_lblPhoneNo1">{{data.m_tel}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -281,7 +295,7 @@
                                                 <td><a href="#">I.D. No:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblEmail">12345678</span>
+                                                        <span id="Main1_lblEmail">{{data.m_id}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -289,7 +303,7 @@
                                                 <td><a href="#">Nationality:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblEmail">Kenyan</span>
+                                                        <span id="Main1_lblEmail">{{data.m_nation}}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -297,7 +311,7 @@
                                                 <td><a href="#">Occupation:</a></td>
                                                 <td>
                                                     <div>
-                                                        <span id="Main1_lblPostalAddress">Teacher</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
+                                                        <span id="Main1_lblPostalAddress">{{data.m_occupation}}</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
                                                     </div>
                                                 </td>
                                             </tr>
