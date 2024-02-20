@@ -26,8 +26,14 @@
     <div class="card-body text-dark">
       <p class="login-box-msg">Register</p>
 
-      <form id="quickForm">
+      <form id="quickForm" method="post" action="{% url 'register' %}">
+        {% csrf_token %}
         <div class="card-body">
+          {% if message %}
+          <div class="alert alert-danger" role="alert">
+            {{ message }}
+          </div>
+          {% endif %}
           <div class="form-group">
             <div class="input-group mb-3">
               <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
@@ -53,6 +59,7 @@
           <div class="form-group">
             <div class="input-group mb-3">
               <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+              {{form.confirm_password}}
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-lock"></span>
