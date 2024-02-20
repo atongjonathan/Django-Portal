@@ -9,8 +9,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import send_mail
 from django.conf import settings
 import smtplib
+import json
 
 
+def real_db(csv):
+    with open(csv, 'r') as file:
+        DB = json.load(file)
+    return DB
 
 
 def register(request):
@@ -86,8 +91,10 @@ def recover(request):
 
 @login_required
 def dashboard(request):
+    # print(real_db("sample_data.json"))
     return render(request, template_name="portal/dashboard.html")
 
 
 def test(request):
     return render(request, 'portal/test.html')
+
