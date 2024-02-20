@@ -9,11 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import send_mail
 from django.conf import settings
 import smtplib
-from dotenv import load_dotenv
-import os
 
-
-load_dotenv("config.env")
 
 
 
@@ -80,7 +76,6 @@ def forgot(request):
             token = default_token_generator.make_token(parent)
             uidb64 = urlsafe_base64_encode(force_bytes(parent.id))
             reset_url = f'{settings.BASE_URL}/reset-password/{uidb64}/{token}/'
-            print(load_dotenv("config.env"))
             print("Sending email", reset_url)
             # send_email("atongjonathangmail.com", parent.email,f"Subject:Reset Password\n\n{reset_url}")
             return redirect("recover")
