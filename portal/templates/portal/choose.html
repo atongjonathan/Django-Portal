@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Lockscreen</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'portal/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'portal/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'portal/dist/css/adminlte.min.css' %}">
+  <link rel="icon" href="{% static 'portal/dist/img/AdminLTELogo.png' %}">
+
+  <style>
+    .flex-container
+    {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap !important;
+        margin: 0 auto;
+        row-gap: 10px;
+    }
+    .flex-item
+    {
+        width: 30%;
+    }
+    .lockscreen-name
+    {
+        font-size: small;
+    }
+    button  p
+    {
+        display: none;
+    }
+    .alert
+    {
+        width: 50%;
+        margin: 10px auto;
+    }
+    @media (max-width: 500px)
+    {
+        .flex-item
+        {
+            width: 100%;
+        }
+
+    }
+  </style>
+</head>
+<body class="hold-transition lockscreen">
+<!-- Automatic element centering -->
+<div class="">
+  <div class="lockscreen-logo">
+    <a href="#"><b>Your Children</b></a>
+  </div>
+  <!-- User name -->
+  {% if message %}
+  <div class="alert alert-danger mt-2">Incorrect Admission Number. Please try again</div>
+  {% endif %}
+  <div class="flex-container">
+    {% for child in children %}
+    <div class="flex-item">
+        <div class="lockscreen-name">{{child.name}}</div>
+    
+        <!-- START LOCK SCREEN ITEM -->
+        <div class="lockscreen-item">
+          <!-- lockscreen image -->
+          <div class="lockscreen-image">
+            <img src="{% static 'portal/dist/img/avatar.png' %}" alt="User Image">
+          </div>
+          <!-- /.lockscreen-image -->
+      
+          <!-- lockscreen credentials (contains the form) -->
+          <form class="lockscreen-credentials" method="post" action="{% url 'choose' %}">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" name="id" class="form-control" placeholder="Admission Number">
+      
+              <div class="input-group-append">
+                <button type="submit" class="btn" title="Submit">
+                  <i class="fas fa-arrow-right text-muted"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+    
+        <!-- /.lockscreen credentials -->
+    
+      </div> 
+  </div>
+ 
+  {% endfor %}
+  </div>
+
+
+  <!-- /.lockscreen-item -->
+  <div class="help-block text-center">
+    Enter your child's Admission Number to continue
+  </div>
+
+</div>
+<!-- /.center -->
+
+<!-- jQuery -->
+<script src="{% static 'portal/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'portal/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
+
+<!-- Add this script after including jQuery library -->
+
+<script>
+    $(document).ready(function() {
+      // Get the value of the input field on button click
+      $('.lockscreen-credentials button').on('click', function() {
+        var enteredAdmissionNo = $('.lockscreen-credentials input').val();
+  
+        // Compare with Django variable {{ admission_no }}
+        var innerHTMLOfP = $('.lockscreen-credentials button').parent().find('p').html();
+        var successAlert = $(this).parent().siblings('.alert-success');
+        var dangerAlert = $(this).parent().siblings('.alert-danger');
+        
+        var jsonString = innerHTMLOfP.replace(/'/g, '"');
+        let id = $.parseJSON(jsonString).id
+
+        if (enteredAdmissionNo == id) {
+          // If the values match, redirect to the desired URL
+          successAlert.show();
+        dangerAlert.hide();
+          window.location.href = "{% url 'dashboard' '$.id'%}"
+        } else {
+            successAlert.show();
+        dangerAlert.hide();
+          // If the values don't match, you can handle it accordingly
+          $('.lockscreen-credentials').after('<div class="alert alert-danger mt-2">Incorrect Admission Number. Please try again.</div>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>

@@ -8,14 +8,30 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import HttpResponse
 import smtplib
 import json
+import requests
 
-
-def real_db(csv):
-    with open(csv, 'r') as file:
-        DB = json.load(file)
+DB = None
+def real_db():
+    response = requests.get("https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
+    DB = response.json()
     return DB
+
+@login_required
+def choose(request):
+    DB = real_db()
+    children = [child for child in DB  if child["f_email"] == str(request.user) or child["m_email"] == str(request.user)]
+    print(request.user)
+    if request.method == "POST":
+        id = request.POST["id"]
+        for child in DB:
+            if child["id"] == id:
+                return redirect("dashboard", id=id)
+            else:
+                return render(request, "portal/choose.html", {"message": True, "children":children})
+    return render(request, "portal/choose.html", {"children":children})
 
 
 def register(request):
@@ -33,7 +49,7 @@ def register(request):
                 "message": "The email already exists"
             })
         
-        return redirect("dashboard")
+        return redirect("choose")
     elif request.method == "GET":
          return render(request, "portal/register.html")
 
@@ -51,7 +67,7 @@ def login_view(request):
         parent = authenticate(request, password=password, username=email)
         if parent is not None:
             login(request, user=parent)
-            return redirect("dashboard")
+            return redirect("choose")
         else:
             return render(request, "portal/login.html", {"message": "Invalid Email or Password"})
         
@@ -90,9 +106,15 @@ def recover(request):
     return render(request, "portal/recover.html")
 
 @login_required
-def dashboard(request):
-    # print(real_db("sample_data.json"))
-    return render(request, template_name="portal/dashboard.html")
+def dashboard(request, id):
+    DB = real_db()
+    for child in DB:
+        if child["id"] == id:
+            data = child
+            return render(request, template_name="portal/dashboard.html", context={"data": data})
+        else:
+            print(id)
+            return HttpResponse(id)
 
 
 def test(request):

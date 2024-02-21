@@ -13,8 +13,8 @@
           <!-- <small>Version 2.0</small> -->
         </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Dashboard</li>
+          <li><a href="{% url 'choose' %}"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+          <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         </ol>
       </section>
 
@@ -142,11 +142,12 @@
                             <!-- /.box-body -->
                             <div class="box-footer no-padding">
                               <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Admission No <span class="pull-right text-red">  {{data.id}}</span></a>
-                                </li>
+                                <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> {{ data.programme }}</span></a>
                                 <li><a href="#">Name<span class="pull-right text-red">  {{data.name}}</span></a>
                                 </li>
-                                <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> {{ data.programme }}</span></a>
+                                <li><a href="#">Admission No <span class="pull-right text-red">  {{data.id}}</span></a>
+                                </li>
+
                                 </li>
                                 <li><a href="#">My Current Stage <span class="pull-right text-red">  {{data.stage}}</span></a>
                                 </li>
