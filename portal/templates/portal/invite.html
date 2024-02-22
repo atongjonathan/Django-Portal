@@ -1,0 +1,59 @@
+{% extends 'portal/layout.html' %}
+{% load static %}
+
+{% block content-wrapper %}
+
+<div class="content-wrapper" style="min-height: 926.032px;">
+    
+    <section class="content-header">
+        <h1>
+          Invite
+          <!-- <small>Version 2.0</small> -->
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href=""><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+          <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        </ol>
+      </section>
+
+    
+   
+      <div class="flex-item">
+        <div class="lockscreen-name"></div>
+    
+        <!-- START LOCK SCREEN ITEM -->
+        <div class="lockscreen-item">
+          <!-- lockscreen image -->
+          <div class="lockscreen-image">
+            <img src="{% static 'portal/dist/img/avatar.png' %}" alt="User Image">
+          </div>
+          <!-- /.lockscreen-image -->
+      
+          <!-- lockscreen credentials (contains the form) -->
+          <!-- <a href=""> -->
+          <form class="lockscreen-credentials" method="" action="">
+            <div class="input-group">
+              <input type="text" name="id" value="{{ child.id }}" class="form-control" placeholder="Admission Number">
+      
+              <div class="input-group-append">
+                <a href=""><button type="button" class="btn" title="Go to Child">
+                  <i class="fas fa-arrow-right text-muted"></i>
+                </button></a>
+                
+              </div>
+            </div>
+          </form>
+          <!-- </a> -->
+    
+        <!-- /.lockscreen credentials -->
+    
+      </div> 
+  </div>
+
+
+
+
+            
+</div>
+
+{% endblock %}

@@ -8,7 +8,7 @@
         "f_name": "DANFACE KARANI NYANGAU",
         "f_occupation": "ACCOUNTANT",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool",
         "f_id": "28089532",
         "f_nation": "KENYAN",
         "m_name": "WINNIE KERUBO",
@@ -26,7 +26,7 @@
         "f_name": "JOHN ONYANGO BOYI",
         "f_occupation": "DENTAL TECHNOLOGIST",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool",
         "f_id": "23634345",
         "f_nation": "KENYAN",
         "m_name": "LINDA MWERESA",
@@ -44,7 +44,7 @@
         "f_name": "EDWIN NGENO",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool",
         "f_id": "",
         "f_nation": "KENYAN",
         "m_name": "VERONICA WANJIKU NGENO",
@@ -62,7 +62,7 @@
         "f_name": "KIVALE ALI SAID",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.co.ke",
         "f_id": "",
         "f_nation": "KENYAN",
         "m_name": "REBECCA MUTHOKI MUTUA",
@@ -80,14 +80,16 @@
         "f_name": "GUARDIAN- MARY MUTHEU",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.co.ke",
         "f_id": "",
         "f_nation": "",
         "m_name": "WINNIE NDINDA KIMEU",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "4,000.00"
+        "balance": "4,000.00",
+        "billed": "156,000.00",
+        "paid": ""
     },
     {
         "id": "STU-0233",
@@ -98,14 +100,16 @@
         "f_name": "",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.co.ke",
         "f_id": "",
         "f_nation": "",
         "m_name": "CAROLYN MUTISO",
         "m_occupation": "ACCOUNTANT",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "7,500.00"
+        "balance": "7,500.00",
+        "billed": "156,000.00",
+        "paid": ""
     },
     {
         "id": "STU-0234",
@@ -116,14 +120,16 @@
         "f_name": "NAFTALI OBIRI",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.org",
         "f_id": "",
         "f_nation": "",
         "m_name": "WINNIE MOGIRE",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "4,000.00"
+        "balance": "4,000.00",
+        "billed": "156,000.00",
+        "paid": ""
     },
     {
         "id": "STU-0235",
@@ -134,14 +140,16 @@
         "f_name": "PAUL MBATHA MUTINDA",
         "f_occupation": "ENTREPRENEUR",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.org",
         "f_id": "32318231",
         "f_nation": "KENYAN",
         "m_name": "CARNYCE ADHIAMBO OMONDI",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "73,500.00"
+        "balance": "73,500.00",
+        "billed": "156,000.00",
+        "paid": "16,500"
     },
     {
         "id": "STU-0237",
@@ -152,14 +160,16 @@
         "f_name": "BENARD MUASYA MUANGE",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjuniorschool.org",
         "f_id": "",
         "f_nation": "KENYAN",
         "m_name": "TABITHA NZURI K",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "1,000.00"
+        "balance": "1,000.00",
+        "billed": "156,000.00",
+        "paid": "155,000.00"
     },
     {
         "id": "STU-0240",
@@ -170,14 +180,16 @@
         "f_name": "KENNETH IMOH MGANDA",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjunior.org",
         "f_id": "",
         "f_nation": "KENYAN",
         "m_name": "REGINA  KITUR IMOH",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "35,560.00"
+        "balance": "35,560.00",
+        "billed": "156,000.00",
+        "paid": "120,440"
     },
     {
         "id": "STU-0243",
@@ -188,14 +200,16 @@
         "f_name": "MICHAEL MUKEYA",
         "f_occupation": "",
         "f_tel": "717152289",
-        "f_email": "calvince@thearkjuniorschool.com",
+        "f_email": "calvince@thearkjunior.org",
         "f_id": "",
         "f_nation": "",
         "m_name": "HELEN SIKUKU",
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "24,660.00"
+        "balance": "24,660.00",
+        "billed": "156,000.00",
+        "paid": "131,340.00"
     },
     {
         "id": "STU-0245",
@@ -213,7 +227,9 @@
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "30,500.00"
+        "balance": "30,500.00",
+        "billed": "156,000.00",
+        "paid": "125,500.00"
     },
     {
         "id": "STU-0246",
@@ -231,7 +247,9 @@
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "16,800.00"
+        "balance": "16,800.00",
+        "billed": "156,000.00",
+        "paid": "139,200.00"
     },
     {
         "id": "STU-0249",
@@ -249,6 +267,8 @@
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "0"
+        "balance": "0",
+        "billed": "156,000.00",
+        "paid": "156,000.00"
     }
 ]

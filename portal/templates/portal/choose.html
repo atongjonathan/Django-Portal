@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Lockscreen</title>
+  <title>Choose Student</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -26,7 +26,7 @@
         align-items: center;
         flex-wrap: wrap !important;
         margin: 0 auto;
-        row-gap: 10px;
+        row-gap: 20px;
     }
     .flex-item
     {
@@ -35,6 +35,7 @@
     .lockscreen-name
     {
         font-size: small;
+        margin-left: 20px;
     }
     button  p
     {
@@ -45,6 +46,28 @@
         width: 50%;
         margin: 10px auto;
     }
+    .input-group input
+    {
+      text-align: center;
+    }
+    .lockscreen-logo a
+    {
+      color: blue;
+          font-weight: bolder;
+    }
+    .lockscreen-logo a:hover 
+    {
+      color: black;
+    }
+    .lockscreen-logo
+    {
+      margin-bottom: 30px;
+    }
+    .wrapper
+    {
+      padding: 40px;
+    }
+
     @media (max-width: 500px)
     {
         .flex-item
@@ -57,13 +80,13 @@
 </head>
 <body class="hold-transition lockscreen">
 <!-- Automatic element centering -->
-<div class="">
+<div class="wrapper">
   <div class="lockscreen-logo">
     <a href="#"><b>Your Children</b></a>
   </div>
   <!-- User name -->
   {% if message %}
-  <div class="alert alert-danger mt-2">Incorrect Admission Number. Please try again</div>
+  <div class="alert alert-danger mt-2">{{message}}</div>
   {% endif %}
   <div class="flex-container">
     {% for child in children %}
@@ -74,23 +97,25 @@
         <div class="lockscreen-item">
           <!-- lockscreen image -->
           <div class="lockscreen-image">
-            <img src="{% static 'portal/dist/img/avatar.png' %}" alt="User Image">
+            <img src="{{ child.img }}" alt="User Image">
           </div>
           <!-- /.lockscreen-image -->
       
           <!-- lockscreen credentials (contains the form) -->
-          <form class="lockscreen-credentials" method="post" action="{% url 'choose' %}">
-            {% csrf_token %}
+          <!-- <a href="{% url 'dashboard' child.id  %}"> -->
+          <form class="lockscreen-credentials" method="" action="{% url 'dashboard' child.id %}">
             <div class="input-group">
-              <input type="text" name="id" class="form-control" placeholder="Admission Number">
+              <input type="text" name="id" value="{{ child.id }}" class="form-control" placeholder="Admission Number" disabled>
       
               <div class="input-group-append">
-                <button type="submit" class="btn" title="Submit">
+                <a href="{% url 'dashboard' child.id %}"><button type="button" class="btn" title="Go to Child">
                   <i class="fas fa-arrow-right text-muted"></i>
-                </button>
+                </button></a>
+                
               </div>
             </div>
           </form>
+          <!-- </a> -->
     
         <!-- /.lockscreen credentials -->
     
@@ -103,7 +128,10 @@
 
   <!-- /.lockscreen-item -->
   <div class="help-block text-center">
-    Enter your child's Admission Number to continue
+    Choose child to continue
+    <p class="mt-3 mb-1">
+      <a href="{% url 'logout' %}">Log Out?</a>
+    </p>
   </div>
 
 </div>

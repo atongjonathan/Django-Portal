@@ -9,38 +9,40 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
+from django.http.request import HttpRequest
 import smtplib
-import json
 import requests
 
-DB = None
+
+
+
 def real_db():
-    response = requests.get("https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
+    response = requests.get(
+        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
     DB = response.json()
+    DB = get_avatars(DB)
     return DB
 
-@login_required
-def choose(request):
-    DB = real_db()
-    children = [child for child in DB  if child["f_email"] == str(request.user) or child["m_email"] == str(request.user)]
-    print(request.user)
-    if request.method == "POST":
-        id = request.POST["id"]
-        for child in DB:
-            if child["id"] == id:
-                return redirect("dashboard", id=id)
-            else:
-                return render(request, "portal/choose.html", {"message": True, "children":children})
-    return render(request, "portal/choose.html", {"children":children})
+def get_avatars(DB: list):
+    for child in DB:
+         child["img"]=f"https://ui-avatars.com/api/name={child['name'].replace(' ','+')}?rounded=true&background=random"
+    return DB
 
 
-def register(request):
+def register(request: HttpRequest):
     if request.method == 'POST':
         email = request.POST["email"]
+        children = [child for child in DB if child["f_email"]
+                    == email or child["m_email"] == email]
+        no_of_children = len(children)
+        if no_of_children == 0:
+            return render(request, "portal/register.html",
+             {"message": "Email provided is not recognised by the school. Visit school to update!"})
         password = request.POST['password']
 
-        try: 
-            parent = Parent.objects.create_user(username=email, password=password)
+        try:
+            parent = Parent.objects.create_user(
+                username=email, password=password)
             parent.save()
             login(request, user=parent)
         except Exception as e:
@@ -48,19 +50,62 @@ def register(request):
             return render(request, "portal/register.html", {
                 "message": "The email already exists"
             })
-        
+
         return redirect("choose")
     elif request.method == "GET":
-         return render(request, "portal/register.html")
-
-    
-
-def logout_view(request):
-    logout(request)
-    return redirect("login")
+        return render(request, "portal/register.html")
 
 
-def login_view(request):
+@login_required
+def choose(request: HttpRequest):
+    children = [child for child in DB if child["f_email"] == str(
+        request.user) or child["m_email"] == str(request.user)]
+    no_of_children = len(children)
+    if no_of_children == 0:
+        logout(request)
+        return render(request, "portal/login.html", {"message": "Your Email is not attached to any child. Visit school to update!"})
+    else:
+        return render(request, "portal/choose.html", {"title": "Choose Child","children": children})
+
+
+@login_required
+def dashboard(request: HttpRequest, id):
+    for child in DB:
+        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
+            data = child
+            return render(request, template_name="portal/dashboard.html", context={"data": data, "id":data["id"]})
+        else:
+            pass
+    return render(request, "portal/choose.html", {"title": "Dashboard","message": " Your email is not recognised by the school. Visit school to update!"})
+
+
+
+# Dashboard Addons
+
+def statement(request: HttpRequest, id):
+    for child in DB:
+        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
+            data = child
+            return render(request, "portal/statement.html", {"title": "Fee Statement","id": id, "data":data})    
+
+def statement_print(request: HttpRequest, id):
+    for child in DB:
+        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
+            data = child    
+    return render(request, "portal/statement_print.html", {"title": "Fee Statement - PDF","id": id, "data":data})    
+
+def invite(request: HttpRequest, id):
+    for child in DB:
+        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
+            data = child
+            return render(request, "portal/invite.html", {"title": "Invite","id": id, "data": data})
+
+
+def structure(request: HttpRequest):
+    return render(request, "portal/structure.html", {"title": "Fee Structure",})
+
+
+def login_view(request: HttpRequest):
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
@@ -69,11 +114,67 @@ def login_view(request):
             login(request, user=parent)
             return redirect("choose")
         else:
-            return render(request, "portal/login.html", {"message": "Invalid Email or Password"})
-        
+            return render(request, "portal/login.html", {"title": "Fee Statement","message": "Invalid Email or Password"})
 
     else:
         return render(request, "portal/login.html")
+
+def logout_view(request: HttpRequest):
+    logout(request)
+    return redirect("login")
+
+
+
+
+
+
+
+def forgot(request: HttpRequest):
+    if request.method == "POST":
+        email = request.POST["email"]
+        parent = Parent.objects.filter(username=email).first()
+        if parent:
+            # Generate a token and send an email
+            token = default_token_generator.make_token(parent)
+            uidb64 = urlsafe_base64_encode(force_bytes(parent.id))
+            reset_url = f'{settings.BASE_URL}/reset-password/{uidb64}/{token}/'
+            print("Sending email", reset_url)
+            # send_email("atongjonathangmail.com", parent.email,f"Subject:Reset Password\n\n{reset_url}")
+            return redirect("recover")
+    return render(request, "portal/forgot.html", {"title": "Forgot Password",})
+
+
+def recover(request: HttpRequest):
+    return render(request, "portal/recover.html", {"title": "Change Password",})
+
+
+
+
+
+
+def test(request: HttpRequest):
+    return render(request, 'portal/test.html')
+
+
+
+
+def logged_out(request: HttpRequest):
+    return render(request, "portal/logged_out.html", {"title": "Logged Out",})
+
+
+def contact(request: HttpRequest):
+    return render(request, "portal/contact.html", {"title": "Contact"})
+
+def contact_us(request: HttpRequest):
+    return render(request, "portal/contact_us.html", {"title": "Contact Us",})
+
+def handle_404(request: HttpRequest):
+    return render(request, "portal/error_404.html", status=404)
+
+
+
+
+
 
 def send_email(sender, reciever, content):
     with smtplib.SMTP('smtp.gmail.com') as connection:
@@ -88,35 +189,6 @@ def send_email(sender, reciever, content):
             print("Sent")
         except UnicodeError:
             print("Not Sent")
-def forgot(request):
-    if request.method == "POST":
-        email = request.POST["email"]
-        parent = Parent.objects.filter(username=email).first()
-        if parent:
-            # Generate a token and send an email
-            token = default_token_generator.make_token(parent)
-            uidb64 = urlsafe_base64_encode(force_bytes(parent.id))
-            reset_url = f'{settings.BASE_URL}/reset-password/{uidb64}/{token}/'
-            print("Sending email", reset_url)
-            # send_email("atongjonathangmail.com", parent.email,f"Subject:Reset Password\n\n{reset_url}")
-            return redirect("recover")
-    return render(request, "portal/forgot.html")
 
-def recover(request):
-    return render(request, "portal/recover.html")
-
-@login_required
-def dashboard(request, id):
-    DB = real_db()
-    for child in DB:
-        if child["id"] == id:
-            data = child
-            return render(request, template_name="portal/dashboard.html", context={"data": data})
-        else:
-            print(id)
-            return HttpResponse(id)
-
-
-def test(request):
-    return render(request, 'portal/test.html')
-
+global DB
+DB = real_db()

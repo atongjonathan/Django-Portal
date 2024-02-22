@@ -1,0 +1,140 @@
+{% extends 'portal/layout.html' %}
+{% load static %}
+
+{% block content-wrapper %}
+
+
+<div class="content-wrapper" style="min-height: 2645.77px;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+      <h1>
+        Fees Statement
+        <!-- <small>Version 2.0</small> -->
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+        <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
+      </ol>
+    </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <!-- Main content -->
+          <div class="invoice p-3 mb-3">
+            <!-- title row -->
+            <div class="row">
+              <div class="col-12-table-responsive">
+                <table class="table table-striped">
+
+                  <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Particulars</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Bal (KES:)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td></td>
+                        <td>Balance B/F  ..................................</td>
+                        
+                        <td></td>
+                        <td></td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td>11/3/22</td>
+                        <td>Receipt-Funcamp</td>
+                        <td>7,000.00</td>
+                        <td></td>
+                        <td>-7,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>11/3/22</td>
+                        <td>Receipt-Funcamp</td>
+                        <td>2,000.00</td>
+                        <td></td>
+                        <td>-9,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>14/3/22</td>
+                        <td>Fun Camp Fees- March 2022 Holiday</td>
+                        <td></td>
+                        <td>6,500.00</td>
+                        <td>-2,500.00</td>
+                    </tr>
+                    <tr>
+                        <td>14/3/22</td>
+                        <td>Fun Camp Transport- March 2020 Ho</td>
+                        <td></td>
+                        <td>2,500.00</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td>17/4/22</td>
+                        <td>Receipt</td>
+                        <td></td>
+                        <td>80,000.00</td>
+                        <td>-80,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>26/4/22</td>
+                        <td>Book Fund Charges</td>
+                        <td>4,000.00</td>
+                        <td></td>
+                        <td>-76,000.00</td>
+                        
+                    </tr>
+                    <tr>
+                </table>
+              </div>
+
+            </div>
+
+  <!-- <div class="header">
+      <h1>THE ARK JUNIOR SCHOOL</h1>
+      <h2>SOUTH B BRANCH</h2>
+      <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
+      <h3>Learn To Excel</h3>
+      <h4>STATEMENT OF ACCOUNT</h4>
+  </div>
+
+  <div class="subheader">
+      <p>REG. NO: STUP-0174</p>
+      <p>NAME: EARL GEMO KIMARU</p>
+      <p>PROGRAMME: CBC</p>
+      <p>Start Date: 02-Feb-22  End Date: 02-Feb-24</p>
+      <p>Date Printed: 17-Feb-24</p>
+  </div> -->
+
+  <table class="table">
+
+
+
+
+            <!-- /.row -->
+
+            <!-- this row will not appear when printing -->
+            <div class="row no-print">
+              <div class="col-12">
+                <a href="{% url 'statement_print' id %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                <a href="{% static 'portal/pdfs/document.pdf' %}"><button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                  <i class="fas fa-download"></i> Generate PDF
+                </button></a>
+                
+              </div>
+            </div>
+          </div>
+          <!-- /.invoice -->
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+{% endblock %}
