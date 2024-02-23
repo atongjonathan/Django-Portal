@@ -189,7 +189,8 @@ def page_not_found(request, exception):
 
 def send_email(sender, reciever, content):
 
-    with smtplib.SMTP('smtp.gmail.com') as connection:
+    with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+        connection.ehlo()
         connection.starttls()
         connection.login(user="portal@thearkjuniorschool.com", password="ioqm iivv yatz mbep\n")
         try:
