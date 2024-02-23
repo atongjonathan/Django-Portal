@@ -1,18 +1,14 @@
 from django.shortcuts import render, redirect
 from .models import Parent
-from django.db.utils import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode
 from django.conf import settings
-from django.http import HttpResponse
 from django.http.request import HttpRequest
 import smtplib
 import requests
-
 
 
 
@@ -97,6 +93,17 @@ def statement_print(request: HttpRequest, id):
 def invite(request: HttpRequest, id):
     for child in DB:
         if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
+            data = child  
+    if request.method == "POST":
+        email = request.POST["email"]
+        message = f"Subject: Invite to the Ark Junior School\n\n{request.user} Welcomes you to check out the Ark Junior Schools"
+        try:
+            send_email(settings.EMAIL_HOST, email, message)
+            return render(request, "portal/invite.html", {"title": "Invite","id": id, "data": data, "message": True})
+        except Exception as e:
+            print(e)
+    for child in DB:
+        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
             data = child
             return render(request, "portal/invite.html", {"title": "Invite","id": id, "data": data})
 
@@ -117,13 +124,15 @@ def login_view(request: HttpRequest):
             return render(request, "portal/login.html", {"title": "Fee Statement","message": "Invalid Email or Password"})
 
     else:
-        return render(request, "portal/login.html")
+        if (request.user.is_anonymous):
+            return render(request, "portal/login.html")
+        else:
+            return redirect("choose")
+            # return HttpResponse("Invalid Path")
 
 def logout_view(request: HttpRequest):
     logout(request)
-    return redirect("login")
-
-
+    return redirect("logged_out")
 
 
 
@@ -138,8 +147,7 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(parent)
             uidb64 = urlsafe_base64_encode(force_bytes(parent.id))
             reset_url = f'{settings.BASE_URL}/reset-password/{uidb64}/{token}/'
-            print("Sending email", reset_url)
-            # send_email("atongjonathangmail.com", parent.email,f"Subject:Reset Password\n\n{reset_url}")
+            send_email('portal@thearkjuniorschool.com', email,f"Subject:Reset Password\n\n{reset_url}")
             return redirect("recover")
     return render(request, "portal/forgot.html", {"title": "Forgot Password",})
 
@@ -168,8 +176,11 @@ def contact(request: HttpRequest):
 def contact_us(request: HttpRequest):
     return render(request, "portal/contact_us.html", {"title": "Contact Us",})
 
-def handle_404(request: HttpRequest):
-    return render(request, "portal/error_404.html", status=404)
+
+
+# HTTP Error 400
+def page_not_found(request, exception):
+    return render(request, "portal/error_404.html")
 
 
 
@@ -177,16 +188,15 @@ def handle_404(request: HttpRequest):
 
 
 def send_email(sender, reciever, content):
+
     with smtplib.SMTP('smtp.gmail.com') as connection:
-        connection.ehlo()
         connection.starttls()
-        connection.ehlo()
-        # connection.login(user=sender, password=tiag lrtm ltrx snee)
+        connection.login(user="portal@thearkjuniorschool.com", password="ioqm iivv yatz mbep\n")
         try:
             connection.sendmail(from_addr=sender,
                                 to_addrs=reciever,
-                                msg=f"Subject:Quotation\n\n{content}")
-            print("Sent")
+                                msg=content)
+            print(f"Email Sent to {reciever}")
         except UnicodeError:
             print("Not Sent")
 

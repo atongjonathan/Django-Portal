@@ -31,6 +31,7 @@
     .flex-item
     {
         width: 30%;
+        cursor: pointer;
     }
     .lockscreen-name
     {
@@ -40,6 +41,10 @@
     button  p
     {
         display: none;
+    }
+    .btn>i
+    {
+      margin-top: 10px;
     }
     .alert
     {
@@ -52,7 +57,7 @@
     }
     .lockscreen-logo a
     {
-      color: blue;
+      color: #007bff;
           font-weight: bolder;
     }
     .lockscreen-logo a:hover 
@@ -82,7 +87,7 @@
 <!-- Automatic element centering -->
 <div class="wrapper">
   <div class="lockscreen-logo">
-    <a href="#"><b>Your Children</b></a>
+    <a href="#"><b >Choose Student</b></a>
   </div>
   <!-- User name -->
   {% if message %}
@@ -90,7 +95,7 @@
   {% endif %}
   <div class="flex-container">
     {% for child in children %}
-    <div class="flex-item">
+    <div class="flex-item" title="{{ child.name }}">
         <div class="lockscreen-name">{{child.name}}</div>
     
         <!-- START LOCK SCREEN ITEM -->
@@ -105,7 +110,8 @@
           <!-- <a href="{% url 'dashboard' child.id  %}"> -->
           <form class="lockscreen-credentials" method="" action="{% url 'dashboard' child.id %}">
             <div class="input-group">
-              <input type="text" name="id" value="{{ child.id }}" class="form-control" placeholder="Admission Number" disabled>
+              <button type="text" title="{{ child.name }}" class="flex-item form-control" placeholder="Admission Number">Admission: {{ child.id }}</button>
+
       
               <div class="input-group-append">
                 <a href="{% url 'dashboard' child.id %}"><button type="button" class="btn" title="Go to Child">
@@ -148,33 +154,16 @@
 <!-- Add this script after including jQuery library -->
 
 <script>
-    $(document).ready(function() {
-      // Get the value of the input field on button click
-      $('.lockscreen-credentials button').on('click', function() {
-        var enteredAdmissionNo = $('.lockscreen-credentials input').val();
-  
-        // Compare with Django variable {{ admission_no }}
-        var innerHTMLOfP = $('.lockscreen-credentials button').parent().find('p').html();
-        var successAlert = $(this).parent().siblings('.alert-success');
-        var dangerAlert = $(this).parent().siblings('.alert-danger');
-        
-        var jsonString = innerHTMLOfP.replace(/'/g, '"');
-        let id = $.parseJSON(jsonString).id
-
-        if (enteredAdmissionNo == id) {
-          // If the values match, redirect to the desired URL
-          successAlert.show();
-        dangerAlert.hide();
-          window.location.href = "{% url 'dashboard' '$.id'%}"
-        } else {
-            successAlert.show();
-        dangerAlert.hide();
-          // If the values don't match, you can handle it accordingly
-          $('.lockscreen-credentials').after('<div class="alert alert-danger mt-2">Incorrect Admission Number. Please try again.</div>');
-        }
-      });
+document.addEventListener("DOMContentLoaded", function() {
+  let children = document.querySelectorAll(".flex-item");
+  children.forEach(element => {
+    element.addEventListener("click", () => {
+      const button = element.querySelector('button');
+      button.click()
     });
-  </script>
+  });
+});
+</script>
   
 </body>
 </html>

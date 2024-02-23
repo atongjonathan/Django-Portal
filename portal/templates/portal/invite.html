@@ -2,7 +2,17 @@
 {% load static %}
 
 {% block content-wrapper %}
+<style>
+.invite-div
+{
+  width: 200px;
+  height: 200px;
+  background-color: blue;
+  display: flex;
+  margin: 130px auto;
+}
 
+</style>
 <div class="content-wrapper" style="min-height: 926.032px;">
     
     <section class="content-header">
@@ -18,42 +28,121 @@
 
     
    
-      <div class="flex-item">
-        <div class="lockscreen-name"></div>
-    
-        <!-- START LOCK SCREEN ITEM -->
-        <div class="lockscreen-item">
-          <!-- lockscreen image -->
-          <div class="lockscreen-image">
-            <img src="{% static 'portal/dist/img/avatar.png' %}" alt="User Image">
-          </div>
-          <!-- /.lockscreen-image -->
-      
-          <!-- lockscreen credentials (contains the form) -->
-          <!-- <a href=""> -->
-          <form class="lockscreen-credentials" method="" action="">
-            <div class="input-group">
-              <input type="text" name="id" value="{{ child.id }}" class="form-control" placeholder="Admission Number">
-      
-              <div class="input-group-append">
-                <a href=""><button type="button" class="btn" title="Go to Child">
-                  <i class="fas fa-arrow-right text-muted"></i>
-                </button></a>
+     <section class="content">
+      <div class="row">
+
+        <div class="col-md-12">
+
+          <div class="box-body">
+
+            <div class="col-md-12">
+              <div class="box box-warning direct-chat direct-chat-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Send Invite</h3>
+
+                  <div class="box-tools pull-right">
+                    <span data-toggle="tooltip" title="" class="badge bg-yellow" data-original-title="1 New Messages">1</span>
+                    <button title="" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div style="padding:0 5px ;" class="box-body">
+                  <!-- Conversations are loaded here -->
+                    <!-- Message. Default to the left -->
+                    <div class="direct-chat-msg">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left">New Parent</span>
+                        <span class="direct-chat-timestamp pull-right">Just Now</span>
+                      </div>
+                      <!-- /.direct-chat-info -->
                 
+                      <img class="direct-chat-img" src="https://adminlte.io/themes/AdminLTE/dist/img/avatar3.png" alt="message user image">
+                      <!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                        Can you recommend a great school for me to enroll my child ?
+                      </div>
+                      {% if message %}
+                      <div class="direct-chat-msg right">
+                        <div class="direct-chat-info clearfix">
+                          <span class="direct-chat-name pull-right">{{ request.user }}</span>
+                          <span id="current-time" class="direct-chat-timestamp pull-left"></span>
+                        </div>
+                        <!-- /.direct-chat-info -->
+                        <img class="direct-chat-img" src="https://ui-avatars.com/api/name= {{ request.user }}?rounded=true&background=random" alt="message user image">
+                        <!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                          Yes I would love to, check out The Ark Junior School it won't disappoint.
+                        </div>
+                        {% endif %}
+                        <!-- /.direct-chat-text -->
+                      </div>
+                      <!-- /.direct-chat-text -->
+                    </div>
+                  </div>
+                  <!--/.direct-chat-messages-->
+
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  <form action="{% url 'invite' id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                      <input name="email" type="email" name="message" placeholder="Enter the email to invite the parent ..." class="form-control">
+                      <span class="input-group-btn">
+                            <button type="submit" class="btn btn-warning btn-flat">Send</button>
+                          </span>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.box-footer-->
               </div>
+                <div class="col-md-6">
+                  <!-- DIRECT CHAT -->
+                 
+                  <!--/.direct-chat -->
+                </div>
             </div>
-          </form>
-          <!-- </a> -->
-    
-        <!-- /.lockscreen credentials -->
-    
-      </div> 
-  </div>
+          </div>
+        </div>
+      </div>
+     </section>
 
 
 
 
             
 </div>
+<script>
+  function displayCurrentTime() {
+      var months = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
 
+      var currentDate = new Date();
+
+      var day = currentDate.getDate();
+      var month = months[currentDate.getMonth()];
+      var hours = currentDate.getHours();
+      var minutes = currentDate.getMinutes();
+      var ampm = hours >= 12 ? 'pm' : 'am';
+
+      // Convert hours to 12-hour format
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+
+      var formattedTime = day + " " + month + " " + hours + ":" +
+                          (minutes < 10 ? '0' : '') + minutes + " " + ampm;
+
+      document.getElementById("current-time").innerText = formattedTime;
+  }
+
+  window.onload = function () {
+      displayCurrentTime();
+      setInterval(displayCurrentTime, 1000);
+  };
+</script>
 {% endblock %}

@@ -4,26 +4,49 @@
 {% block content-wrapper %}
 
 <style>
-  footer
-  {
+  footer {
     display: none;
+  }
+
+  .pdf-img {
+    height: 90px;
+  }
+
+  .header {
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   text-align: center;
+   row-gap: 5px;
+  }
+  .header p
+  {
+    margin: 0;
+  }
+  .invoice
+  {
+    margin-left: 10px;
+  }
+  u
+  {
+    margin-bottom: 20px;
   }
 </style>
 
 <div class="content-wrapper" style="min-height: 2645.77px;">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-      <h1>
-        Fees Statement
-        <!-- <small>Version 2.0</small> -->
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="/"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
-        <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      </ol>
-    </section>
+    <h1>
+      Fees Statement
+      <!-- <small>Version 2.0</small> -->
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="/"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+      <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    </ol>
+  </section>
 
-  <section class="content">
+  <section class="invoice">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -32,76 +55,99 @@
             <!-- title row -->
             <div class="row">
               <div class="col-12-table-responsive">
+                <div class="header-wrapper">              
+                  <div class="header">
+                    <img class="pdf-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="">
+                    <b>SOUTH B BRANCH</b>
+                    <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
+                    <b><i><p style="margin: 5px;"> Learn To Excel</p></i></b>
+                    <u><b>STATEMENT OF ACCOUNT</b></u>
+                  </div>
+              </div>
+
+                <div class="subheader">
+                  <p>REG. NO: {{ data.id }}</p>
+                  <p>NAME: {{ data.name }}</p>
+                  <p>PROGRAMME: {{ data.programme }}</p>
+                </div>
+
                 <table class="table table-striped">
 
                   <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Particulars</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th>Bal (KES:)</th>
+                      <th>Date</th>
+                      <th>Particulars</th>
+                      <th>Debit</th>
+                      <th>Credit</th>
+                      <th>Bal (KES:)</th>
                     </tr>
-                </thead>
-                <tbody>
+                  </thead>
+                  <tbody>
                     <tr>
                       <td></td>
-                        <td>Balance B/F  ..................................</td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td>0.00</td>
+                      <td>Balance B/F ..................................</td>
+
+                      <td></td>
+                      <td></td>
+                      <td>0.00</td>
                     </tr>
                     <tr>
-                        <td>11/3/22</td>
-                        <td>Receipt-Funcamp</td>
-                        <td>7,000.00</td>
-                        <td></td>
-                        <td>-7,000.00</td>
+                      <td>11/3/22</td>
+                      <td>Receipt-Funcamp</td>
+                      <td>7,000.00</td>
+                      <td></td>
+                      <td>-7,000.00</td>
                     </tr>
                     <tr>
-                        <td>11/3/22</td>
-                        <td>Receipt-Funcamp</td>
-                        <td>2,000.00</td>
-                        <td></td>
-                        <td>-9,000.00</td>
+                      <td>11/3/22</td>
+                      <td>Receipt-Funcamp</td>
+                      <td>2,000.00</td>
+                      <td></td>
+                      <td>-9,000.00</td>
                     </tr>
                     <tr>
-                        <td>14/3/22</td>
-                        <td>Fun Camp Fees- March 2022 Holiday</td>
-                        <td></td>
-                        <td>6,500.00</td>
-                        <td>-2,500.00</td>
+                      <td>14/3/22</td>
+                      <td>Fun Camp Fees- March 2022 Holiday</td>
+                      <td></td>
+                      <td>6,500.00</td>
+                      <td>-2,500.00</td>
                     </tr>
                     <tr>
-                        <td>14/3/22</td>
-                        <td>Fun Camp Transport- March 2020 Ho</td>
-                        <td></td>
-                        <td>2,500.00</td>
-                        <td>0.00</td>
+                      <td>14/3/22</td>
+                      <td>Fun Camp Transport- March 2020 Ho</td>
+                      <td></td>
+                      <td>2,500.00</td>
+                      <td>0.00</td>
                     </tr>
                     <tr>
-                        <td>17/4/22</td>
-                        <td>Receipt</td>
-                        <td></td>
-                        <td>80,000.00</td>
-                        <td>-80,000.00</td>
+                      <td>17/4/22</td>
+                      <td>Receipt</td>
+                      <td></td>
+                      <td>80,000.00</td>
+                      <td>-80,000.00</td>
                     </tr>
                     <tr>
-                        <td>26/4/22</td>
-                        <td>Book Fund Charges</td>
-                        <td>4,000.00</td>
-                        <td></td>
-                        <td>-76,000.00</td>
-                        
+                      <td>26/4/22</td>
+                      <td>Book Fund Charges</td>
+                      <td>4,000.00</td>
+                      <td></td>
+                      <td>-76,000.00</td>
+
                     </tr>
                     <tr>
+                      <td><b>Total</b></td>
+                      <td></td>
+                      <td>{{ data.billed }}</td>
+                      <td>{{ data.paid }}</td>
+                      <td>{{ data.balance }}</td>
+                    </tr>
+                  <tr>
                 </table>
               </div>
 
             </div>
 
-  <!-- <div class="header">
+            <!-- <div class="header">
       <h1>THE ARK JUNIOR SCHOOL</h1>
       <h2>SOUTH B BRANCH</h2>
       <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
@@ -117,23 +163,24 @@
       <p>Date Printed: 17-Feb-24</p>
   </div> -->
 
-  <table class="table">
 
 
 
 
-            <!-- /.row -->
+              <!-- /.row -->
 
-            <!-- this row will not appear when printing -->
-            <div class="row no-print">
-              <div class="col-12">
-                <a href="{% url 'statement_print' id %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                <a href="{% url 'statement_print' id %}"><button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                  <i class="fas fa-download"></i> Generate PDF
-                </button></a>
-                
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-12">
+                  <a href="{% url 'statement_print' id %}" rel="noopener" target="_blank" class="btn btn-default"><i
+                      class="fas fa-print"></i> Print</a>
+                  <a href="{% url 'statement_print' id %}"><button type="button" class="btn btn-primary float-right"
+                      style="margin-right: 5px;">
+                      <i class="fas fa-download"></i> Generate PDF
+                    </button></a>
+
+                </div>
               </div>
-            </div>
           </div>
           <!-- /.invoice -->
         </div><!-- /.col -->

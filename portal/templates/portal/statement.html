@@ -26,92 +26,116 @@
             <!-- title row -->
             <div class="row">
               <div class="col-12-table-responsive">
+                <div class="header-wrapper">              
                 <table class="table table-striped">
 
                   <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Particulars</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th>Bal (KES:)</th>
+                      <th>Date</th>
+                      <th>Particulars</th>
+                      <th>Debit</th>
+                      <th>Credit</th>
+                      <th>Bal (KES:)</th>
                     </tr>
-                </thead>
-                <tbody>
+                  </thead>
+                  <tbody>
                     <tr>
                       <td></td>
-                        <td>Balance B/F  ..................................</td>
-                        
-                        <td></td>
-                        <td></td>
-                        <td>0.00</td>
+                      <td>Balance B/F ..................................</td>
+
+                      <td></td>
+                      <td></td>
+                      <td>0.00</td>
                     </tr>
                     <tr>
-                        <td>11/3/22</td>
-                        <td>Receipt-Funcamp</td>
-                        <td>7,000.00</td>
-                        <td></td>
-                        <td>-7,000.00</td>
+                      <td>11/3/22</td>
+                      <td>Receipt-Funcamp</td>
+                      <td>7,000.00</td>
+                      <td></td>
+                      <td>-7,000.00</td>
                     </tr>
                     <tr>
-                        <td>11/3/22</td>
-                        <td>Receipt-Funcamp</td>
-                        <td>2,000.00</td>
-                        <td></td>
-                        <td>-9,000.00</td>
+                      <td>11/3/22</td>
+                      <td>Receipt-Funcamp</td>
+                      <td>2,000.00</td>
+                      <td></td>
+                      <td>-9,000.00</td>
                     </tr>
                     <tr>
-                        <td>14/3/22</td>
-                        <td>Fun Camp Fees- March 2022 Holiday</td>
-                        <td></td>
-                        <td>6,500.00</td>
-                        <td>-2,500.00</td>
+                      <td>14/3/22</td>
+                      <td>Fun Camp Fees- March 2022 Holiday</td>
+                      <td></td>
+                      <td>6,500.00</td>
+                      <td>-2,500.00</td>
                     </tr>
                     <tr>
-                        <td>14/3/22</td>
-                        <td>Fun Camp Transport- March 2020 Ho</td>
-                        <td></td>
-                        <td>2,500.00</td>
-                        <td>0.00</td>
+                      <td>14/3/22</td>
+                      <td>Fun Camp Transport- March 2020 Ho</td>
+                      <td></td>
+                      <td>2,500.00</td>
+                      <td>0.00</td>
                     </tr>
                     <tr>
-                        <td>17/4/22</td>
-                        <td>Receipt</td>
-                        <td></td>
-                        <td>80,000.00</td>
-                        <td>-80,000.00</td>
+                      <td>17/4/22</td>
+                      <td>Receipt</td>
+                      <td></td>
+                      <td>80,000.00</td>
+                      <td>-80,000.00</td>
                     </tr>
                     <tr>
-                        <td>26/4/22</td>
-                        <td>Book Fund Charges</td>
-                        <td>4,000.00</td>
-                        <td></td>
-                        <td>-76,000.00</td>
-                        
+                      <td>26/4/22</td>
+                      <td>Book Fund Charges</td>
+                      <td>4,000.00</td>
+                      <td></td>
+                      <td>-76,000.00</td>
+
                     </tr>
                     <tr>
+                      <td>26/4/22</td>
+                      <td>Dairy Charges</td>
+                      <td>1,000.00</td>
+                      <td></td>
+                      <td>-77,000.00</td>
+
+                    </tr>
+                    <tr>
+                      <td>26/4/22</td>
+                      <td>Educational Trip Charges</td>
+                      <td>3,000.00</td>
+                      <td></td>
+                      <td>-100,000.00</td>
+
+                    </tr>
+                    <tr>
+                      <td>26/4/22</td>
+                      <td>Tuition Fee Term 1 Charges</td>
+                      <td>55,000.00</td>
+                      <td></td>
+                      <td>-77,000.00</td>
+
+                    </tr>
+                    <tr>
+                      <td>26/4/22</td>
+                      <td>Transport Charges</td>
+                      <td>14,500.00</td>
+                      <td></td>
+                      <td>-77,000.00</td>
+
+                    </tr>
+                    <tr>
+                      <td><b>Total</b></td>
+                      <td></td>
+                      <td>{{ data.billed }}</td>
+                      <td>{{ data.paid }}</td>
+                      <td>{{ data.balance }}</td>
+                    </tr>
+                  <tr>
                 </table>
               </div>
 
             </div>
 
-  <!-- <div class="header">
-      <h1>THE ARK JUNIOR SCHOOL</h1>
-      <h2>SOUTH B BRANCH</h2>
-      <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
-      <h3>Learn To Excel</h3>
-      <h4>STATEMENT OF ACCOUNT</h4>
-  </div>
 
-  <div class="subheader">
-      <p>REG. NO: STUP-0174</p>
-      <p>NAME: EARL GEMO KIMARU</p>
-      <p>PROGRAMME: CBC</p>
-      <p>Start Date: 02-Feb-22  End Date: 02-Feb-24</p>
-      <p>Date Printed: 17-Feb-24</p>
-  </div> -->
-
-  <table class="table">
 
 
 
@@ -119,7 +143,7 @@
             <!-- /.row -->
 
             <!-- this row will not appear when printing -->
-            <div class="row no-print">
+            <div style="margin-left: 20px;" class="row no-print">
               <div class="col-12">
                 <a href="{% url 'statement_print' id %}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                 <a href="{% static 'portal/pdfs/document.pdf' %}"><button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">

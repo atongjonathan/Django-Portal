@@ -10,8 +10,9 @@
       <div class="card-body">
         <p class="login-box-msg">You are only one step a way from your new password.</p>
         <form action="login.html" method="post">
+          {% csrf_token %}
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" class="form-control" placeholder="Password" required>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -19,7 +20,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Confirm Password">
+            <input type="password" class="form-control" placeholder="Confirm Password" required>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>

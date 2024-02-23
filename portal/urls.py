@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import PasswordResetConfirmView
+
 urlpatterns = [
     path("register", views.register, name="register"),
     path("login", views.login_view, name="login"),
@@ -15,7 +17,9 @@ urlpatterns = [
     path("logged-out", views.logged_out, name="logged_out"),
     path("contact", views.contact, name="contact"),
     path("contact-us", views.contact_us, name="contact_us"),
-    path("404", views.handle_404, name="error_404")
+    path("404", views.page_not_found, name="error_404"),
+    path('reset-password/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
 
     # path('forgot/<str:token>/', views.confirm_reset_password, name='confirm_reset_password'),
     # path("test", views.test, name="test")
