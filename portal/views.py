@@ -102,8 +102,8 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        message = f"Subject: Invite to the Ark Junior School\n\n{request.user}has welcomed you to check out the Ark Junior School"
-        print(send_email(settings.EMAIL_HOST, email, message))
+        message = f"{request.user} has welcomed you to check out the Ark Junior School."
+        print(send_email(email, "Invite to the Ark Junior School", message))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
