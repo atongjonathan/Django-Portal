@@ -55,7 +55,7 @@
               <img src="{% static 'portal/dist/img/reading.png' %}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-              <a href="{% url 'login' %}" class="d-block">You are not logged in</a>
+              <a href="{% url 'login' %}" class="d-block">Log back in</a>
             </div>
           </div>
     
@@ -126,10 +126,10 @@
     <!-- Main content -->
     <section class="content">
       <div class="error-page">
-        <h2 class="headline text-warning">Out</h2>
+        <!-- <h2 class="headline text-warning">Out</h2> -->
 
         <div class="error-content">
-          <h3><i class="fas fa-exclamation-triangle text-warning"></i> You have logged out.</h3>
+          <h3><i class="fas fa-exclamation-triangle text-warning"></i> You are logged out.</h3>
 
           <p>
             Meanwhile, you may <a href="{% url 'login' %}">log back in</a> or may check the options.

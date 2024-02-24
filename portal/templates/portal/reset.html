@@ -1,45 +1,139 @@
-{% extends 'portal/auth_layout.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registration</title>
 
-{% block div %}
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'portal/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'portal/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'portal/dist/css/adminlte.min.css' %}">
+  <link rel="icon" href="{% static 'portal/dist/img/AdminLTELogo.png' %}">
+</head>
+<style>
+  body{
+    /* background-image:url("{% static 'portal/dist/img/AdminLTELogo.png' %}") !important; */
+    background-size:cover;
+}
 
-<div class="login-box text-dark">
-    <div class="card card-outline card-primary">
-      <div class="card-header text-center">
-        <a href="" class="h1"><b>Parent's Portal</b></a>
-      </div>
-      <div class="card-body">
-        <p class="login-box-msg">You are only one step a way from your new password.</p>
-        <form action="login.html" method="post">
-          {% csrf_token %}
-          <div class="input-group mb-3">
-            <input name="password" type="password" class="form-control" placeholder="Password" required>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input name="confirmation" type="password" class="form-control" placeholder="Confirm Password" required>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary btn-block">Change password</button>
-            </div>
-            <!-- /.col -->
-          </div>
-        </form>
-  
-        <p class="mt-3 mb-1">
-          <a href="{% url 'login' %}">Login</a>
-        </p>
-      </div>
-      <!-- /.login-card-body -->
+</style>
+<body class="hold-transition register-page">
+
+<div class="register-box">
+
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center text-dark">
+      <a href="#" class="h1"><b>Parent's Portal</b></a>
     </div>
-  </div>
-{% endblock %}
+    <div class="card-body text-dark">
+      <p class="login-box-msg">Set up your new password</p>
+
+      <form id="quickForm" action="{% url 'set_password'%}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+            {{form.confirm_password}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Set password</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+
+
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery -->
+<script src="{% static 'portal/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'portal/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
+<script>
+      $('.swalDefaultSuccess').click(function() {
+      Toast.fire({
+        icon: 'success',
+        title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+</script>
+<script>
+  $(function () {
+  $('#quickForm').validate({
+    rules: {
+      email: {
+        required: true,
+        email: true,
+      },
+      password: {
+        minlength: 5
+      },
+      confirm_password: {
+        minlength: 5,
+        equalTo: "#password"
+      },
+    },
+    messages: {
+      email: {
+        required: "Please enter a email address",
+        email: "Please enter a valid email address"
+      },
+      password: {
+        required: "Please provide a password",
+        minlength: "Your password must be at least 5 characters long"
+      },
+      confirm_password: {
+        required: "Please confirm your password",
+        equalTo: "Please enter the same password again."
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+</script>
+
+
+</body>
+</html>

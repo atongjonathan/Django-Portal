@@ -1,40 +1,16 @@
 {% extends 'portal/auth_layout.html' %}
-<style>
-    body{margin-top:20px;}
-.mail-seccess {
-    text-align: center;
-	background: #fff;
-	border-top: 1px solid #eee;
-}
-.mail-seccess .success-inner {
-	display: inline-block;
-}
-.mail-seccess .success-inner h1 {
-	font-size: 100px;
-	text-shadow: 3px 5px 2px #3333;
-	color: #006DFE;
-	font-weight: 700;
-}
-.mail-seccess .success-inner h1 span {
-	display: block;
-	font-size: 25px;
-	color: #333;
-	font-weight: 600;
-	text-shadow: none;
-	margin-top: 20px;
-}
-.mail-seccess .success-inner p {
-	padding: 20px 15px;
-}
-.mail-seccess .success-inner .btn{
-	color:#fff;
-}
-</style>
+{% load static %}
+
 
 {% block div %}
 
 
 <div class="login-box text-dark">
+  {% if message %}
+  <div class="alert alert-success">
+    <strong>Email Sent!</strong>
+    </div>
+  {% endif %}
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
         <a href="" class="h1"><b>Parent's Portal</b></a>
@@ -54,5 +30,6 @@
       <!-- /.login-card-body -->
     </div>
   </div>
+
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from django.contrib.auth.views import PasswordResetConfirmView
+
 
 urlpatterns = [
     path("register", views.register, name="register"),
@@ -18,8 +18,9 @@ urlpatterns = [
     path("contact", views.contact, name="contact"),
     path("contact-us", views.contact_us, name="contact_us"),
     path("404", views.page_not_found, name="error_404"),
-    path('reset-password/<uidb64>/<token>/', views.recover, name='password_reset_confirm'),
-
+    path("set-password", views.set_password, name="set_password"),
+    path('reset-password/<str:uidb64>/<str:token>/', views.recover, name='password_reset_confirm'),
+    path("modal/<id>", views.modal, name="modal"),
 
     # path('forgot/<str:token>/', views.confirm_reset_password, name='confirm_reset_password'),
     # path("test", views.test, name="test")

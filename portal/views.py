@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from .models import Parent
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
@@ -9,7 +11,31 @@ from django.conf import settings
 from django.http.request import HttpRequest
 from django.http import HttpResponse
 from portal.utils import *
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'portal/reset.html'  # Customize this template as needed
+    success_url = reverse_lazy('login')  # Redirect to the login page upon successful password reset
+
+    def form_valid(self, form):
+        uidb64 = self.kwargs.get('uidb64')
+        token = self.kwargs.get('token')        
+        response = super().form_valid(form)
+        return response
+
+    def form_invalid(self, form):
+        uidb64 = self.kwargs.get('uidb64')
+        token = self.kwargs.get('token')        
+        response = super().form_invalid(form)
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['uidb64'] = self.kwargs.get('uidb64')
+        context['token'] = self.kwargs.get('token')   
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -76,7 +102,7 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        message = f"Subject: Invite to the Ark Junior School\n\n{request.user} Welcomes you to check out the Ark Junior Schools"
+        message = f"Subject: Invite to the Ark Junior School\n\n{request.user}has welcomed you to check out the Ark Junior School"
         print(send_email(settings.EMAIL_HOST, email, message))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
@@ -115,14 +141,34 @@ def forgot(request: HttpRequest):
         email = request.POST["email"]
         parent = Parent.objects.filter(username=email).first()
         if parent:
-            # Generate a token and send an email
+            return render(request, "portal/mail_sent.html", {"title": "Proceed ?" })
+        return render(request, "portal/forgot.html", {"title": "Forgot Password","message": "Invalid Email" })
+    return render(request, "portal/forgot.html")
 
-            return redirect("recover")
-    return render(request, "portal/forgot.html", {"title": "Forgot Password", })
+
+def recover(request: HttpRequest, uidb64, token):
+    return CustomPasswordResetConfirmView.as_view()(request, uidb64=uidb64, token=token)
 
 
-def recover(request: HttpRequest):
-    return render(request, "portal/reset.html", {"title": "Change Password", })
+def set_password(request):
+    if request.method == "POST":
+        new_password = request.POST["password"]
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Update the session to avoid requiring reauthentication
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, 'Password changed successfully.')
+        return redirect('login')
+    else:
+        if (request.user):
+            return redirect('mail_sent')
+        else:
+            return redirect("login")
+
+        # return render(request, "portal/reset.html", {"message":True})
+
 
 
 def test(request: HttpRequest):
@@ -139,10 +185,11 @@ def mail_sent(request: HttpRequest):
     if request.method == "POST":
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        reset_url = f'{request.get_host}/reset-password/{uidb64}/{token}/'
+        reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
+        body = f"Follow this link to reset your password\n {reset_url}"
         send_email(str(request.user)
-                    ,"Reset Password", reset_url)
-        return HttpResponse("Email Sent")
+                    ,"Reset Password", body)
+        return render(request, "portal/mail_sent.html", {"message":"Email sent to your inbox"})
     return render(request, "portal/mail_sent.html")
 
 
@@ -152,6 +199,10 @@ def contact(request: HttpRequest):
 
 def contact_us(request: HttpRequest):
     return render(request, "portal/contact_us.html", {"title": "Contact Us", })
+
+def modal(request: HttpRequest, id):
+    data = get_child_data(id, request.user)
+    return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
 
 
 # HTTP Error 400

@@ -13,6 +13,8 @@
 }
 
 </style>
+<link rel="stylesheet" href="{% static 'portal/plugins/toastr/toastr.min.css' %}">
+
 <div class="content-wrapper" style="min-height: 926.032px;">
     
     <section class="content-header">
@@ -21,7 +23,7 @@
           <!-- <small>Version 2.0</small> -->
         </h1>
         <ol class="breadcrumb">
-          <li><a href=""><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+          <li><a href="{% url 'choose' %}"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
           <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
         </ol>
       </section>
