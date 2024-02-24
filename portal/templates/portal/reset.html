@@ -12,7 +12,7 @@
         <form action="login.html" method="post">
           {% csrf_token %}
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password" required>
+            <input name="password" type="password" class="form-control" placeholder="Password" required>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Confirm Password" required>
+            <input name="confirmation" type="password" class="form-control" placeholder="Confirm Password" required>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
