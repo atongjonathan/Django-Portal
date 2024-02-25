@@ -81,7 +81,7 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        message = f"{request.user} has welcomed you to check out the Ark Junior School."
+        message = f"{request.user} has welcomed you to check out the Ark Junior Schaool."
         print(send_email(email, "Invite to the Ark Junior School", message))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
@@ -125,7 +125,7 @@ def forgot(request: HttpRequest):
             user = Parent.objects.filter(username=email).first()
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
-            reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
+            reset_url = f'https://{request.get_host()}/reset-password/{uidb64}/{token}/'
             body = f"""
 Dear Parent,
 
@@ -211,7 +211,7 @@ Dear Parent,
 
 This is to confirm that your request to change your password.
 
-Follow this link to reset your password\n {reset_url} 
+Follow this link to reset your password\n https://{reset_url} 
 
 If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
 
