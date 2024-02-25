@@ -2,13 +2,20 @@
 
 {% block div %}
 <div class="login-box"> 
+  {% if changed_message %}
+
+  <div class="alert alert-success">
+    {{ changed_message }}
+  </div>  
+  {% endif %}
+
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center text-dark">
       <a href="{% url 'choose' %}" class="h1"><b>Parent's Portal</b></a>
     </div>
     <div class="card-body text-dark">
-      <p class="login-box-msg">Sign in</p>
+      <p class="login-box-msg">Log in</p>
 
       <form action="{% url 'login' %}" method="post">
         {% csrf_token %}

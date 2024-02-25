@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import Parent
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode
 from django.utils.http import urlsafe_base64_encode
 from django.conf import settings
 from django.http.request import HttpRequest
@@ -13,29 +14,6 @@ from django.http import HttpResponse
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-
-
-
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'portal/reset.html'  # Customize this template as needed
-    success_url = reverse_lazy('login')  # Redirect to the login page upon successful password reset
-
-    def form_valid(self, form):
-        uidb64 = self.kwargs.get('uidb64')
-        token = self.kwargs.get('token')        
-        response = super().form_valid(form)
-        return response
-
-    def form_invalid(self, form):
-        uidb64 = self.kwargs.get('uidb64')
-        token = self.kwargs.get('token')        
-        response = super().form_invalid(form)
-        return response
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['uidb64'] = self.kwargs.get('uidb64')
-        context['token'] = self.kwargs.get('token')   
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -69,6 +47,7 @@ def choose(request: HttpRequest):
     children = [child for child in DB if child["f_email"] == str(
         request.user) or child["m_email"] == str(request.user)]
     no_of_children = len(children)
+    print(request.user.id)
     if no_of_children == 0:
         logout(request)
         return render(request, "portal/login.html", {"message": "Your Email is not attached to any child. Visit school to update!"})
@@ -81,7 +60,7 @@ def dashboard(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
         return render(request, "portal/choose.html", {"title": "Dashboard", "message": " Your email is not recognised by the school. Visit school to update!"})
-    return render(request, template_name="portal/dashboard.html", context={"data": data, "id": data["id"]})
+    return render(request, template_name="portal/dashboard.html", context={"title":"Dashboard", "data": data, "id": data["id"]})
 
 
 @login_required
@@ -139,35 +118,75 @@ def logout_view(request: HttpRequest):
 def forgot(request: HttpRequest):
     if request.method == "POST":
         email = request.POST["email"]
-        parent = Parent.objects.filter(username=email).first()
-        if parent:
-            return render(request, "portal/mail_sent.html", {"title": "Proceed ?" })
-        return render(request, "portal/forgot.html", {"title": "Forgot Password","message": "Invalid Email" })
+        children = [child for child in DB if child["f_email"]
+                    == email or child["m_email"] == email]
+        no_of_children = len(children)
+        if no_of_children > 0:
+            user = Parent.objects.filter(username=email).first()
+            token = default_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.id))
+            reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
+            body = f"""
+Dear Parent,
+
+This email is sent to confirm your request to change your password.
+
+Follow this link to reset your password\n {reset_url} 
+
+If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
+
+Best regards,"""
+            send_email(str(user)
+                ,"Reset Password", body.strip())
+            return render(request, "portal/forgot.html", {"title": "Forgot Password", "success":"Email Sent"})
+        return render(request, "portal/forgot.html", {"title": "Forgot Password","fail": "Invalid Email" })
     return render(request, "portal/forgot.html")
 
+@login_required
+def change(request: HttpRequest, uidb64, token):
+    uid = force_str(urlsafe_base64_decode(uidb64))
+    User = get_user_model()
+    user = User.objects.get(pk=uid)
+    token_valid = default_token_generator.check_token(user=user,token=token)
+    if token_valid:
+        return render(request, "portal/change.html", {"title":"Change Password", "uidb64":uidb64, "token":token})
+    return redirect("register")
 
-def recover(request: HttpRequest, uidb64, token):
-    return CustomPasswordResetConfirmView.as_view()(request, uidb64=uidb64, token=token)
+def reset(request: HttpRequest, uidb64, token):
+    uid = force_str(urlsafe_base64_decode(uidb64))
+    Parent = get_user_model()
+    user = Parent.objects.get(pk=uid)
+    token_valid = default_token_generator.check_token(user=user,token=token)
+    if token_valid:
+        context = {"uidb64":uidb64, "token":token}
+        return redirect("set_password", **context)
+    return redirect("register")
 
 
-def set_password(request):
+def set_password(request:HttpRequest, uidb64, token):
     if request.method == "POST":
         new_password = request.POST["password"]
-        request.user.set_password(new_password)
-        request.user.save()
+        if request.user.is_authenticated:
+            request.user.set_password(new_password)
+            request.user.save()
+        else:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            Parent = get_user_model()
+            user = Parent.objects.get(pk=uid)
+            user.set_password(new_password)
+            user.save()
 
         # Update the session to avoid requiring reauthentication
         update_session_auth_hash(request, request.user)
-
-        messages.success(request, 'Password changed successfully.')
-        return redirect('login')
+        context = {"changed_message":"Password Changed Successfully !"}
+        return render(request, 'portal/login.html', context)
     else:
-        if (request.user):
-            return redirect('mail_sent')
+        if (request.user.is_authenticated):
+            return redirect('proceed')
         else:
-            return redirect("login")
+            return render(request, "portal/change.html",{"title":"Reset Password","uidb64":uidb64, "token":token})
 
-        # return render(request, "portal/reset.html", {"message":True})
+        # return render(request, "portal/change.html", {"message":True})
 
 
 
@@ -181,16 +200,26 @@ def logged_out(request: HttpRequest):
 
 
 @login_required
-def mail_sent(request: HttpRequest):
+def proceed(request: HttpRequest):
     if request.method == "POST":
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
-        body = f"Follow this link to reset your password\n {reset_url}"
+        reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
+        body = f"""
+
+Dear Parent,
+
+This is to confirm that your request to change your password.
+
+Follow this link to reset your password\n {reset_url} 
+
+If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
+
+Best regards,"""
         send_email(str(request.user)
-                    ,"Reset Password", body)
-        return render(request, "portal/mail_sent.html", {"message":"Email sent to your inbox"})
-    return render(request, "portal/mail_sent.html")
+                    ,"Reset Password", body.strip())
+        return render(request, "portal/proceed.html", {"title":"Proceed","message":"Email sent to your inbox"})
+    return render(request, "portal/proceed.html",  {"title":"Send Email"})
 
 
 def contact(request: HttpRequest):

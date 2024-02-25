@@ -34,7 +34,7 @@
     <div class="card-body text-dark">
       <p class="login-box-msg">Set up your new password</p>
 
-      <form id="quickForm" action="{% url 'set_password'%}" method="post">
+      <form id="quickForm" action="{% url 'set_password' uidb64 token %}" method="post">
         {% csrf_token %}
         <div class="form-group">
           <div class="input-group mb-3">

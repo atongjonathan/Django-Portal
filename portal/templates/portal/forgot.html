@@ -2,14 +2,19 @@
 
 {% block div %}
 <div class="login-box">
-  {% if message %}
+  {% if fail %}
   <div class="alert alert-danger">
     <strong>Invalid Email</strong>
     </div>
   {% endif %}
+  {% if success %}
+  <div class="alert alert-success">
+    <strong>Email Sent!</strong> Follow the link sent to reset your password
+    </div>
+  {% endif %}
     <div class="card card-outline card-primary text-dark">
       <div class="card-header text-center">
-        <a href="../../index2.html" class="h1"><b>Parent's Portal</b></a>
+        <a href="" class="h1"><b>Parent's Portal</b></a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
@@ -24,9 +29,16 @@
             </div>
           </div>
           <div class="row">
+            {% if success %}
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-block" disabled>Request new password</button>
+            </div>
+            {% else %}
             <div class="col-12">
               <button type="submit" class="btn btn-primary btn-block">Request new password</button>
             </div>
+            {% endif %}
+
             <!-- /.col -->
           </div>
         </form>

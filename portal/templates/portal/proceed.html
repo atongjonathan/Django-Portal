@@ -18,10 +18,15 @@
       <div class="card-body">
         <p class="login-box-msg">We will send you an email to change your password</p>
         <p class="login-box-msg">Follow the link to reset your password</p>
-		<form action="{% url 'mail_sent' %}" method="post">
+		<form action="{% url 'proceed' %}" method="post">
 			{% csrf_token %}
             <div class="col-12">
-				<button type="submit" class="btn btn-primary btn-block">Proceed ?</button>
+              {%if message %}
+              <a href=""><button type="submit" class="btn btn-primary btn-block" disabled>Proceed ?</button></a>
+              {% else %}
+              <a href=""><button type="submit" class="btn btn-primary btn-block">Proceed ?</button></a>
+              {% endif %}
+				
             </div>
 		</form>
             <!-- /.col -->

@@ -3,6 +3,35 @@
 
 {% block content-wrapper %}
 
+<style>
+  footer {
+    display: none;
+  }
+
+  .pdf-img {
+    height: 90px;
+  }
+
+  .header {
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   text-align: center;
+   row-gap: 5px;
+  }
+  .header p
+  {
+    margin: 0;
+  }
+  .invoice
+  {
+    margin-left: 10px;
+  }
+  u
+  {
+    margin-bottom: 20px;
+  }
+</style>
 
 <div class="content-wrapper" style="min-height: 2645.77px;">
   <!-- Content Header (Page header) -->
@@ -27,6 +56,21 @@
             <div class="row">
               <div class="col-12-table-responsive">
                 <div class="header-wrapper">              
+                  <div class="header">
+                    <img class="pdf-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="">
+                    <b>SOUTH B BRANCH</b>
+                    <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
+                    <b><i><p style="margin: 5px;"> Learn To Excel</p></i></b>
+                    <u><b>STATEMENT OF ACCOUNT</b></u>
+                  </div>
+              </div>
+
+                <div class="subheader">
+                  <p>REG. NO: {{ data.id }}</p>
+                  <p>NAME: {{ data.name }}</p>
+                  <p>PROGRAMME: {{ data.programme }}</p>
+                </div>
+
                 <table class="table table-striped">
 
                   <thead>
@@ -91,38 +135,6 @@
 
                     </tr>
                     <tr>
-                      <td>26/4/22</td>
-                      <td>Dairy Charges</td>
-                      <td>1,000.00</td>
-                      <td></td>
-                      <td>-77,000.00</td>
-
-                    </tr>
-                    <tr>
-                      <td>26/4/22</td>
-                      <td>Educational Trip Charges</td>
-                      <td>3,000.00</td>
-                      <td></td>
-                      <td>-100,000.00</td>
-
-                    </tr>
-                    <tr>
-                      <td>26/4/22</td>
-                      <td>Tuition Fee Term 1 Charges</td>
-                      <td>55,000.00</td>
-                      <td></td>
-                      <td>-77,000.00</td>
-
-                    </tr>
-                    <tr>
-                      <td>26/4/22</td>
-                      <td>Transport Charges</td>
-                      <td>14,500.00</td>
-                      <td></td>
-                      <td>-77,000.00</td>
-
-                    </tr>
-                    <tr>
                       <td><b>Total</b></td>
                       <td></td>
                       <td>{{ data.billed }}</td>
@@ -132,8 +144,6 @@
                   <tr>
                 </table>
               </div>
-
-            </div>
 
 
 
