@@ -7,9 +7,9 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.http import urlsafe_base64_encode
 from django.http.request import HttpRequest
-from django.http import HttpResponse
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
+import requests
 
 
 
@@ -28,6 +28,7 @@ def register(request: HttpRequest):
             parent = Parent.objects.create_user(
                 username=email, password=password)
             parent.save()
+            print(send_my_email("welcome", "Welcome to the Ark Kunior Parents Portal", str(request.user)))
             login(request, user=parent)
         except Exception as e:
             print(e)
@@ -45,7 +46,6 @@ def choose(request: HttpRequest):
     children = [child for child in DB if child["f_email"] == str(
         request.user) or child["m_email"] == str(request.user)]
     no_of_children = len(children)
-    print(request.user.id)
     if no_of_children == 0:
         logout(request)
         return render(request, "portal/login.html", {"message": "Your Email is not attached to any child. Visit school to update!"})
@@ -79,7 +79,7 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        send_my_email("invite", "Invite to the Ark Junior School", email,user=str(request.user))
+        print(send_my_email("invite", "Invitation to the Ark Junior School", recipient=email, user=str(request.user)))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
@@ -123,7 +123,7 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
-            send_my_email("forgot", "Forgot Password", email, reset_url)
+            print(send_my_email("forgot", "Forgot Password", email, reset_url))
             return render(request, "portal/forgot.html", {"success": "Email Sent" })
         return render(request, "portal/forgot.html", {"title": "Forgot Password","fail": "Invalid Email" })
     return render(request, "portal/forgot.html")
@@ -155,14 +155,14 @@ def set_password(request:HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
-            send_my_email("changed", "Password Changed", str(request.user))
+            print(send_my_email("changed", "Password Changed", str(request.user)))
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            send_my_email("changed", "Password Changed", str(user))
+            print(send_my_email("changed", "Password Changed", str(user)))
 
         # Update the session to avoid requiring reauthentication
         update_session_auth_hash(request, request.user)
@@ -193,7 +193,7 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
-        send_my_email("forgot", "Forgot Password", str(request.user), reset_url)
+        print(send_my_email("forgot", "Forgot Password",user=str(request.user), url=reset_url))
         return render(request, "portal/proceed.html",  {"title":"Send Email", "message":"Email Sent"})
     return render(request, "portal/proceed.html",  {"title":"Send Email"})
 
@@ -206,12 +206,8 @@ def contact_us(request: HttpRequest):
     return render(request, "portal/contact_us.html", {"title": "Contact Us", })
 
 def modal(request: HttpRequest, id):
-    
-    # send_my_email("welcome", "Welcome to The Ark Junior's Portal", "atongjonathan2@gmail.com")
-    return render(request,"emails/forgot.html", context={"link":"127.0.0.1:8000/change-password/MTc/c30din-25045d72e6c769f1bb1650976c4cb42c/"})
-    # data = get_child_data(id, request.user)
-    # send_my_email()
-    # return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
+    data = get_child_data(id, request.user)
+    return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
 
 
 # HTTP Error 400

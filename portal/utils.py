@@ -1,33 +1,31 @@
 import requests
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+import asyncio
+import aiohttp
+
+async def send_my_email_async(template, subject, recipient, url=None, user=None):
+    json_data = {
+        "subject": subject,
+        "recipient": recipient,
+        "template": template,
+        "url": url,
+        "user": user
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) as response:
+            return await response.text()
 
 def send_my_email(template, subject, recipient, url=None, user=None):
-    if template == "forgot":
-        url = f"https://{url}"
-        html_message = render_to_string(template_name=f"emails/{template}.html", context={"link":url})
-    elif template == "invite":
-        html_message = render_to_string(template_name=f"emails/{template}.html", context={"user":user})
-    else:
-        html_message = render_to_string(template_name=f"emails/{template}.html")
-    plain_message = strip_tags(html_message)
+    # Create an event loop
+    loop = asyncio.new_event_loop()
 
-    message = EmailMultiAlternatives(
-    to=[recipient],
-        from_email="portal@thearkjuniorschool.com",
-        subject=subject,
-        body=plain_message
-    )
-    message.attach_alternative(html_message, "text/html")
-    try:
-        message.send(fail_silently=False)
-        print("Email Sent to", recipient)
-        return True
-    except Exception as e:
-        print(e)
-        return False
+    # Run the asynchronous function in the event loop
+    result = loop.run_until_complete(send_my_email_async(template, subject, recipient, url, user))
 
+    # Close the event loop
+    loop.close()
+
+    return result
 
 def get_child_data(id, user):
     for child in DB:
