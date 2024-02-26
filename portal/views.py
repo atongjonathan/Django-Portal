@@ -184,7 +184,7 @@ def test(request: HttpRequest):
 # Looged Out Views
 
 def logged_out(request: HttpRequest):
-    return render(request, "portal/logged_out.html", {"title": "Logged Out", })
+    return render(request, "portal/logged_out.html", {"title": "Logged Out"})
 
 
 @login_required
