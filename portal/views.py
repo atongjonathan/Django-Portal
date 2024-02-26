@@ -9,9 +9,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
-import requests
-
-
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -28,7 +25,7 @@ def register(request: HttpRequest):
             parent = Parent.objects.create_user(
                 username=email, password=password)
             parent.save()
-            print(send_my_email("welcome", "Welcome to the Ark Kunior Parents Portal", str(request.user)))
+            print(send_my_email(template="welcome",subject="Welcome to the Ark Kunior Parents Portal",recipient=str(request.user)))
             login(request, user=parent)
         except Exception as e:
             print(e)
@@ -79,7 +76,7 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        print(send_my_email("invite", "Invitation to the Ark Junior School", recipient=email, user=str(request.user)))
+        print(send_my_email(template="invite", subject="Invitation to the Ark Junior School", recipient=email, user=str(request.user)))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
@@ -123,7 +120,7 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
-            print(send_my_email("forgot", "Forgot Password", email, reset_url))
+            print(send_my_email(template= "forgot", subject="Forgot Password", recipient=email, url=reset_url))
             return render(request, "portal/forgot.html", {"success": "Email Sent" })
         return render(request, "portal/forgot.html", {"title": "Forgot Password","fail": "Invalid Email" })
     return render(request, "portal/forgot.html")
@@ -155,14 +152,14 @@ def set_password(request:HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
-            print(send_my_email("changed", "Password Changed", str(request.user)))
+            print(send_my_email(template="changed", subject= "Password Changed", recipient=str(request.user)))
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            print(send_my_email("changed", "Password Changed", str(user)))
+            print(send_my_email(template="changed", subject= "Password Changed", recipient=str(user)))
 
         # Update the session to avoid requiring reauthentication
         update_session_auth_hash(request, request.user)
@@ -193,7 +190,7 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
-        print(send_my_email("forgot", "Forgot Password",user=str(request.user), url=reset_url))
+        print(send_my_email(template="forgot", subject="Forgot Password",recipient=str(request.user), url=reset_url))
         return render(request, "portal/proceed.html",  {"title":"Send Email", "message":"Email Sent"})
     return render(request, "portal/proceed.html",  {"title":"Send Email"})
 
@@ -213,6 +210,10 @@ def modal(request: HttpRequest, id):
 # HTTP Error 400
 def page_not_found(request, exception):
     return render(request, "portal/error_404.html")
+
+def my_bad(request):
+    send_my_email("welcome", "Error 500 on portal website",recipient="atongjonathan@gmail.com")
+    return render(request, "portal/error_500.html")
 
 
 # def statement(request, id):
