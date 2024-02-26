@@ -1,5 +1,7 @@
 import requests
-
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 EMAILS = {
     "new_login":
@@ -34,16 +36,31 @@ EMAILS = {
     },
 
 }
+def send_my_email(template, subject, recipient, url=None, user=None):
+    if template == "forgot":
+        url = f"https://{url}"
+        html_message = render_to_string(template_name=f"emails/{template}.html", context={"link":url})
+    elif template == "invite":
+        print(user)
+        html_message = render_to_string(template_name=f"emails/{template}.html", context={"user":user})
+    else:
+        html_message = render_to_string(template_name=f"emails/{template}.html")
+    plain_message = strip_tags(html_message)
 
-def send_email(receiver, subject, body):
-    url = "https://atongjona2.pythonanywhere.com/send_email"
-    payload = {
-        "recipient_email": receiver,
-        "subject": subject,
-        "body": body
-    }
-    response = requests.get(url, json=payload)
-    return response.json()
+    message = EmailMultiAlternatives(
+    to=[recipient],
+        from_email="portal@thearkjuniorschool.com",
+        subject=subject,
+        body=plain_message
+    )
+    message.attach_alternative(html_message, "text/html")
+    try:
+        message.send(fail_silently=False)
+        print("Email Sent to", recipient)
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 
 def get_child_data(id, user):

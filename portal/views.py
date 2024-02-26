@@ -1,19 +1,17 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from .models import Parent
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.http import urlsafe_base64_encode
-from django.conf import settings
 from django.http.request import HttpRequest
 from django.http import HttpResponse
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
-from django.contrib import messages
+
+
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -81,8 +79,7 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        message = f"{request.user} has welcomed you to check out the Ark Junior Schaool."
-        print(send_email(email, "Invite to the Ark Junior School", message))
+        send_my_email("invite", "Invite to the Ark Junior School", email,user=str(request.user))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
@@ -125,20 +122,9 @@ def forgot(request: HttpRequest):
             user = Parent.objects.filter(username=email).first()
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
-            reset_url = f'https://{request.get_host()}/reset-password/{uidb64}/{token}/'
-            body = f"""
-Dear Parent,
-
-This email is sent to confirm your request to change your password.
-
-Follow this link to reset your password\n {reset_url} 
-
-If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
-
-Best regards,"""
-            send_email(str(user)
-                ,"Reset Password", body.strip())
-            return render(request, "portal/forgot.html", {"title": "Forgot Password", "success":"Email Sent"})
+            reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
+            send_my_email("forgot", "Forgot Password", email, reset_url)
+            return render(request, "portal/forgot.html", {"success": "Email Sent" })
         return render(request, "portal/forgot.html", {"title": "Forgot Password","fail": "Invalid Email" })
     return render(request, "portal/forgot.html")
 
@@ -169,12 +155,14 @@ def set_password(request:HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
+            send_my_email("changed", "Password Changed", str(request.user))
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
+            send_my_email("changed", "Password Changed", str(user))
 
         # Update the session to avoid requiring reauthentication
         update_session_auth_hash(request, request.user)
@@ -205,20 +193,8 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
-        body = f"""
-
-Dear Parent,
-
-This is to confirm that your request to change your password.
-
-Follow this link to reset your password\n https://{reset_url} 
-
-If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
-
-Best regards,"""
-        send_email(str(request.user)
-                    ,"Reset Password", body.strip())
-        return render(request, "portal/proceed.html", {"title":"Proceed","message":"Email sent to your inbox"})
+        send_my_email("forgot", "Forgot Password", str(request.user), reset_url)
+        return render(request, "portal/proceed.html",  {"title":"Send Email", "message":"Email Sent"})
     return render(request, "portal/proceed.html",  {"title":"Send Email"})
 
 
@@ -230,8 +206,12 @@ def contact_us(request: HttpRequest):
     return render(request, "portal/contact_us.html", {"title": "Contact Us", })
 
 def modal(request: HttpRequest, id):
-    data = get_child_data(id, request.user)
-    return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
+    
+    # send_my_email("welcome", "Welcome to The Ark Junior's Portal", "atongjonathan2@gmail.com")
+    return render(request,"emails/forgot.html", context={"link":"127.0.0.1:8000/change-password/MTc/c30din-25045d72e6c769f1bb1650976c4cb42c/"})
+    # data = get_child_data(id, request.user)
+    # send_my_email()
+    # return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
 
 
 # HTTP Error 400

@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l)7c*j3ydy4f16s8jc54wrv=57-8v=c!oavk8u57qjp&jtl8td'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "atongjona.pythonanywhere.com", "ngong.itsfixed.africa", "www.ngong.itsfixed.africa", "portal.itsfixed.africa"]
-BASE_URL = ALLOWED_HOSTS[2]
 
 
 
@@ -135,5 +134,5 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "atongjonathan@gmail.com"
+EMAIL_HOST_USER = "portal@thearkjuniorschool.com"
 EMAIL_HOST_PASSWORD = "ioqm iivv yatz mbep\n"
