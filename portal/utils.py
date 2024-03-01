@@ -1,7 +1,9 @@
 import requests
 import asyncio
 import aiohttp
+from logging import getLogger
 
+logger = getLogger(__name__)
 async def send_my_email_async(template, subject, recipient, url=None, user=None):
     json_data = {
         "subject": subject,
@@ -13,7 +15,11 @@ async def send_my_email_async(template, subject, recipient, url=None, user=None)
 
     async with aiohttp.ClientSession() as session:
         async with session.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) as response:
-            return await response.text()
+            data = await response.json()
+            message = str(data.get("message"))
+            if message != "Successs":
+                logger.info(f"Email was with request {str(json_data)}.\nResponse returned {message}")
+            return data
 
 def send_my_email(template, subject, recipient, url=None, user=None):
     # Create an event loop

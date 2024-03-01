@@ -9,6 +9,11 @@ from django.utils.http import urlsafe_base64_encode
 from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
+from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
+
+basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s", level=INFO, handlers={StreamHandler(), FileHandler("logs.txt") })
+
+logger = getLogger(__name__)
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -17,21 +22,22 @@ def register(request: HttpRequest):
                     == email or child["m_email"] == email]
         no_of_children = len(children)
         if no_of_children == 0:
+            logger.info(f"No Child Associated with {email}")
             return render(request, "portal/register.html",
                           {"message": "Email provided is not recognised by the school. Visit school to update!"})
         password = request.POST['password']
-
         try:
-            parent = Parent.objects.create_user(
-                username=email, password=password)
-            parent.save()
-            print(send_my_email(template="welcome",subject="Welcome to the Ark Kunior Parents Portal",recipient=str(request.user)))
-            login(request, user=parent)
+            parent = Parent.objects.create_user(username=email, password=password)
         except Exception as e:
-            print(e)
+            logger.info(f"User {email} seems to exist.Error:{e}")
             return render(request, "portal/register.html", {
                 "message": "The email already exists"
             })
+        parent.save()
+        logger.info(f"Parent {parent.username} saved!")
+        send_my_email(template="welcome",subject="Welcome to the Ark Kunior Parents Portal",recipient=email)
+        login(request, user=parent)
+        logger.info(f"User {request.user} logged in")
 
         return redirect("choose")
     elif request.method == "GET":
@@ -44,6 +50,7 @@ def choose(request: HttpRequest):
         request.user) or child["m_email"] == str(request.user)]
     no_of_children = len(children)
     if no_of_children == 0:
+        logger.error(f"Forced log out due to no child associate to {request.user}")
         logout(request)
         return render(request, "portal/login.html", {"message": "Your Email is not attached to any child. Visit school to update!"})
     else:
@@ -54,6 +61,7 @@ def choose(request: HttpRequest):
 def dashboard(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
+        logger.info(f"Unrecognised email {request.user}")
         return render(request, "portal/choose.html", {"title": "Dashboard", "message": " Your email is not recognised by the school. Visit school to update!"})
     return render(request, template_name="portal/dashboard.html", context={"title":"Dashboard", "data": data, "id": data["id"]})
 
@@ -70,13 +78,15 @@ def statement(request: HttpRequest, id):
         if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
             data = child
             return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
+        else:
+            return redirect("login")
 
 @login_required
 def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if request.method == "POST":
         email = request.POST["email"]
-        print(send_my_email(template="invite", subject="Invitation to the Ark Junior School", recipient=email, user=str(request.user)))
+        send_my_email(template="invite", subject="Invitation to the Ark Junior School", recipient=email, user=str(request.user))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
@@ -94,6 +104,7 @@ def login_view(request: HttpRequest):
         parent = authenticate(request, password=password, username=email)
         if parent is not None:
             login(request, user=parent)
+            logger.info(f"User {request.user} logged in")
             return redirect("choose")
         else:
             return render(request, "portal/login.html", {"title": "Fee Statement", "message": "Invalid Email or Password"})
@@ -105,6 +116,7 @@ def login_view(request: HttpRequest):
 
 
 def logout_view(request: HttpRequest):
+    logger.info(f"User {request.user} logged out")
     logout(request)
     return redirect("logged_out")
 
@@ -120,7 +132,7 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
-            print(send_my_email(template= "forgot", subject="Forgot Password", recipient=email, url=reset_url))
+            send_my_email(template= "forgot", subject="Forgot Password", recipient=email, url=reset_url)
             return render(request, "portal/forgot.html", {"success": "Email Sent" })
         return render(request, "portal/forgot.html", {"title": "Forgot Password","fail": "Invalid Email" })
     return render(request, "portal/forgot.html")
@@ -152,7 +164,8 @@ def set_password(request:HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
-            print(send_my_email(template="changed", subject= "Password Changed", recipient=str(request.user)))
+            send_my_email(template="changed", subject= "Password Changed", recipient=str(request.user))
+            logger.info(f"Password changed by user {request.user}")
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
@@ -160,10 +173,11 @@ def set_password(request:HttpRequest, uidb64, token):
             user.set_password(new_password)
             user.save()
             print(send_my_email(template="changed", subject= "Password Changed", recipient=str(user)))
+            logger.info(f"Password reset by user {user.get_username()}")
 
         # Update the session to avoid requiring reauthentication
         update_session_auth_hash(request, request.user)
-        context = {"changed_message":"Password Changed Successfully !"}
+        context = {"changed_message":"Password Changed Successfully!"}
         return render(request, 'portal/login.html', context)
     else:
         if (request.user.is_authenticated):
@@ -190,7 +204,7 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
-        print(send_my_email(template="forgot", subject="Forgot Password",recipient=str(request.user), url=reset_url))
+        send_my_email(template="forgot", subject="Forgot Password",recipient=str(request.user), url=reset_url)
         return render(request, "portal/proceed.html",  {"title":"Send Email", "message":"Email Sent"})
     return render(request, "portal/proceed.html",  {"title":"Send Email"})
 
