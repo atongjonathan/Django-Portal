@@ -4,7 +4,7 @@ import aiohttp
 from logging import getLogger
 
 logger = getLogger(__name__)
-async def send_my_email_async(template, subject, recipient, url=None, user=None):
+def send_my_email(template, subject, recipient, url=None, user=None):
     json_data = {
         "subject": subject,
         "recipient": recipient,
@@ -13,25 +13,15 @@ async def send_my_email_async(template, subject, recipient, url=None, user=None)
         "user": user
     }
 
-    async with aiohttp.ClientSession() as session:
-        async with session.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) as response:
-            data = await response.json()
-            message = str(data.get("message"))
-            if message != "Successs":
-                logger.info(f"Email was with request {str(json_data)}.\nResponse returned {message}")
-            return data
+    response = requests.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) 
+    response =  response.json()
+    message = response.get("message")
+    if message != "Success":
+        logger.error(f"Email Sending failed with response {message}")
+    else:      
+        logger.info(f"Email Sent from json {json_data}")
+    return response
 
-def send_my_email(template, subject, recipient, url=None, user=None):
-    # Create an event loop
-    loop = asyncio.new_event_loop()
-
-    # Run the asynchronous function in the event loop
-    result = loop.run_until_complete(send_my_email_async(template, subject, recipient, url, user))
-
-    # Close the event loop
-    loop.close()
-
-    return result
 
 def get_child_data(id, user):
     for child in DB:
