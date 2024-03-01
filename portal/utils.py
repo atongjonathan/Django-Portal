@@ -1,67 +1,37 @@
 import requests
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+import asyncio
+import aiohttp
+from logging import getLogger
 
-EMAILS = {
-    "new_login":
-    {
-        "subject":"Welcome to The Ark Junior Parents Portal - Your New Login Details",
-        "body":"""
-        Dear Parent,
+logger = getLogger(__name__)
+async def send_my_email_async(template, subject, recipient, url=None, user=None):
+    json_data = {
+        "subject": subject,
+        "recipient": recipient,
+        "template": template,
+        "url": url,
+        "user": user
+    }
 
-        We are excited to welcome you to the Parents Portal! Your login details are confirmed, and you can access the portal at your own convinience 
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) as response:
+            data = await response.json()
+            message = str(data.get("message"))
+            if message != "Successs":
+                logger.info(f"Email was with request {str(json_data)}.\nResponse returned {message}")
+            return data
 
-        Please log in at the Parents Portal and explore the various features available to keep track of your child's academic progress, fees status, and stay updated with school announcements.
-
-        If you have any questions or need assistance, feel free to contact our support team at <portal@thearkjuniorschool.com>
->
-        Best regards,
-        """
-    },
-        "password_reset":
-    {
-        "subject":"Portal - Password Reset",
-        "body":"""
-        Dear Parent,
-
-        This is to confirm that your password for the [School Name] Portal has been successfully reset. If you did not request this change, please contact our support team immediately.
-
-        You can log in with your email and the new password. 
-
-        If you need further assistance, please don't hesitate to reach out to our support team at <portal@thearkjuniorschool.com>.
-
-        Best regards,
-        """
-    },
-
-}
 def send_my_email(template, subject, recipient, url=None, user=None):
-    if template == "forgot":
-        url = f"https://{url}"
-        html_message = render_to_string(template_name=f"emails/{template}.html", context={"link":url})
-    elif template == "invite":
-        print(user)
-        html_message = render_to_string(template_name=f"emails/{template}.html", context={"user":user})
-    else:
-        html_message = render_to_string(template_name=f"emails/{template}.html")
-    plain_message = strip_tags(html_message)
+    # Create an event loop
+    loop = asyncio.new_event_loop()
 
-    message = EmailMultiAlternatives(
-    to=[recipient],
-        from_email="portal@thearkjuniorschool.com",
-        subject=subject,
-        body=plain_message
-    )
-    message.attach_alternative(html_message, "text/html")
-    try:
-        message.send(fail_silently=False)
-        print("Email Sent to", recipient)
-        return True
-    except Exception as e:
-        print(e)
-        return False
+    # Run the asynchronous function in the event loop
+    result = loop.run_until_complete(send_my_email_async(template, subject, recipient, url, user))
 
+    # Close the event loop
+    loop.close()
+
+    return result
 
 def get_child_data(id, user):
     for child in DB:
