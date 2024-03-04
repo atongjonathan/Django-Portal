@@ -10,13 +10,11 @@ from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
-from math import ceil
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
-            level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")})
+            level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
-
 
 def get_data(data: dict):
     billed = int(data["billed"].replace(",", "").split(".")[0])

@@ -33,7 +33,7 @@ def get_child_data(id, user):
 
 def real_db():
     response = requests.get(
-        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/updates/portal/sample_data.json")
+        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
     DB = response.json()
     DB = get_avatars(DB)
     return DB
