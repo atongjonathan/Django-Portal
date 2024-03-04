@@ -32,7 +32,7 @@
                             <span id="Main1_lblDR">{{ data.billed }}</span></span>
 
                         <div class="progress">
-                            <div class="progress-bar" style="width: 50%"></div>
+                            <div class="progress-bar" style="width: {{data.billed_perc}}%"></div>
                         </div>
                         <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>
@@ -55,7 +55,7 @@
                             <span id="Main1_lblCR">{{ data.paid }}</span></span>
 
                         <div class="progress">
-                            <div class="progress-bar" style="width: 20%"></div>
+                            <div class="progress-bar" style="width: {{data.paid_perc}}%"></div>
                         </div>
                         <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>
@@ -75,7 +75,7 @@
                             <span id="Main1_lblBal">{{ data.balance }}</span></span>
 
                         <div class="progress">
-                            <div class="progress-bar" style="width: 40%"></div>
+                            <div class="progress-bar" style="width: {{data.balance_perc}}%"></div>
                         </div>
                         <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>

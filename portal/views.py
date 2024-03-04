@@ -10,10 +10,22 @@ from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
+from math import ceil
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s", level=INFO, handlers={StreamHandler(), FileHandler("logs.txt") })
 
 logger = getLogger(__name__)
+
+
+def get_data(data:dict):
+    billed = int(data["billed"].replace(",","").split(".")[0])
+    paid = int(data["paid"].replace(",","").split(".")[0])
+    balance = int(data["balance"].replace(",","").split(".")[0])
+    data["billed_perc"] = int(billed/(billed)*100)
+    data["paid_perc"] = int(paid/(billed)*100)
+    data["balance_perc"] = int(balance/(billed)*100)
+    print(data)
+    return data
 
 def register(request: HttpRequest):
     if request.method == 'POST':
@@ -60,6 +72,7 @@ def choose(request: HttpRequest):
 @login_required
 def dashboard(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    data = get_data(data)
     if data is None:
         logger.info(f"Unrecognised email {request.user}")
         return render(request, "portal/choose.html", {"title": "Dashboard", "message": " Your email is not recognised by the school. Visit school to update!"})
@@ -69,6 +82,7 @@ def dashboard(request: HttpRequest, id):
 @login_required
 def statement_print(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    data = get_data(data)
     return render(request, "portal/statement_print.html", {"title": "Fee Statement", "id": id, "data": data})
 
 
@@ -84,6 +98,7 @@ def statement(request: HttpRequest, id):
 @login_required
 def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    data = get_data(data)
     if request.method == "POST":
         email = request.POST["email"]
         send_my_email(template="invite", subject="Invitation to the Ark Junior School", recipient=email, user=str(request.user))
@@ -218,6 +233,7 @@ def contact_us(request: HttpRequest):
 
 def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    data = get_data(data)
     return render(request, "portal/modal.html", {"title": "Modal Us","data":data, "id":id })
 
 
@@ -230,27 +246,3 @@ def my_bad(request):
     return render(request, "portal/error_500.html")
 
 
-# def statement(request, id):
-#     for child in DB:
-#         if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
-#             data = child
-
-#             buffer = BytesIO()
-#             p = canvas.Canvas(buffer)
-
-#             # Add your content using ReportLab's API
-#             # Example: Draw text at specific coordinates
-#             content = render_to_string("portal/statement_print.html", {"title": "Fee Statement - PDF", "id": id, "data": data})
-#             p.drawString(100, 100, content)  # Replace with your content and formatting
-#             p.save()
-#             buffer.seek(0)
-#             filename = f"fee_statement_{id}.pdf"
-#             with open(filename, 'wb') as pdf_file:
-#                 pdf_file.write(buffer.read())
-#             with open(filename, 'rb') as pdf_file:
-#                 response = HttpResponse(pdf_file.read(), content_type='application/pdf')
-#                 response['Content-Disposition'] = f'attachment; filename="{filename}"'
-#             return response
-
-#     # Handle the case where no matching child is found
-#     return HttpResponse("Child not found")
