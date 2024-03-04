@@ -18,9 +18,9 @@ urlpatterns = [
     path("contact", views.contact, name="contact"),
     path("contact-us", views.contact_us, name="contact_us"),
     path("404", views.page_not_found, name="error_404"),
-    path("set-password/<str:uidb64>/<str:token>/", views.set_password, name="set_password"),
-    path('reset-password/<str:uidb64>/<str:token>/', views.reset, name='password_reset_confirm'),
-    path('change-password/<str:uidb64>/<str:token>/', views.change, name='password_change_confirm'),
+    path("set/<str:uidb64>/<str:token>/", views.set_password, name="set_password"),
+    path('reset/<str:uidb64>/<str:token>/', views.reset, name='password_reset_confirm'),
+    path('change/<str:uidb64>/<str:token>/', views.change, name='password_change_confirm'),
     path("modal/<id>", views.modal, name="modal"),
 
     # path('forgot/<str:token>/', views.confirm_reset_password, name='confirm_reset_password'),
