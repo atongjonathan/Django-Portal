@@ -13,22 +13,22 @@
   }
 
   .header {
-   display: flex;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
-   row-gap: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    row-gap: 5px;
   }
-  .header p
-  {
+
+  .header p {
     margin: 0;
   }
-  .invoice
-  {
+
+  .invoice {
     margin-left: 10px;
   }
-  u
-  {
+
+  u {
     margin-bottom: 20px;
   }
 </style>
@@ -36,15 +36,15 @@
 <div class="content-wrapper" style="min-height: 2645.77px;">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-      <h1>
-        Fees Statement
-        <!-- <small>Version 2.0</small> -->
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="/"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
-        <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
-      </ol>
-    </section>
+    <h1>
+      Fees Statement
+      <!-- <small>Version 2.0</small> -->
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="/"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+      <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    </ol>
+  </section>
 
   <section class="content">
     <div class="container-fluid">
@@ -55,15 +55,17 @@
             <!-- title row -->
             <div class="row">
               <div class="col-12-table-responsive">
-                <div class="header-wrapper">              
+                <div class="header-wrapper">
                   <div class="header">
                     <img class="pdf-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="">
                     <b>SOUTH B BRANCH</b>
                     <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
-                    <b><i><p style="margin: 5px;"> Learn To Excel</p></i></b>
+                    <b><i>
+                        <p style="margin: 5px;"> Learn To Excel</p>
+                      </i></b>
                     <u><b>STATEMENT OF ACCOUNT</b></u>
                   </div>
-              </div>
+                </div>
 
                 <div class="subheader">
                   <p>REG. NO: {{ data.id }}</p>
@@ -141,7 +143,7 @@
                       <td>{{ data.paid }}</td>
                       <td>{{ data.balance }}</td>
                     </tr>
-                  <tr>
+                    <tr>
                 </table>
               </div>
 
@@ -150,23 +152,25 @@
 
 
 
-            <!-- /.row -->
+              <!-- /.row -->
 
-            <!-- this row will not appear when printing -->
-            <div style="margin-left: 20px;" class="row no-print">
-              <div class="col-12">
-                <a href="" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                <a href="{% url 'statement' id %}"><button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                  <i class="fas fa-download"></i> Generate PDF
-                </button></a>
-                
+              <!-- this row will not appear when printing -->
+              <div style="margin-left: 20px;" class="row no-print">
+                <div class="col-12">
+                  <a href="" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>
+                    Print</a>
+                  <a href="{% url 'statement' id %}"><button type="button" class="btn btn-primary float-right"
+                      style="margin-right: 5px;">
+                      <i class="fas fa-download"></i> Generate PDF
+                    </button></a>
+
+                </div>
               </div>
             </div>
-          </div>
-          <!-- /.invoice -->
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
 </div>

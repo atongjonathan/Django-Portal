@@ -1,9 +1,9 @@
 import requests
-import asyncio
-import aiohttp
 from logging import getLogger
 
 logger = getLogger(__name__)
+
+
 def send_my_email(template, subject, recipient, url=None, user=None):
     json_data = {
         "subject": subject,
@@ -13,12 +13,13 @@ def send_my_email(template, subject, recipient, url=None, user=None):
         "user": user
     }
 
-    response = requests.get("https://atongjona2.pythonanywhere.com/send_email", json=json_data) 
-    response =  response.json()
+    response = requests.get(
+        "https://atongjona2.pythonanywhere.com/send_email", json=json_data)
+    response = response.json()
     message = response.get("message")
     if message != "Success":
         logger.error(f"Email Sending failed with response {message}")
-    else:      
+    else:
         logger.info(f"Email Sent from json {json_data}")
     return response
 
@@ -29,16 +30,18 @@ def get_child_data(id, user):
             return child
     return None
 
+
 def real_db():
     response = requests.get(
-        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
+        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/updates/portal/sample_data.json")
     DB = response.json()
     DB = get_avatars(DB)
     return DB
 
+
 def get_avatars(DB: list):
     for child in DB:
-         child["img"]=f"https://ui-avatars.com/api/name={child['name'].replace(' ','+')}?rounded=true&background=random"
+        child["img"] = f"https://ui-avatars.com/api/name={child['name'].replace(' ','+')}?rounded=true&background=random"
     return DB
 
 

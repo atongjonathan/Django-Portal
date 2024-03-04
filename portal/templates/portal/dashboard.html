@@ -1,4 +1,3 @@
-
 {% extends 'portal/layout.html' %}
 {% load static %}
 
@@ -6,19 +5,19 @@
 
 {% block content-wrapper %}
 <div class="content-wrapper" style="min-height: 926.032px;">
-    
+
     <section class="content-header">
         <h1>
-          Dashboard
-          <!-- <small>Version 2.0</small> -->
+            Dashboard
+            <!-- <small>Version 2.0</small> -->
         </h1>
         <ol class="breadcrumb">
-          <li><a href="{% url 'choose' %}"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
-          <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{% url 'choose' %}"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
+            <li class="active"><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
         </ol>
-      </section>
+    </section>
 
-    
+
     <section class="content">
 
         <div class="row">
@@ -34,17 +33,18 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: {{data.billed_perc}}%"></div>
                         </div>
-                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
+                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white"
+                            style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
             </div>
             <!-- /.col -->
-    
+
             <!-- fix for small devices only -->
             <div class="clearfix visible-sm-block"></div>
-    
+
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
@@ -57,7 +57,8 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: {{data.paid_perc}}%"></div>
                         </div>
-                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
+                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white"
+                            style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                     <!-- /.info-box-content -->
@@ -77,273 +78,289 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: {{data.balance_perc}}%"></div>
                         </div>
-                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white" style="color: white">View
+                        <a href="{% url 'statement_print' data.id %}" class="small-box-footer white"
+                            style="color: white">View
                             Details <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                    
+
                     <!-- /.info-box-content -->
                 </div>
-                
+
                 <!-- /.info-box -->
             </div>
             <!-- /.col -->
-          </div>
+        </div>
 
-          <div class="row">
+        <div class="row">
             <div class="col-md-12">
-              <div class="box">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Details</h3>
-    
-                  <div class="box-tools pull-right">
-                    <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
-                    <div class="btn-group">
-                      <button title="Drop Down" type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-wrench"></i></button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings</a></li>
-                        <!-- <li><a href="#">Another action</a></li>
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Details</h3>
+
+                        <div class="box-tools pull-right">
+                            <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button title="Drop Down" type="button" class="btn btn-box-tool dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Settings</a></li>
+                                    <!-- <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Separated link</a></li> -->
-                      </ul>
+                                </ul>
+                            </div>
+                            <button title="Remove" type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
                     </div>
-                    <button title="Remove" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  <div class="row">
-                    <!-- /.col -->
-                    <div class="col-md-4">
-                        <div class="box box-primary">
-                            <div class="box-header with-border">
-                              <h3 class="box-title">Student Details</h3>
-                
-                              <div class="box-tools pull-right">
-                                <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                              </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <div class="img">
-                                    <img src="{% static 'portal/dist/img/reading.png' %}" alt="readiing img" srcset="">
-                                  </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Student Details</h3>
+
+                                        <div class="box-tools pull-right">
+                                            <button title="Collapse" type="button" class="btn btn-box-tool"
+                                                data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button title="Collapse" type="button" class="btn btn-box-tool"
+                                                data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="img">
+                                                    <img src="{% static 'portal/dist/img/reading.png' %}"
+                                                        alt="readiing img" srcset="">
+                                                </div>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <div class="box-footer no-padding">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current
+                                                        Programme</strong><span class="pull-right text-green"> {{
+                                                        data.programme }}</span></a>
+                                            <li><a href="#">Name<span class="pull-right text-blue name">
+                                                        {{data.name}}</span></a>
+                                            </li>
+                                            <li><a href="#">Admission No <span class="pull-right text-yellow">
+                                                        {{data.id}}</span></a>
+                                            </li>
+
+                                            </li>
+                                            <li><a href="#">My Current Stage <span class="pull-right text-green">
+                                                        {{data.stage}}</span></a>
+                                            </li>
+                                            <li><a href="#">Phone <span class="pull-right text-red">
+                                                        {{data.no}}</span></a>
+                                            </li>
+                                    </div>
+                                    <!-- /.footer -->
                                 </div>
-                                <!-- /.col -->
-                              </div>
-                              <!-- /.row -->
                             </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer no-padding">
-                              <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#"><strong><i class="fa fa-book margin-r-5"></i>Current Programme</strong><span class="pull-right text-green"> {{ data.programme }}</span></a>
-                                <li><a href="#">Name<span class="pull-right text-blue name">  {{data.name}}</span></a>
-                                </li>
-                                <li><a href="#">Admission No <span class="pull-right text-yellow">  {{data.id}}</span></a>
-                                </li>
+                            <!-- Father Details -->
+                            <div class="col-md-4">
+                                <div class="box box-warning">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Father's Information</h3>
 
-                                </li>
-                                <li><a href="#">My Current Stage <span class="pull-right text-green">  {{data.stage}}</span></a>
-                                </li>
-                                <li><a href="#">Phone  <span class="pull-right text-red">  {{data.no}}</span></a>
-                                </li>
-                            </div>
-                            <!-- /.footer -->
-                          </div>
-                      </div>
-                      <!-- Father Details -->
-                    <div class="col-md-4">
-                        <div class="box box-warning">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Father's Information</h3>
-
-                                <!-- <div class="box-tools pull-right">
+                                        <!-- <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default"><i class="fa fa-edit"></i>Update
                                         Profile</button>
                                 </div> -->
-                                <div class="box-tools pull-right">
-                                    <button title="collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                    </button>
-                                    <button title="Remove" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                                  </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="#">Name:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblNames">{{data.f_name}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Phone Number:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPhoneNo1">{{data.f_no}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Tel Number:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPhoneNo1">{{data.f_tel}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Email:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPhoneNo1">{{data.f_email}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">I.D. No:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblEmail">{{data.f_id}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Nationality:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblEmail">{{data.f_nation}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Occupation:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPostalAddress">{{data.f_occupation}}</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div class="box-tools pull-right">
+                                            <button title="collapse" type="button" class="btn btn-box-tool"
+                                                data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button title="Remove" type="button" class="btn btn-box-tool"
+                                                data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Name:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblNames">{{data.f_name}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Phone Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">{{data.f_no}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Tel Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">{{data.f_tel}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Email:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">{{data.f_email}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">I.D. No:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">{{data.f_id}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Nationality:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">{{data.f_nation}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Occupation:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span
+                                                                    id="Main1_lblPostalAddress">{{data.f_occupation}}</span>&nbsp;<span
+                                                                    id="Main1_lblPostalAddress2"></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.box-body -->
+
+                                    <!-- /.box-footer -->
                                 </div>
-                                <!-- /.table-responsive -->
                             </div>
-                            <!-- /.box-body -->
 
-                            <!-- /.box-footer -->
-                        </div>
-                    </div>
+                            <!-- Mother Details -->
 
-                    <!-- Mother Details -->
+                            <div class="col-md-4">
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Mother's Information</h3>
 
-                    <div class="col-md-4">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Mother's Information</h3>
-
-                                <!-- <div class="box-tools pull-right">
+                                        <!-- <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default"><i class="fa fa-edit"></i>Update
                                         Profile</button>
                                 </div> -->
-                                <div class="box-tools pull-right">
-                                    <button title="collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                    </button>
-                                    <button title="collapse" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                                  </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="#">Name:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblNames">{{data.m_name}} </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Phone Number:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPhoneNo1">{{data.m_no}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Tel Number:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPhoneNo1">{{data.m_tel}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">I.D. No:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblEmail">{{data.m_id}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Nationality:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblEmail">{{data.m_nation}}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">Occupation:</a></td>
-                                                <td>
-                                                    <div>
-                                                        <span id="Main1_lblPostalAddress">{{data.m_occupation}}</span>&nbsp;<span id="Main1_lblPostalAddress2"></span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <div class="box-tools pull-right">
+                                            <button title="collapse" type="button" class="btn btn-box-tool"
+                                                data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                            <button title="collapse" type="button" class="btn btn-box-tool"
+                                                data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table no-margin">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><a href="#">Name:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblNames">{{data.m_name}} </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Phone Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">{{data.m_no}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Tel Number:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblPhoneNo1">{{data.m_tel}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">I.D. No:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">{{data.m_id}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Nationality:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span id="Main1_lblEmail">{{data.m_nation}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="#">Occupation:</a></td>
+                                                        <td>
+                                                            <div>
+                                                                <span
+                                                                    id="Main1_lblPostalAddress">{{data.m_occupation}}</span>&nbsp;<span
+                                                                    id="Main1_lblPostalAddress2"></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.box-body -->
+
+                                    <!-- /.box-footer -->
                                 </div>
-                                <!-- /.table-responsive -->
                             </div>
-                            <!-- /.box-body -->
 
-                            <!-- /.box-footer -->
+
+                            <!-- /.col -->
                         </div>
+                        <!-- /.row -->
                     </div>
-                    
-                   
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
+                    <!-- ./box-body -->
                 </div>
-                <!-- ./box-body -->
-              </div>
-              <!-- /.box -->
+                <!-- /.box -->
             </div>
             <!-- /.col -->
-          </div>
-
-
-
-
-            
+        </div>
 </div>
 
 {% endblock %}

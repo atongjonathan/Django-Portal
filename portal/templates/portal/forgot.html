@@ -5,49 +5,49 @@
   {% if fail %}
   <div class="alert alert-danger">
     <strong>Invalid Email</strong>
-    </div>
+  </div>
   {% endif %}
   {% if success %}
   <div class="alert alert-success">
     <strong>Email Sent!</strong> Follow the link sent to reset your password
-    </div>
-  {% endif %}
-    <div class="card card-outline card-primary text-dark">
-      <div class="card-header text-center">
-        <a href="" class="h1"><b>Parent's Portal</b></a>
-      </div>
-      <img class="logo-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="" srcset="">
-      <div class="card-body">
-        <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
-        <form action="{% url 'forgot' %}" method="post">
-          {% csrf_token %}
-          <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control" placeholder="Email" required>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            {% if success %}
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary btn-block" disabled>Request new password</button>
-            </div>
-            {% else %}
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary btn-block">Request new password</button>
-            </div>
-            {% endif %}
-
-            <!-- /.col -->
-          </div>
-        </form>
-        <p class="mt-3 mb-1">
-          <a href="{% url 'login' %}">Login</a>
-        </p>
-      </div>
-      <!-- /.login-card-body -->
-    </div>
   </div>
+  {% endif %}
+  <div class="card card-outline card-primary text-dark">
+    <div class="card-header text-center">
+      <a href="" class="h1"><b>Parent's Portal</b></a>
+    </div>
+    <img class="logo-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="" srcset="">
+    <div class="card-body">
+      <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
+      <form action="{% url 'forgot' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <input type="email" name="email" class="form-control" placeholder="Email" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          {% if success %}
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block" disabled>Request new password</button>
+          </div>
+          {% else %}
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
+          </div>
+          {% endif %}
+
+          <!-- /.col -->
+        </div>
+      </form>
+      <p class="mt-3 mb-1">
+        <a href="{% url 'login' %}">Login</a>
+      </p>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
 {% endblock %}

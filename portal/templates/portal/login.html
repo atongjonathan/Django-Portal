@@ -1,12 +1,12 @@
 {% extends 'portal/auth_layout.html' %}
 {% load static %}
 {% block div %}
-<div class="login-box"> 
+<div class="login-box">
   {% if changed_message %}
 
   <div class="alert alert-success">
     {{ changed_message }}
-  </div>  
+  </div>
   {% endif %}
 
   <!-- /.login-logo -->
@@ -20,11 +20,11 @@
 
       <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
-          {% if message %}
-          <div class="alert alert-danger" role="alert">
-            {{ message }}
-          </div>
-          {% endif %}
+        {% if message %}
+        <div class="alert alert-danger" role="alert">
+          {{ message }}
+        </div>
+        {% endif %}
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email" required>
           <div class="input-group-append">
