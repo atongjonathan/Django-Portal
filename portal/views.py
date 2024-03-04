@@ -151,7 +151,7 @@ def forgot(request: HttpRequest):
             user = Parent.objects.filter(username=email).first()
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
-            reset_url = f'{request.get_host()}/reset-password/{uidb64}/{token}/'
+            reset_url = f'{request.get_host()}/reset/{uidb64}/{token}/'
             send_my_email(template="forgot", subject="Forgot Password",
                           recipient=email, url=reset_url)
             return render(request, "portal/forgot.html", {"success": "Email Sent"})
@@ -228,7 +228,7 @@ def proceed(request: HttpRequest):
     if request.method == "POST":
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        reset_url = f'{request.get_host()}/change-password/{uidb64}/{token}/'
+        reset_url = f'{request.get_host()}/change/{uidb64}/{token}/'
         send_my_email(template="forgot", subject="Forgot Password",
                       recipient=str(request.user), url=reset_url)
         return render(request, "portal/proceed.html",  {"title": "Send Email", "message": "Email Sent"})

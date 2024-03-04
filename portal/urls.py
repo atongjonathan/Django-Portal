@@ -18,7 +18,7 @@ urlpatterns = [
     path("contact", views.contact, name="contact"),
     path("contact-us", views.contact_us, name="contact_us"),
     path("404", views.page_not_found, name="error_404"),
-    path("set/<str:uidb64>/<str:token>/",
+    path("reset/<str:uidb64>/<str:token>/",
          views.set_password, name="set_password"),
     path('reset/<str:uidb64>/<str:token>/',
          views.reset, name='password_reset_confirm'),
