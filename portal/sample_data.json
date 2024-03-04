@@ -15,7 +15,9 @@
         "m_occupation": "TEACHER",
         "m_tel": "702150582",
         "m_email": "calvince2@itsfixed.africa",
-        "balance": "-3,500.00"
+        "balance": "-3,500.00",
+        "billed": "156,000.00",
+        "paid": "159,500.00"
     },
     {
         "id": "STU-0227",
@@ -33,7 +35,9 @@
         "m_occupation": "DENTAL OFFICER",
         "m_tel": "702150582",
         "m_email": "calvince@itsfixed.africa",
-        "balance": "9,060.00"
+        "balance": "9,060.00",
+        "billed": "156,000.00",
+        "paid": "146,940.00"
     },
     {
         "id": "STU-0229",
@@ -51,7 +55,9 @@
         "m_occupation": "KENYAN",
         "m_tel": "702150582",
         "m_email": "calvince2@itsfixed.africa",
-        "balance": "3,500.00"
+        "balance": "3,500.00",
+        "billed": "156,000.00",
+        "paid": "152,500.00"
     },
     {
         "id": "STU-0230",
@@ -69,7 +75,9 @@
         "m_occupation": "",
         "m_tel": "702150582",
         "m_email": "calvince2@itsfixed.africa",
-        "balance": "0"
+        "balance": "0",
+        "billed": "156,000.00",
+        "paid": "156,000.00"
     },
     {
         "id": "STU-0232",
@@ -129,7 +137,7 @@
         "m_email": "calvince2@itsfixed.africa",
         "balance": "4,000.00",
         "billed": "156,000.00",
-        "paid": ""
+        "paid": "152,000.00"
     },
     {
         "id": "STU-0235",
