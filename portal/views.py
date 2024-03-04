@@ -24,7 +24,6 @@ def get_data(data:dict):
     data["billed_perc"] = int(billed/(billed)*100)
     data["paid_perc"] = int(paid/(billed)*100)
     data["balance_perc"] = int(balance/(billed)*100)
-    print(data)
     return data
 
 def register(request: HttpRequest):

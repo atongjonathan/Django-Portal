@@ -169,7 +169,7 @@
               <!-- search form -->
               <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
-                  <input type="text" name="q" class="form-control" placeholder="Search...">
+                  <input id="search" type="text" name="q" class="form-control" placeholder="Search...">
                   <span class="input-group-btn">
                         <button title="Search" type="submit" name="search" id="search-btn" class="btn btn-flat">
                           <i class="fa fa-search"></i>
@@ -179,7 +179,7 @@
               </form>
               <!-- /.search form -->
               <!-- sidebar menu: : style can be found in sidebar.less -->
-              <ul class="sidebar-menu" data-widget="tree">
+              <ul id="sidebar-menu" class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
                 <li>
                     <a href="{% url 'dashboard' id %}">
@@ -321,5 +321,26 @@
 
 
 </body>
+
+<script>
+$(document).ready(function(){
+    $("#search").on("keyup", function() {
+        var searchText = $(this).val().toLowerCase();
+
+        $(".treeview").each(function() {
+            var hasMatchingLink = false;
+            $(this).find(".treeview-menu a").each(function() {
+                if ($(this).text().toLowerCase().indexOf(searchText) > -1) {
+                    hasMatchingLink = true;
+                }
+            });
+
+            $(this).toggle(hasMatchingLink);
+        });
+    });
+});
+</script>
+
+
 
 </html>
