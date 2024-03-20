@@ -1,0 +1,467 @@
+{% extends 'portal/layout.html' %}
+{% block content-wrapper %}
+{% load static %}
+
+<style>
+  .pay-box {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .options {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .active {
+    border: 1px solid #367fa9;
+    color: #3c8dbc;
+  }
+
+  .mpesa {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    /* background-color: red; */
+  }
+
+  .mpesa img {
+    /* width: 100%; */
+    height: 100%;
+  }
+
+  input[type=radio] {
+    accent-color: #3c8dbc;
+  }
+
+  .due {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .option {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .pay-btn {
+    margin-top: 15px;
+  }
+
+  .pay-form {
+    padding: 10px 15px;
+  }
+
+  .input-text {
+    width: 100%;
+  }
+</style>
+<!-- Theme style -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="col-md-12 balance-box">
+      <!-- /.info-box -->
+      <div class="info-box bg-aqua">
+        <span class="info-box-icon"><i class="fa fa-shopping-cart"></i></span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">current Balance:</span>
+          <span class="info-box-number">Ksh.
+            <span id="Main1_lblBal">4,000.00</span></span>
+
+          <div class="progress">
+            <div class="progress-bar" style="width: 2%"></div>
+          </div>
+          <a href="/statement-print/STU-0232" class="small-box-footer white" style="color: white">View
+            Details <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+
+        <!-- /.info-box-content -->
+      </div>
+
+      <!-- /.info-box -->
+    </div>
+    <div class="pay-box">
+
+      <div class="col-md-6">
+        <li class="mpesa">
+          <img src="https://png.co.ke/wp-content/uploads/2023/02/Mpesa-Logo.png" alt="">
+        </li>
+        <div class="register-box-body">
+          <p class="login-box-msg">Pay Fees</p>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+
+              <div class="box-tools pull-right">
+                <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                    class="fa fa-minus"></i>
+                </button>
+                <button title="Collapse" type="button" class="btn btn-box-tool" data-widget="remove"><i
+                    class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="box-footer no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="#">Student Name<span class="pull-right text-blue name">
+                        {{ data.name }}</span></a>
+                  </li>
+                  <li><a href="#">Account No <span class="pull-right text-yellow">
+                        {{ data.id }}</span></a>
+                  </li>
+                  <li><a href="#">Balance <span class="pull-right text-yellow">
+                        {{ data.balance }}</span></a>
+                  </li>
+
+                  <li>
+                    <div class="pay-form">
+                      <form action="{% url 'pay' data.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="number">Paying Phone Number:</label>
+                          <div class="input-group">
+                            <div class="input-group-addon">
+                              <i class="fa fa-phone"></i>
+                            </div>
+                            <input name="phone_no" type="text" class="form-control"
+                              data-inputmask='"mask": "999-999-999-999"' data-mask placeholder="254-XXX-XXX-XXX"
+                              pattern="^\254\ [0-9]{3}-[0-9]{3}-[0-9]{3}$" required>
+
+                          </div>
+                        </div>
+                        <div class="input-group option">
+                          <div class="options active">
+                            <input name="amount" id="default-amount" type="radio" checked>
+                            <div class="due">
+                              <label for="amount">Total Amount Due</label>
+                              <!-- <input type="text" value=""> -->
+                              <p>Ksh. {{data.balance}}</p>
+                            </div>
+
+
+
+                          </div>
+                          <div class="options">
+                            <input name="amount" id="default-amount" type="radio">
+                            <div class="due">
+                              <label for="amount">Other Amount</label>
+                              <input name="custom_amount" class="input-text" type="text" placeholder="Ksh.">
+                            </div>
+                          </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+
+                      </form>
+                    </div>
+
+                  </li>
+                  <!-- <a href="#">
+                      <div class="options">
+                        <input name="amount" id="default-amount" type="radio" checked>
+                        <div class="due">
+                          <label for="amount">Total Amount Due</label>
+                          <p>{{data.balance}}</p>
+                        </div>
+                        
+
+                      </div>
+                    </a>
+                    <a href="#">
+                      <div class="options">
+                        <input name="amount" id="amount" type="radio">
+                        <label for="default-amount">Total Amount Due</label>
+                        
+
+
+                      </div>
+
+                    </a> -->
+
+
+
+
+                </ul>
+              </div>
+            </div>
+            <!-- /.row -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+</div>
+
+<div class="container-fluid">
+
+
+  <!-- <div class="row">
+        <div class="col-md-12">
+
+          <div class="card card-success card-outline">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-edit"></i>
+                SweetAlert2 Examples
+              </h3>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-success swalDefaultSuccess">
+                Launch Success Toast
+              </button>
+              <button type="button" class="btn btn-info swalDefaultInfo">
+                Launch Info Toast
+              </button>
+              <button type="button" class="btn btn-danger swalDefaultError">
+                Launch Error Toast
+              </button>
+              <button type="button" class="btn btn-warning swalDefaultWarning">
+                Launch Warning Toast
+              </button>
+              <button type="button" class="btn btn-default swalDefaultQuestion">
+                Launch Question Toast
+              </button>
+            </div>
+          </div>
+
+          <div class="card card-warning card-outline">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-edit"></i>
+                Toastr Examples
+              </h3>
+            </div>
+            <div class="card-body">
+              <button type="button" class="btn btn-success  toastrDefaultSuccess">
+                Launch Success Toast
+              </button>
+              <button type="button" class="btn btn-info toastrDefaultInfo">
+                Launch Info Toast
+              </button>
+              <button type="button" class="btn btn-danger toastrDefaultError">
+                Launch Error Toast
+              </button>
+              <button type="button" class="btn btn-warning toastrDefaultWarning">
+                Launch Warning Toast
+              </button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+  <!-- ./row -->
+</div><!-- /.container-fluid -->
+
+<!-- /.modal -->
+
+</section>
+
+
+<!-- /.content -->
+</div>
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="{% static 'portal/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+<!-- Toastr -->
+<script src="{% static 'portal/plugins/toastr/toastr.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"
+  integrity="sha512-efAcjYoYT0sXxQRtxGY37CKYmqsFVOIwMApaEbrxJr4RwqVVGw8o+Lfh/+59TU07+suZn1BWq4fDl5fdgyCNkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(function () {
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+
+    $('.swalDefaultSuccess').click(function () {
+      Toast.fire({
+        icon: 'success',
+        title: 'KKKKs ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.swalDefaultInfo').click(function () {
+      Toast.fire({
+        icon: 'info',
+        title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.swalDefaultError').click(function () {
+      Toast.fire({
+        icon: 'error',
+        title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.swalDefaultWarning').click(function () {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.swalDefaultQuestion').click(function () {
+      Toast.fire({
+        icon: 'question',
+        title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+
+    $('.toastrDefaultSuccess').click(function () {
+      toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+    });
+    $('.toastrDefaultInfo').click(function () {
+      toastr.info('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+    });
+    $('.toastrDefaultError').click(function () {
+      toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+    });
+    $('.toastrDefaultWarning').click(function () {
+      toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+    });
+
+    $('.toastsDefaultDefault').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultTopLeft').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        position: 'topLeft',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultBottomRight').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        position: 'bottomRight',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultBottomLeft').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        position: 'bottomLeft',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultAutohide').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        autohide: true,
+        delay: 750,
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultNotFixed').click(function () {
+      $(document).Toasts('create', {
+        title: 'Toast Title',
+        fixed: false,
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultFull').click(function () {
+      $(document).Toasts('create', {
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        icon: 'fas fa-envelope fa-lg',
+      })
+    });
+    $('.toastsDefaultFullImage').click(function () {
+      $(document).Toasts('create', {
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        image: '../../dist/img/user3-128x128.jpg',
+        imageAlt: 'User Picture',
+      })
+    });
+    $('.toastsDefaultSuccess').click(function () {
+      $(document).Toasts('create', {
+        class: 'bg-success',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultInfo').click(function () {
+      $(document).Toasts('create', {
+        class: 'bg-info',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultWarning').click(function () {
+      $(document).Toasts('create', {
+        class: 'bg-warning',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultDanger').click(function () {
+      $(document).Toasts('create', {
+        class: 'bg-danger',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+    $('.toastsDefaultMaroon').click(function () {
+      $(document).Toasts('create', {
+        class: 'bg-maroon',
+        title: 'Toast Title',
+        subtitle: 'Subtitle',
+        body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+      })
+    });
+  });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+
+    $('input[data-mask]').inputmask();
+
+
+
+    $(".options").on("click", function () {
+      var clickedValue = $(this).find('input[type="radio"]').val();
+      $(this).addClass("active").siblings().removeClass("active");
+      $(this).find('input[type="radio"]').prop("checked", true);
+      let textInputExists = $(this).find('input[type="text"]').length > 0;
+
+      if (textInputExists) {
+        // Do something if input[type="text"] is found
+        $(this).find('.input-text').prop('required', true)
+      }
+      else {
+        $('input[type="text"]').prop('required', false)
+      }
+
+    });
+  });
+
+
+</script>
+
+{% endblock %}

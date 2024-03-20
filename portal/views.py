@@ -10,11 +10,13 @@ from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
+from . mpesa import Mpesa
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
+
 
 def get_data(data: dict):
     billed = int(data["billed"].replace(",", "").split(".")[0])
@@ -95,6 +97,7 @@ def statement(request: HttpRequest, id):
             data = child
             return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
         else:
+            print(child)
             return redirect("login")
 
 
@@ -247,6 +250,24 @@ def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data = get_data(data)
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
+
+
+def pay(request: HttpRequest, id):
+    data = get_child_data(id, request.user)
+    data = get_data(data)
+    if request.method == 'POST':
+        phone_number = request.POST.get("phone_no").replace("-", "")
+        balance = data["balance"]
+        custom_amount = request.POST.get("custom_amount")
+        if custom_amount:
+            amount = custom_amount
+        else:
+            amount = balance
+        amount = amount.split(".")[0].replace(",","")
+        mpesa = Mpesa()
+        print(mpesa.initiate_stk_push(phone_number, int(float(amount))))
+        print(custom_amount, balance)
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
 
 
 # HTTP Error 400
