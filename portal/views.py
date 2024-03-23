@@ -266,7 +266,6 @@ def pay(request: HttpRequest, id):
         amount = amount.split(".")[0].replace(",","")
         mpesa = Mpesa()
         print(mpesa.initiate_stk_push(phone_number, int(float(amount))))
-        print(custom_amount, balance)
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
 
 

@@ -136,4 +136,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "portal@thearkjuniorschool.com"
-EMAIL_HOST_PASSWORD = "ioqm iivv yatz mbep\n"
+ACCESS_TOKEN = '9jmrwfpoIYmbgbKQeFP32mW8Ml2d'

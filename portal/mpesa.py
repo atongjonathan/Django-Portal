@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import json
 from datetime import datetime
+from django.conf import settings
 print(load_dotenv())
 
 class Mpesa():
@@ -33,9 +34,15 @@ class Mpesa():
 
 
     def get_headers(self, credentials:dict):
+        try:
+            access_token = self.get_access_token(credentials)
+            settings.ACCESS_TOKEN = access_token
+        except Exception as e:
+            access_token = settings.ACCESS_TOKEN
+
         headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + self.get_access_token(credentials),
+        "Authorization": "Bearer " + access_token,
         "X-appKey": credentials.get("consumer_key")
     }
         return headers
@@ -44,6 +51,7 @@ class Mpesa():
 
 
     def initiate_stk_push(self, PHONE_NO, amount):
+        print(self.headers)
         # amount = 1
         phone = PHONE_NO
         passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
