@@ -92,13 +92,10 @@ def statement_print(request: HttpRequest, id):
 
 @login_required
 def statement(request: HttpRequest, id):
-    for child in DB:
-        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
-            data = child
-            return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
-        else:
-            print(child)
-            return redirect("login")
+    data = get_child_data(id, request.user)
+    if data:
+        return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
+    return redirect("login")
 
 
 @login_required
