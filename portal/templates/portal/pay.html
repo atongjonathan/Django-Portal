@@ -156,7 +156,7 @@
                             <input name="amount" id="default-amount" type="radio">
                             <div class="due">
                               <label for="amount">Other Amount</label>
-                              <input name="custom_amount" class="input-text" type="text" placeholder="Ksh.">
+                              <input name="custom_amount" class="input-text" type="text" placeholder="Ksh."  pattern="[0-9]+">
                             </div>
                           </div>
                         </div>
@@ -441,6 +441,7 @@
   $(document).ready(function () {
 
     $('input[data-mask]').inputmask();
+    $('input[amount-mask]').inputmask();
 
 
 

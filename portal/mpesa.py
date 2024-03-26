@@ -5,7 +5,6 @@ import os
 import json
 from datetime import datetime
 from django.conf import settings
-print(load_dotenv())
 
 class Mpesa():
     def __init__(self) -> None:
