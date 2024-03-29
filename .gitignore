@@ -4,3 +4,6 @@ staticfiles
 logs.txt
 db.sqlite3
 *.
+data.py
+config.env
+db.sqlite3

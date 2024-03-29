@@ -1,5 +1,6 @@
 import requests
 from logging import getLogger
+from . data import sample_data
 
 logger = getLogger(__name__)
 
@@ -32,9 +33,7 @@ def get_child_data(id, user):
 
 
 def real_db():
-    response = requests.get(
-        "https://raw.githubusercontent.com/atongjonathan/Django-Portal/master/portal/sample_data.json")
-    DB = response.json()
+    DB = sample_data 
     DB = get_avatars(DB)
     return DB
 
@@ -45,5 +44,4 @@ def get_avatars(DB: list):
     return DB
 
 
-global DB
 DB = real_db()

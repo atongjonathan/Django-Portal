@@ -1,16 +1,12 @@
 import requests
 import base64
-from dotenv import load_dotenv
-import os
-import json
 from datetime import datetime
 from django.conf import settings
+import json
 
 class Mpesa():
     def __init__(self) -> None:
-        # test_3 = json.loads(os.environ.get("test_3"))
-        test_3 = {"consumer_key": "AitjEGY0rigIzv49I6EafK9e4MyC1KNoPHDKPGaGb8zo6hKo","consumer_secret": "JIWXWCzXjXbRUcnpT5bbz9SB1tzxehH9tL4A69XuGnr2AqWsjd1a5qv0vRqmevwA"}
-        self.headers = self.get_headers(test_3)
+        self.headers = self.get_headers(json.loads(settings.DARAJA_CREDENTIALS))
 
 
     def get_access_token(self, credentials: dict):
@@ -50,7 +46,6 @@ class Mpesa():
 
 
     def initiate_stk_push(self, PHONE_NO, amount):
-        print(self.headers)
         # amount = 1
         phone = PHONE_NO
         passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
@@ -72,7 +67,7 @@ class Mpesa():
             'Amount': amount,
             'PartyA': party_a, # The phone number sending money in the format 2547XXXXXXXX
             'PartyB': business_short_code, # The organization that receives the funds.
-            'PhoneNumber': party_a, # The Mobile Number to receive the STK Pin Prompt
+            'PhoneNumber': party_a, # The Mobile Nmber to receive the STK Pin Prompt
             'CallBackURL': callback_url,
             'AccountReference': account_reference, # Identifier of the transaction for the CustomerPayBillOnline transaction type. Along with the business name, this value is also displayed to the customer in the STK Pin Prompt message
             'TransactionDesc': transaction_desc # Any additional information/comment that can be sent along with the request from your system

@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv("config.env")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,9 +28,13 @@ SECRET_KEY = 'django-insecure-l)7c*j3ydy4f16s8jc54wrv=57-8v=c!oavk8u57qjp&jtl8td
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+PRODUCTION_HOST = os.environ.get("HOST")
+ALLOWED_HOSTS = ["127.0.0.1"]
 
-ALLOWED_HOSTS = ["127.0.0.1", "atongjona.pythonanywhere.com", "ngong.itsfixed.africa", "www.ngong.itsfixed.africa", "portal.itsfixed.africa"]
+ALLOWED_HOSTS.append(PRODUCTION_HOST)
 
+DARAJA_CREDENTIALS =  os.environ.get("DARAJA_CREDENTIALS")
+ACCESS_TOKEN = "icMkbJnH0IFplA3MN9tri0RzgElc"
 
 
 # Application definition
@@ -130,10 +137,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 AUTH_USER_MODEL = 'portal.Parent'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = "portal@thearkjuniorschool.com"
-ACCESS_TOKEN = '9jmrwfpoIYmbgbKQeFP32mW8Ml2d'
