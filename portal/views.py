@@ -53,10 +53,8 @@ def register(request: HttpRequest):
                       subject="Welcome to the Ark Kunior Parents Portal", recipient=email)
         login(request, user=parent)
         logger.info(f"User {request.user} logged in")
-
         return redirect("choose")
-    elif request.method == "GET":
-        return render(request, "portal/register.html")
+    return render(request, "portal/register.html")
 
 
 @login_required
@@ -69,8 +67,7 @@ def choose(request: HttpRequest):
             f"Forced log out due to no child associate to {request.user}")
         logout(request)
         return render(request, "portal/login.html", {"message": "Your Email is not attached to any child. Visit school to update!"})
-    else:
-        return render(request, "portal/choose.html", {"title": "Choose Child", "children": children})
+    return render(request, "portal/choose.html", {"title": "Choose Child", "children": children})
 
 
 @login_required
@@ -126,13 +123,10 @@ def login_view(request: HttpRequest):
             login(request, user=parent)
             logger.info(f"User {request.user} logged in")
             return redirect("choose")
-        else:
-            return render(request, "portal/login.html", {"title": "Fee Statement", "message": "Invalid Email or Password"})
-    else:
-        if (request.user.is_anonymous):
-            return render(request, "portal/login.html")
-        else:
-            return redirect("choose")
+        return render(request, "portal/login.html", {"title": "Fee Statement", "message": "Invalid Email or Password"})
+    if (request.user.is_anonymous):
+        return render(request, "portal/login.html")
+    return redirect("choose")
 
 
 def logout_view(request: HttpRequest):
@@ -204,11 +198,10 @@ def set_password(request: HttpRequest, uidb64, token):
         update_session_auth_hash(request, request.user)
         context = {"changed_message": "Password Changed Successfully!"}
         return render(request, 'portal/login.html', context)
+    if (request.user.is_authenticated):
+        return redirect('proceed')
     else:
-        if (request.user.is_authenticated):
-            return redirect('proceed')
-        else:
-            return render(request, "portal/change.html", {"title": "Reset Password", "uidb64": uidb64, "token": token})
+        return render(request, "portal/change.html", {"title": "Reset Password", "uidb64": uidb64, "token": token})
 
         # return render(request, "portal/change.html", {"message":True})
 
@@ -260,7 +253,7 @@ def pay(request: HttpRequest, id):
             amount = custom_amount
         else:
             amount = balance
-        amount = amount.split(".")[0].replace(",","")
+        amount = amount.split(".")[0].replace(",", "")
         mpesa = Mpesa()
         print(mpesa.initiate_stk_push(phone_number, int(float(amount))))
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
