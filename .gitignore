@@ -3,3 +3,4 @@ venv
 staticfiles
 logs.txt
 db.sqlite3
+*.

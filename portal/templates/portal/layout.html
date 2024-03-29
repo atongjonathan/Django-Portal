@@ -31,49 +31,48 @@
     <link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/dist/css/skins/_all-skins.min.css">
 
     <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="{% static 'portal/styles.css' %}">
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="stylesheet" href="{% static 'portal/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{% static 'portal/plugins/toastr/toastr.min.css' %}">
-        <style>
-            .img
-            {
-                width: 60%;
-                height: 60%;
-                margin: 0 auto;
-            }
-            .img > img
-            {
-                width: 100%;
-            }
-            footer
-            {
-                text-align: center;
-            }
-            .preloader
-            {
-                display: none;
-            }
-            .user-panel>.info {
-                padding-left:8px;
-            }
-            .wrapper
-            {
-                height: auto;
-                min-height: 100%;
-            }
-            .sidebaer
-            {
-                height: auto;
-            }
-            .treeview-menu
-            {
-                display: none;
-            }
-        </style>
+    <style>
+        .img {
+            width: 60%;
+            height: 60%;
+            margin: 0 auto;
+        }
+
+        .img>img {
+            width: 100%;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        .preloader {
+            display: none;
+        }
+
+        .user-panel>.info {
+            padding-left: 8px;
+        }
+
+        .wrapper {
+            height: auto;
+            min-height: 100%;
+        }
+
+        .sidebaer {
+            height: auto;
+        }
+
+        .treeview-menu {
+            display: none;
+        }
+    </style>
 </head>
 
 
@@ -84,11 +83,12 @@
 
     <div class="wrapper">
 
-        
+
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="AdminLTELogo" height="60" width="60">
-          </div>
-          
+            <img class="animation__wobble" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="AdminLTELogo"
+                height="60" width="60">
+        </div>
+
         <header class="main-header">
 
             <!-- Logo -->
@@ -97,9 +97,9 @@
                 <span class="logo-mini"><b>IFC</b></span>
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><img src="{% static 'portal/dist/img/AdminLTELogo.png' %}" class="user-image logo"
-                    alt="User Image"></span>
+                        alt="User Image"></span>
             </a>
-    
+
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
                 <!-- Sidebar toggle button-->
@@ -112,22 +112,20 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{{ data.img }}" class="user-image"
-                                    alt="User Image">
+                                <img src="{{ data.img }}" class="user-image" alt="User Image">
                                 <span class="hidden-xs">{{data.name}}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="{{ data.img }}"
-                                        class="img-circle" alt="User Image">
-    
+                                    <img src="{{ data.img }}" class="img-circle" alt="User Image">
+
                                     <p>
                                         {{data.name}}
                                     </p>
                                     <p>
                                         <small>{{request.user}}</small>
-                                        
+
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
@@ -147,95 +145,97 @@
                         </li> -->
                     </ul>
                 </div>
-    
+
             </nav>
         </header>
-    
-    
+
+
         <aside class="main-sidebar">
-            
+
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-              <!-- Sidebar user panel -->
-              <div class="user-panel">
-                <div class="pull-left image">
-                  <img src="{{ data.img }}" class="img-circle" alt="User Image">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="{{ data.img }}" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>{{ data.name }}</p>
+                        <a href=""><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                  <p>{{ data.name }}</p>
-                  <a href=""><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-              </div>
-              <!-- search form -->
-              <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                  <input type="text" name="q" class="form-control" placeholder="Search...">
-                  <span class="input-group-btn">
-                        <button title="Search" type="submit" name="search" id="search-btn" class="btn btn-flat">
-                          <i class="fa fa-search"></i>
-                        </button>
-                      </span>
-                </div>
-              </form>
-              <!-- /.search form -->
-              <!-- sidebar menu: : style can be found in sidebar.less -->
-              <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">MAIN NAVIGATION</li>
-                <li>
-                    <a href="{% url 'dashboard' id %}">
-                        <i class=" fa fa-dashboard text-blue"></i><span>  Dashboard</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-pie-chart text-red"></i>
-                        <span>Financials</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
+                <!-- search form -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input id="search" type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button title="Search" type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </span>
-                    </a>
-                    <ul class="treeview-menu">
-    
-                        <li><a href="{% url 'statement_print' id %}"><i class="fa fa-circle-o"></i>Fee Statement</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>Fee Structure</a></li>
-                        <li><a href="{% url 'statement' id %}"><i class="fa fa-circle-o"></i>Fees Statement - PDF</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-graduation-cap text-green"></i>
-                        <span>Academics</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href=""><i class="fa fa-circle-o"></i>ePortfolio</a>
-                        </li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>Termly
-                                Report</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>Assssment
-                                Report</a></li>
-                        <!-- <li><a href=""><i class="fa fa-circle-o"></i>Exam Cards</a></li> -->
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-microphone text-yellow"></i>
-                        <span>Invite</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{% url 'invite' id %}"><i class="fa fa-circle-o"></i>Invite a Parent</a></li>
-    
-    
-    
-                    </ul>
-                </li>
-    
-                <!-- <li class="treeview">
+                    </div>
+                </form>
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul id="sidebar-menu" class="sidebar-menu" data-widget="tree">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li>
+                        <a href="{% url 'dashboard' id %}">
+                            <i class=" fa fa-dashboard text-blue"></i><span> Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-pie-chart text-red"></i>
+                            <span>Financials</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li><a href="{% url 'statement_print' id %}"><i class="fa fa-circle-o"></i>Fee Statement</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-circle-o"></i>Fee Structure</a></li>
+                            <li><a href="{% url 'statement' id %}"><i class="fa fa-circle-o"></i>Fees Statement -
+                                    PDF</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-graduation-cap text-green"></i>
+                            <span>Academics</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href=""><i class="fa fa-circle-o"></i>ePortfolio</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-circle-o"></i>Termly
+                                    Report</a></li>
+                            <li><a href=""><i class="fa fa-circle-o"></i>Assssment
+                                    Report</a></li>
+                            <!-- <li><a href=""><i class="fa fa-circle-o"></i>Exam Cards</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-microphone text-yellow"></i>
+                            <span>Invite</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{% url 'invite' id %}"><i class="fa fa-circle-o"></i>Invite a Parent</a></li>
+
+
+
+                        </ul>
+                    </li>
+
+                    <!-- <li class="treeview">
                     <a href="#">
                         <i class="fa fa-check-circle-o text-success"></i>
                         <span>Students Clearance</span>
@@ -248,49 +248,47 @@
     
                     </ul>
                 </li> -->
-                <li id="sttt" class="treeview">
-                    <a href="#">
-                        <i class="fa fa-cogs  text-blue"></i>
-                        <span>Settings</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none;">
-    
-                        <li><a href="{% url 'proceed' %}"><i class="fa fa-circle-o"></i>Change password</a></li>
-                    </ul>
-                </li>
-                <li class="header">PERIODIC ACTIVITIES</li>
-    
-    
-                <li><a href=""><i class="fa fa-microphone text-yellow"></i><span> Term Activities
+                    <li id="sttt" class="treeview">
+                        <a href="#">
+                            <i class="fa fa-cogs  text-blue"></i>
+                            <span>Settings</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+
+                            <li><a href="{% url 'proceed' %}"><i class="fa fa-circle-o"></i>Change password</a></li>
+                        </ul>
+                    </li>
+                    <li class="header">PERIODIC ACTIVITIES</li>
+
+
+                    <li><a href=""><i class="fa fa-microphone text-yellow"></i><span> Term Activities
                             </span></a></li>
-                <!-- <li><a href=""><i class="fa fa-volume-up text-aqua"></i><span>  KarU
-                            Election</span></a></li> -->
-            </ul>
+                </ul>
             </section>
             <!-- /.sidebar -->
-          </aside>
-    
-    
+        </aside>
+
+
         {% block content-wrapper %}
 
 
         {% endblock %}
 
-          
+
 
 
         <footer class="main-footer">
             <!-- <div class="pull-right hidden-xs">
               <b>Version</b> 2.4.0
             </div> -->
-            <strong>Copyright © 2024 <a href="">Jonathan Atong</a>.</strong> All rights
+            <strong>Copyright © 2024 <a href="">ItsFixed Communications</a>.</strong> All rights
             reserved.
-          </footer>
-     
-    
+        </footer>
+
+
     </div>
 
 
@@ -313,13 +311,34 @@
     <script src="https://adminlte.io/themes/AdminLTE/dist/js/adminlte.min.js"></script>
     <script
         src="https://adminlte.io/themes/AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="{% static 'portal/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
-        <!-- Toastr -->
-        <script src="{% static 'portal/plugins/toastr/toastr.min.js' %}"></script>
-        <!-- AdminLTE App -->
-        <script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
+    <script src="{% static 'portal/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+    <!-- Toastr -->
+    <script src="{% static 'portal/plugins/toastr/toastr.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
 
 
 </body>
+
+<script>
+    $(document).ready(function () {
+        $("#search").on("keyup", function () {
+            var searchText = $(this).val().toLowerCase();
+
+            $(".treeview").each(function () {
+                var hasMatchingLink = false;
+                $(this).find(".treeview-menu a").each(function () {
+                    if ($(this).text().toLowerCase().indexOf(searchText) > -1) {
+                        hasMatchingLink = true;
+                    }
+                });
+
+                $(this).toggle(hasMatchingLink);
+            });
+        });
+    });
+</script>
+
+
 
 </html>

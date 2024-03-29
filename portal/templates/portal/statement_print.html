@@ -13,22 +13,22 @@
   }
 
   .header {
-   display: flex;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
-   row-gap: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    row-gap: 5px;
   }
-  .header p
-  {
+
+  .header p {
     margin: 0;
   }
-  .invoice
-  {
+
+  .invoice {
     margin-left: 10px;
   }
-  u
-  {
+
+  u {
     margin-bottom: 20px;
   }
 </style>
@@ -55,15 +55,17 @@
             <!-- title row -->
             <div class="row">
               <div class="col-12-table-responsive">
-                <div class="header-wrapper">              
+                <div class="header-wrapper">
                   <div class="header">
                     <img class="pdf-img" src="{% static 'portal/dist/img/AdminLTELogo.png' %}" alt="">
                     <b>SOUTH B BRANCH</b>
                     <p>P.O BOX 66346-00800 NAIROBI<br>TEL:0713769176/0720661383<br>info@thearkjuniorschool.com</p>
-                    <b><i><p style="margin: 5px;"> Learn To Excel</p></i></b>
+                    <b><i>
+                        <p style="margin: 5px;"> Learn To Excel</p>
+                      </i></b>
                     <u><b>STATEMENT OF ACCOUNT</b></u>
                   </div>
-              </div>
+                </div>
 
                 <div class="subheader">
                   <p>REG. NO: {{ data.id }}</p>
@@ -141,7 +143,7 @@
                       <td>{{ data.paid }}</td>
                       <td>{{ data.balance }}</td>
                     </tr>
-                  <tr>
+                    <tr>
                 </table>
               </div>
 
@@ -150,20 +152,20 @@
 
 
 
-              <!-- /.row -->
+            <!-- /.row -->
 
-              <!-- this row will not appear when printing -->
-              <div class="row no-print">
-                <div class="col-12">
-                  <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}" rel="noopener" target="_blank" class="btn btn-default"><i
-                      class="fas fa-print"></i> Print</a>
-                  <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}"><button type="button" class="btn btn-primary float-right"
-                      style="margin-right: 5px;">
-                      <i class="fas fa-download"></i> Generate PDF
-                    </button></a>
+            <!-- this row will not appear when printing -->
+            <div class="row no-print">
+              <div class="col-12">
+                <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}" rel="noopener" target="_blank"
+                  class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}"><button type="button"
+                    class="btn btn-primary float-right" style="margin-right: 5px;">
+                    <i class="fas fa-download"></i> Generate PDF
+                  </button></a>
 
-                </div>
               </div>
+            </div>
           </div>
           <!-- /.invoice -->
         </div><!-- /.col -->
@@ -175,12 +177,10 @@
 
 
 <script>
-function print_pdf()
-
-{
+  function print_pdf() {
     window.print()
 
-}
+  }
 </script>
 
 
