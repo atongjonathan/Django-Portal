@@ -196,9 +196,9 @@
 
                             <li><a href="{% url 'statement_print' id %}"><i class="fa fa-circle-o"></i>Fee Statement</a>
                             </li>
-                            <li><a href=""><i class="fa fa-circle-o"></i>Fee Structure</a></li>
                             <li><a href="{% url 'statement' id %}"><i class="fa fa-circle-o"></i>Fees Statement -
                                     PDF</a></li>
+                            <li><a href="{% url 'pay' id %}"><i class="fa fa-circle-o"></i>Pay Fees</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -316,6 +316,8 @@
     <script src="{% static 'portal/plugins/toastr/toastr.min.js' %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static 'portal/dist/js/adminlte.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js" integrity="sha512-efAcjYoYT0sXxQRtxGY37CKYmqsFVOIwMApaEbrxJr4RwqVVGw8o+Lfh/+59TU07+suZn1BWq4fDl5fdgyCNkw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 
 </body>

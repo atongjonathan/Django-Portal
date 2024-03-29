@@ -10,11 +10,13 @@ from django.http.request import HttpRequest
 from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
+from . mpesa import Mpesa
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
+
 
 def get_data(data: dict):
     billed = int(data["billed"].replace(",", "").split(".")[0])
@@ -90,12 +92,10 @@ def statement_print(request: HttpRequest, id):
 
 @login_required
 def statement(request: HttpRequest, id):
-    for child in DB:
-        if child["id"] == id and (child["f_email"] == str(request.user) or child["m_email"] == str(request.user)):
-            data = child
-            return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
-        else:
-            return redirect("login")
+    data = get_child_data(id, request.user)
+    if data:
+        return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
+    return redirect("login")
 
 
 @login_required
@@ -247,6 +247,23 @@ def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data = get_data(data)
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
+
+
+def pay(request: HttpRequest, id):
+    data = get_child_data(id, request.user)
+    data = get_data(data)
+    if request.method == 'POST':
+        phone_number = request.POST.get("phone_no").replace("-", "")
+        balance = data["balance"]
+        custom_amount = request.POST.get("custom_amount")
+        if custom_amount:
+            amount = custom_amount
+        else:
+            amount = balance
+        amount = amount.split(".")[0].replace(",","")
+        mpesa = Mpesa()
+        print(mpesa.initiate_stk_push(phone_number, int(float(amount))))
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
 
 
 # HTTP Error 400

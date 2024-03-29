@@ -25,4 +25,6 @@ urlpatterns = [
     path('change/<str:uidb64>/<str:token>/',
          views.change, name='password_change_confirm'),
     path("modal/<id>", views.modal, name="modal"),
+    path("pay/<id>", views.pay, name="pay"),
+    
 ]
