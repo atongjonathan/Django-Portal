@@ -3,17 +3,9 @@ from . models import Parent
 from django.urls import reverse
 
 
-class PortalTests(TestCase):        
+class PortalTests(TestCase):
     def setUp(self) -> None:
         self.client = Client()
-        self.user = Parent.objects.create_user(
-            {"username": "test@gmail.com", "password": "testpassword"})
-        
-
-    def test_unknown_user_choose(self):
-        response = self.client.get(reverse("choose"))
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, "/accounts/login/?next=%2F")
 
     def test_register_GET(self):
         response = self.client.get(reverse("register"))
@@ -47,8 +39,52 @@ class PortalTests(TestCase):
         credentials = {"email": "test@gmail.com", "password": "test@gmail.com"}
         response = self.client.post(reverse("register"), credentials)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue('_auth_user_id' in self.client.session) # User is logged in
+        self.assertTrue('_auth_user_id' in self.client.session)
         self.assertRedirects(response, reverse("choose"))
+
+    def test_login_GET(self):
+        response = self.client.get(reverse("login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "portal/login.html")
+
+    # def _login_client
+    def _login_client(self):
+        Parent.objects.create_user(
+            username="test@gmail.com", password="testpassword")
+        login_successful = self.client.login(
+            username="test@gmail.com", password="testpassword")
+        return login_successful
+
+    def test_login_GET_parent(self):
+        login_successful = self._login_client()
+        self.assertTrue(login_successful)
+        self.assertTrue('_auth_user_id' in self.client.session)
+        response = self.client.get(reverse("login"))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("choose"))
+
+    def test_login_POST(self):
+        Parent.objects.create_user(
+            username="test@gmail.com", password="testpassword")
+        data = {"email": "test@gmail.com", "password": "testpassword"}
+        response = self.client.post(reverse("login"), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("choose"))
+
+    def test_unknown_choose(self):
+        response = self.client.get(reverse("choose"))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/accounts/login/?next=%2F")
+
+    def test_parent_choose(self):
+        login_successful = self._login_client()
+        self.assertTrue(login_successful)
+        response = self.client.get(reverse("choose"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "portal/choose.html")
+
+
+
 
 
 # Create your tests here.
