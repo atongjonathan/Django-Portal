@@ -73,10 +73,10 @@ def choose(request: HttpRequest):
 @login_required
 def dashboard(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
     if data is None:
         logger.info(f"Unrecognised email {request.user}")
-        return render(request, "portal/choose.html", {"title": "Dashboard", "message": " Your email is not recognised by the school. Visit school to update!"})
+        return redirect("choose")
+    data = get_data(data)
     return render(request, template_name="portal/dashboard.html", context={"title": "Dashboard", "data": data, "id": data["id"]})
 
 
@@ -98,6 +98,8 @@ def statement(request: HttpRequest, id):
 @login_required
 def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    if data is None:
+        return redirect("choose")
     data = get_data(data)
     if request.method == "POST":
         email = request.POST["email"]
@@ -190,8 +192,8 @@ def set_password(request: HttpRequest, uidb64, token):
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            print(send_my_email(template="changed",
-                  subject="Password Changed", recipient=str(user)))
+            send_my_email(template="changed",
+                          subject="Password Changed", recipient=str(user))
             logger.info(f"Password reset by user {user.get_username()}")
 
         # Update the session to avoid requiring reauthentication
@@ -208,8 +210,6 @@ def set_password(request: HttpRequest, uidb64, token):
 
 def test(request: HttpRequest):
     return render(request, 'portal/test.html')
-
-# Looged Out Views
 
 
 def logged_out(request: HttpRequest):
