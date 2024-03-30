@@ -5,7 +5,11 @@ jobs:
     test_portal:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - run: python my_script.py
       - name: Run Django unit tests
         run:
           pip3 install -r requirements.txt
