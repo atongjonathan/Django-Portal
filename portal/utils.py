@@ -13,10 +13,14 @@ def send_my_email(template, subject, recipient, url=None, user=None):
         "url": url,
         "user": user
     }
-
-    response = requests.get(
-        "https://atongjona2.pythonanywhere.com/send_email", json=json_data)
-    response = response.json()
+    try:
+        response = requests.get(
+            "https://atongjona2.pythonanywhere.com/send_email", json=json_data)
+        response = response.json()
+    except Exception as e:
+        logger.error(f"API cannot be reached, exception {e}")
+        response = {"message":"API cannot be reached"}
+    
     message = response.get("message")
     if message != "Success":
         logger.error(f"Email Sending failed with response {message}")
