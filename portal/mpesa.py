@@ -3,11 +3,15 @@ import base64
 from datetime import datetime
 from django.conf import settings
 import json
+from logging import getLogger
+
+logger = getLogger(__name__)
+
 
 class Mpesa():
     def __init__(self) -> None:
-        self.headers = self.get_headers(json.loads(settings.DARAJA_CREDENTIALS))
-
+        self.headers = self.get_headers(
+            json.loads(settings.DARAJA_CREDENTIALS))
 
     def get_access_token(self, credentials: dict):
         access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
@@ -20,30 +24,29 @@ class Mpesa():
         access_token = result['access_token']
         return access_token
 
-    def bearer_header(self, credentials:dict):
+    def bearer_header(self, credentials: dict):
         access_token = self.get_access_token(credentials)
         headers = {
-        "Authorization": f"Bearer " + access_token,
-        'Content-Type': 'application/json'}
+            "Authorization": f"Bearer " + access_token,
+            'Content-Type': 'application/json'}
         return headers
 
-
-    def get_headers(self, credentials:dict):
+    def get_headers(self, credentials: dict):
         try:
             access_token = self.get_access_token(credentials)
             settings.ACCESS_TOKEN = access_token
+            logger.info(f"No issues getting access token, i.e {access_token}")
         except Exception as e:
+            logger.error(
+                f"An issue occurred when getting access token  with exception {e}.Thus using settings access token i.e {access_token}")
             access_token = settings.ACCESS_TOKEN
 
         headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + access_token,
-        "X-appKey": credentials.get("consumer_key")
-    }
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + access_token,
+            "X-appKey": credentials.get("consumer_key")
+        }
         return headers
-
-
-
 
     def initiate_stk_push(self, PHONE_NO, amount):
         # amount = 1
@@ -63,20 +66,29 @@ class Mpesa():
             'BusinessShortCode': business_short_code,
             'Password': password,
             'Timestamp': timestamp,
-            'TransactionType': 'CustomerPayBillOnline',#  The transaction type for M-PESA Express is "CustomerPayBillOnline" for PayBill Numbers and "CustomerBuyGoodsOnline" for Till Numbers
+            # The transaction type for M-PESA Express is "CustomerPayBillOnline" for PayBill Numbers and "CustomerBuyGoodsOnline" for Till Numbers
+            'TransactionType': 'CustomerPayBillOnline',
             'Amount': amount,
-            'PartyA': party_a, # The phone number sending money in the format 2547XXXXXXXX
-            'PartyB': business_short_code, # The organization that receives the funds.
-            'PhoneNumber': party_a, # The Mobile Nmber to receive the STK Pin Prompt
+            'PartyA': party_a,  # The phone number sending money in the format 2547XXXXXXXX
+            # The organization that receives the funds.
+            'PartyB': business_short_code,
+            'PhoneNumber': party_a,  # The Mobile Nmber to receive the STK Pin Prompt
             'CallBackURL': callback_url,
-            'AccountReference': account_reference, # Identifier of the transaction for the CustomerPayBillOnline transaction type. Along with the business name, this value is also displayed to the customer in the STK Pin Prompt message
-            'TransactionDesc': transaction_desc # Any additional information/comment that can be sent along with the request from your system
+            # Identifier of the transaction for the CustomerPayBillOnline transaction type. Along with the business name, this value is also displayed to the customer in the STK Pin Prompt message
+            'AccountReference': account_reference,
+            # Any additional information/comment that can be sent along with the request from your system
+            'TransactionDesc': transaction_desc
         }
-
-        response = requests.post(process_request_url, headers=self.headers, json=json)
-        response_data = response.json()
-        return response_data
-
+        try:
+            response = requests.post(
+                process_request_url, headers=self.headers, json=json)
+        except Exception as e:
+            self.logger.error(f"An error occured when calling stkpush api {e}")
+        try:
+            response_data = response.json()
+            return response_data
+        except Exception as e:
+            self.logger(f"An error occured in accessing json response {e}")
 
     def query_status(self, requestID):
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
@@ -93,10 +105,3 @@ class Mpesa():
         }
         response = requests.post(api_url, json=json, headers=self.headers)
         return response.json()
-
-
-# print(initiate_stk_push())
-# print(query_status("ws_CO_12032024091213124708683896"))
-
-
-
