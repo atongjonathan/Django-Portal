@@ -123,8 +123,8 @@ def login_view(request: HttpRequest):
             login(request, user=parent)
             logger.info(f"User {request.user} logged in")
             return redirect("choose")
-        return render(request, "portal/login.html", {"title": "Fee Statement", "message": "Invalid Email or Password"})
-    if (request.user.is_anonymous):
+        return render(request, "portal/login.html", {"title": "Login", "message": "Invalid Email or Password"})
+    if request.user.is_anonymous:
         return render(request, "portal/login.html")
     return redirect("choose")
 
