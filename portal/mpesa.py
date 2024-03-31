@@ -32,6 +32,7 @@ class Mpesa():
         return headers
 
     def get_headers(self, credentials: dict):
+        access_token = settings.ACCESS_TOKEN
         try:
             access_token = self.get_access_token(credentials)
             settings.ACCESS_TOKEN = access_token
@@ -39,7 +40,7 @@ class Mpesa():
         except Exception as e:
             logger.error(
                 f"An issue occurred when getting access token  with exception {e}.Thus using settings access token i.e {access_token}")
-            access_token = settings.ACCESS_TOKEN
+            
 
         headers = {
             "Content-Type": "application/json",

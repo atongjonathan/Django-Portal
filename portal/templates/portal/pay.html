@@ -70,6 +70,11 @@
   <!-- Main content -->
   <section class="content">
     <div class="col-md-12 balance-box">
+      {% if message %}
+      <div class="alert alert-warning">
+        <strong>{{message}}</strong>
+      </div>
+      {% endif %}
       <!-- /.info-box -->
       <div class="info-box bg-aqua">
         <span class="info-box-icon"><i class="fa fa-shopping-cart"></i></span>
@@ -438,7 +443,10 @@
 
 
 <script>
+  
   $(document).ready(function () {
+
+    
 
     $('input[data-mask]').inputmask();
     $('input[amount-mask]').inputmask();

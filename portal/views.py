@@ -255,7 +255,13 @@ def pay(request: HttpRequest, id):
             amount = balance
         amount = amount.split(".")[0].replace(",", "")
         mpesa = Mpesa()
-        print(mpesa.initiate_stk_push(phone_number, int(float(amount))))
+        try:
+            response = mpesa.initiate_stk_push(phone_number, int(float(amount)))
+            print(response)
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
+        except Exception as e:
+            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
 
 
