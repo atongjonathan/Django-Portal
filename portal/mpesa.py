@@ -84,12 +84,12 @@ class Mpesa():
             response = requests.post(
                 process_request_url, headers=self.headers, json=json)
         except Exception as e:
-            self.logger.error(f"An error occured when calling stkpush api {e}")
+            logger.error(f"An error occured when calling stkpush api {e}")
         try:
             response_data = response.json()
             return response_data
         except Exception as e:
-            self.logger(f"An error occured in accessing json response {e}")
+            logger(f"An error occured in accessing json response {e}")
 
     def query_status(self, requestID):
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
