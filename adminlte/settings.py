@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ["127.0.0.1"]
 ALLOWED_HOSTS.append(PRODUCTION_HOST)
 
 DARAJA_CREDENTIALS =  os.environ.get("DARAJA_CREDENTIALS")
-ACCESS_TOKEN = "icMkbJnH0IFplA3MN9tri0RzgElc"
+ACCESS_TOKEN = "gLMNOGaCcSp4p6gGwAybXY0jgocK"
 
 
 # Application definition
