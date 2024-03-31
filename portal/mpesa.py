@@ -89,7 +89,7 @@ class Mpesa():
             response_data = response.json()
             return response_data
         except Exception as e:
-            logger(f"An error occured in accessing json response {e}")
+            logger.error(f"An error occured in accessing json response {e}")
 
     def query_status(self, requestID):
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
