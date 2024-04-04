@@ -11,3 +11,4 @@ db.sqlite3
 passenger_wsgi.py
 stderr.log
 tmp/
+.hintrc
