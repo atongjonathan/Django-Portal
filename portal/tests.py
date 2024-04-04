@@ -121,7 +121,8 @@ class PortalTests(TestCase):
 
     def test_invite_POST(self):
         self._login_client()
-        response = self.client.post(reverse("invite", kwargs={"id":"STU-0225"}), data={"email":"test@gmail.com"})
+        response = self.client.post(
+            reverse("invite", kwargs={"id": "STU-0225"}), data={"email": "test@gmail.com"})
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "portal/invite.html")
         self.assertIn("message", response.context)
@@ -140,7 +141,7 @@ class PortalTests(TestCase):
         self.assertTemplateUsed(response, "portal/proceed.html")
         self.assertIn("message", response.context)
         self.assertEqual(response.context["message"], "Email Sent")
-    
+
     def test_contact(self):
         response = self.client.get(reverse("contact"))
         self.assertTrue(200, response.status_code)
@@ -149,19 +150,24 @@ class PortalTests(TestCase):
     def test_contactus(self):
         response = self.client.get(reverse("contact_us"))
         self.assertTrue(200, response.status_code)
-        self.assertTemplateUsed(response, "portal/contact_us.html") 
+        self.assertTemplateUsed(response, "portal/contact_us.html")
 
     def test_logout(self):
         self._login_client
         response = self.client.get(reverse("logout"))
         self.assertTrue(302, response.status_code)
-        self.assertRedirects(response, reverse("logged_out"))   
+        self.assertRedirects(response, reverse("logged_out"))
 
     def test_logged_out(self):
         response = self.client.get(reverse("logged_out"))
         self.assertTrue(200, response.status_code)
-        self.assertTemplateUsed(response, "portal/logged_out.html")    
-        self.assertFalse("_auth_user_id" in self.client.session)    
+        self.assertTemplateUsed(response, "portal/logged_out.html")
+        self.assertFalse("_auth_user_id" in self.client.session)
+
+    def test_pay_GET(self):
+        response = self.client.get(reverse("pay"))
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, "portal/pay.html")
 
 
 # Create your tests here.
