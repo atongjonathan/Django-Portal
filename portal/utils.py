@@ -1,9 +1,9 @@
 import requests
 from logging import getLogger
-try:
-    from . data import sample_data
-except ModuleNotFoundError:
-    from . example_data import sample_data
+# try:
+from . data import sample_data
+# except ModuleNotFoundError:
+#     from . example_data import sample_data
 
 logger = getLogger(__name__)
 

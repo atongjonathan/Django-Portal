@@ -4,10 +4,10 @@ staticfiles
 logs.txt
 db.sqlite3
 .vscode
-data.py
 config.env
 db.sqlite3
 .htaccess
 passenger_wsgi.py
 stderr.log
 tmp/
+.hintrc

@@ -73,7 +73,7 @@
                   <p>PROGRAMME: {{ data.programme }}</p>
                 </div>
 
-                <table class="table table-striped">
+                <table id="table" class="table table-striped">
 
                   <thead>
                     <tr>
@@ -93,57 +93,35 @@
                       <td></td>
                       <td>0.00</td>
                     </tr>
+                    {% for row in data.rows %}
+                    {% if row.debit <= 0 and row.credit <= 0 %}
+                    {% else %}
+                    
                     <tr>
-                      <td>11/3/22</td>
-                      <td>Receipt-Funcamp</td>
-                      <td>7,000.00</td>
+                      <td>{{ row.date }}</td>
+                      <td>{{ row.particular }}</td>
+                      {%  if row.debit <= 0 %}
                       <td></td>
-                      <td>-7,000.00</td>
+                      {% else %}
+                      <td>{{ row.debit }}</td>
+                      {% endif %}                      
+                      {%  if row.credit <= 0 %}
+                      <td></td>
+                      {% else %}
+                      <td>{{ row.credit }}</td>
+                      {% endif %}
+                      <td>{{ row.bal }}</td>
                     </tr>
+                    {% endif %}
+                    {% endfor %}
                     <tr>
-                      <td>11/3/22</td>
-                      <td>Receipt-Funcamp</td>
-                      <td>2,000.00</td>
+                      <td><b>Balance</b></td>
                       <td></td>
-                      <td>-9,000.00</td>
-                    </tr>
-                    <tr>
-                      <td>14/3/22</td>
-                      <td>Fun Camp Fees- March 2022 Holiday</td>
-                      <td></td>
-                      <td>6,500.00</td>
-                      <td>-2,500.00</td>
-                    </tr>
-                    <tr>
-                      <td>14/3/22</td>
-                      <td>Fun Camp Transport- March 2020 Ho</td>
-                      <td></td>
-                      <td>2,500.00</td>
-                      <td>0.00</td>
-                    </tr>
-                    <tr>
-                      <td>17/4/22</td>
-                      <td>Receipt</td>
-                      <td></td>
-                      <td>80,000.00</td>
-                      <td>-80,000.00</td>
-                    </tr>
-                    <tr>
-                      <td>26/4/22</td>
-                      <td>Book Fund Charges</td>
-                      <td>4,000.00</td>
-                      <td></td>
-                      <td>-76,000.00</td>
 
-                    </tr>
-                    <tr>
-                      <td><b>Total</b></td>
                       <td></td>
-                      <td>{{ data.billed }}</td>
-                      <td>{{ data.paid }}</td>
-                      <td>{{ data.balance }}</td>
+                      <td></td>
+                      <td><b>0.00</b> </td>
                     </tr>
-                    <tr>
                 </table>
               </div>
 
@@ -181,6 +159,12 @@
     window.print()
 
   }
+</script>
+<script>
+  
+
+
+
 </script>
 
 
