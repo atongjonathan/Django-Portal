@@ -11,3 +11,4 @@ passenger_wsgi.py
 stderr.log
 tmp/
 .hintrc
+*.csv

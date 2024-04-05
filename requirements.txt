@@ -52,3 +52,4 @@ xhtml2pdf==0.2.3
 yarl==1.9.4
 zipp==3.17.0
 zopfli==0.2.3
+pandas
