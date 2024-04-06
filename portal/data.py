@@ -17,12 +17,6 @@ sample_data = [
         "m_occupation": "TEACHER",
         "m_tel": "702150582",
         "m_email": "calvince2@itsfixed.africa",
-        "balance": "-3,500.00",
-        "billed": "156,000.00",
-        "paid": "159,500.00",
-        "t-debit": "",
-        "t-credit": "",
-        "t-bal": ""
     },
     {
         "id": "STU-0227",
@@ -39,13 +33,7 @@ sample_data = [
         "m_name": "LINDA MWERESA",
         "m_occupation": "DENTAL OFFICER",
         "m_tel": "702150582",
-        "m_email": "atongjonathan2@gmail.com",
-        "balance": "9,060.00",
-        "billed": "156,000.00",
-        "paid": "146,940.00",
-        "tdebit": "",
-        "tcredit": "",
-        "tbal": "",
+        "m_email": "atongjonathan2@gmail.com"
     },
     {
         "id": "STU-0229",
@@ -62,10 +50,7 @@ sample_data = [
         "m_name": "VERONICA WANJIKU NGENO",
         "m_occupation": "KENYAN",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "3,500.00",
-        "billed": "156,000.00",
-        "paid": "152,500.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0230",
@@ -82,10 +67,7 @@ sample_data = [
         "m_name": "REBECCA MUTHOKI MUTUA",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "0",
-        "billed": "156,000.00",
-        "paid": "156,000.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0232",
@@ -102,10 +84,7 @@ sample_data = [
         "m_name": "WINNIE NDINDA KIMEU",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "4,000.00",
-        "billed": "156,000.00",
-        "paid": "152,000.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0233",
@@ -122,10 +101,7 @@ sample_data = [
         "m_name": "CAROLYN MUTISO",
         "m_occupation": "ACCOUNTANT",
         "m_tel": "702150582",
-        "m_email": "atongjonathan5@gmail.com",
-        "balance": "7,500.00",
-        "billed": "156,000.00",
-        "paid": "149,500"
+        "m_email": "atongjonathan5@gmail.com"
     },
     {
         "id": "STU-0234",
@@ -142,10 +118,7 @@ sample_data = [
         "m_name": "WINNIE MOGIRE",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "4,000.00",
-        "billed": "156,000.00",
-        "paid": "152,000.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0235",
@@ -162,10 +135,7 @@ sample_data = [
         "m_name": "CARNYCE ADHIAMBO OMONDI",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "73,500.00",
-        "billed": "156,000.00",
-        "paid": "16,500"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0237",
@@ -182,10 +152,7 @@ sample_data = [
         "m_name": "TABITHA NZURI K",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "1,000.00",
-        "billed": "156,000.00",
-        "paid": "155,000.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0240",
@@ -202,10 +169,7 @@ sample_data = [
         "m_name": "REGINA  KITUR IMOH",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvinc2e@itsfixed.africa",
-        "balance": "35,560.00",
-        "billed": "156,000.00",
-        "paid": "120,440"
+        "m_email": "calvinc2e@itsfixed.africa"
     },
     {
         "id": "STU-0243",
@@ -222,10 +186,7 @@ sample_data = [
         "m_name": "HELEN SIKUKU",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "calvince2@itsfixed.africa",
-        "balance": "24,660.00",
-        "billed": "156,000.00",
-        "paid": "131,340.00"
+        "m_email": "calvince2@itsfixed.africa"
     },
     {
         "id": "STU-0245",
@@ -242,13 +203,7 @@ sample_data = [
         "m_name": "MARY MORAA",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "atongjonathan2@gmail.com",
-        "balance": "30,500.00",
-        "billed": "156,000.00",
-        "paid": "125,500.00",
-                "tdebit": "",
-        "tcredit": "",
-        "tbal": ""
+        "m_email": "atongjonathan2@gmail.com"
     },
     {
         "id": "STU-0246",
@@ -265,13 +220,7 @@ sample_data = [
         "m_name": "ESTHER JANE",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "atongjonathan2@gmail.com",
-        "balance": "16,800.00",
-        "billed": "156,000.00",
-        "paid": "139,200.00",
-                "tdebit": "",
-        "tcredit": "",
-        "tbal": ""
+        "m_email": "atongjonathan2@gmail.com"
     },
     {
         "id": "STU-0249",
@@ -288,12 +237,6 @@ sample_data = [
         "m_name": "GRACE KIPROTICH",
         "m_occupation": "",
         "m_tel": "702150582",
-        "m_email": "atongjonathan2@gmail.com",
-        "balance": "0",
-        "billed": "156,000.00",
-        "paid": "156,000.00",
-        "tdebit": "",
-        "tcredit": "",
-        "tbal": ""
+        "m_email": "atongjonathan2@gmail.com"
     }
 ]

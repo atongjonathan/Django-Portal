@@ -46,7 +46,7 @@
     </ol>
   </section>
 
-  <section class="content">
+  <section class="invoice">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -73,7 +73,7 @@
                   <p>PROGRAMME: {{ data.programme }}</p>
                 </div>
 
-                <table class="table table-striped">
+                <table id="table" class="table table-striped">
 
                   <thead>
                     <tr>
@@ -87,96 +87,74 @@
                   <tbody>
                     <tr>
                       <td></td>
-                      <td>Balance B/F ..................................</td>
-
-                      <td></td>
-                      <td></td>
+                      <td>Balance B/F ...</td>
+                      <td>...</td>
+                      <td>...</td>
                       <td>0.00</td>
                     </tr>
-                    <tr>
-                      <td>11/3/22</td>
-                      <td>Receipt-Funcamp</td>
-                      <td>7,000.00</td>
-                      <td></td>
-                      <td>-7,000.00</td>
-                    </tr>
-                    <tr>
-                      <td>11/3/22</td>
-                      <td>Receipt-Funcamp</td>
-                      <td>2,000.00</td>
-                      <td></td>
-                      <td>-9,000.00</td>
-                    </tr>
-                    <tr>
-                      <td>14/3/22</td>
-                      <td>Fun Camp Fees- March 2022 Holiday</td>
-                      <td></td>
-                      <td>6,500.00</td>
-                      <td>-2,500.00</td>
-                    </tr>
-                    <tr>
-                      <td>14/3/22</td>
-                      <td>Fun Camp Transport- March 2020 Ho</td>
-                      <td></td>
-                      <td>2,500.00</td>
-                      <td>0.00</td>
-                    </tr>
-                    <tr>
-                      <td>17/4/22</td>
-                      <td>Receipt</td>
-                      <td></td>
-                      <td>80,000.00</td>
-                      <td>-80,000.00</td>
-                    </tr>
-                    <tr>
-                      <td>26/4/22</td>
-                      <td>Book Fund Charges</td>
-                      <td>4,000.00</td>
-                      <td></td>
-                      <td>-76,000.00</td>
+                    {% for row in data.rows %}
+                    {% if row.debit <= 0 and row.credit <= 0 %} {% else %} <tr>
+                      <td>{{ row.date }}</td>
+                      <td>{{ row.particular }}</td>
+                      {% if row.debit <= 0 %} <td>
+                        </td>
+                        {% else %}
+                        <td>{{ row.debit }}</td>
+                        {% endif %}
+                        {% if row.credit <= 0 %} <td>
+                          </td>
+                          {% else %}
+                          <td>{{ row.credit }}</td>
+                          {% endif %}
+                          <td>{{ row.bal }}</td>
+                          </tr>
+                          {% endif %}
+                          {% endfor %}
+                          <tr>
+                            <td><b>Total</b></td>
+                            <td></td>
 
-                    </tr>
-                    <tr>
-                      <td><b>Total</b></td>
-                      <td></td>
-                      <td>{{ data.billed }}</td>
-                      <td>{{ data.paid }}</td>
-                      <td>{{ data.balance }}</td>
-                    </tr>
-                    <tr>
+                            <td>{{ data.paid }}</td>
+                            <td>{{ data.billed }}</td>
+                            <td><b>{{ data.balance }}</b> </td>
+                          </tr>
                 </table>
               </div>
 
+            </div>
 
 
 
 
+            <!-- /.row -->
 
-              <!-- /.row -->
+            <!-- this row will not appear when printing -->
+            <div class="row no-print">
+              <div class="col-12">
+                <!-- <a onclick="{()=>console.log('Clicked')}" rel="noopener" target="_blank"
+                  class="btn btn-default"><i class="fas fa-print"></i> Print</a> -->
+                <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}"><button type="button"
+                    class="btn btn-primary float-right" style="margin-right: 5px;">
+                    <i class="fas fa-download"></i> Generate PDF
+                  </button></a>
 
-              <!-- this row will not appear when printing -->
-              <div style="margin-left: 20px;" class="row no-print">
-                <div class="col-12">
-                  <a href="" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>
-                    Print</a>
-                  <a href="{% url 'statement' id %}"><button type="button" class="btn btn-primary float-right"
-                      style="margin-right: 5px;">
-                      <i class="fas fa-download"></i> Generate PDF
-                    </button></a>
-
-                </div>
               </div>
             </div>
-            <!-- /.invoice -->
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+          </div>
+          <!-- /.invoice -->
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
 </div>
 
 <script>
-  document.addEventListener("load", window.print())
+  function print_pdf() {
+
+    window.print()
+
+  }
 </script>
 
 {% endblock %}

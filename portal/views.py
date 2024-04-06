@@ -12,20 +12,14 @@ from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
 from . mpesa import Mpesa
 from .statement_data import get_statements
+import json
+
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
 
 
-def get_data(data: dict):
-    billed = int(data["billed"].replace(",", "").split(".")[0])
-    paid = int(data["paid"].replace(",", "").split(".")[0])
-    balance = int(data["balance"].replace(",", "").split(".")[0])
-    data["billed_perc"] = int(billed/(billed)*100)
-    data["paid_perc"] = int(paid/(billed)*100)
-    data["balance_perc"] = int(balance/(billed)*100)
-    return data
 
 
 def register(request: HttpRequest):
@@ -76,24 +70,29 @@ def dashboard(request: HttpRequest, id):
     if data is None:
         logger.info(f"Unrecognised email {request.user}")
         return redirect("choose")
-    data = get_data(data)
-    data["rows"] = get_statements(id)
     return render(request, template_name="portal/dashboard.html", context={"title": "Dashboard", "data": data, "id": data["id"]})
 
 
 @login_required
 def statement_print(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
-    return render(request, "portal/statement_print.html", {"title": "Fee Statement", "id": id, "data": data})
+    data["rows"] = get_statements(id)
+    sum_dict = sum_data(data["rows"])
+    data["billed"] = sum_dict.get("billed")
+    data["paid"] = sum_dict.get("paid")
+    print(json.dumps(data, indent=4))
+    return render(request, "portal/statement_print.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
 
 @login_required
 def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    if data:
-        return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
-    return redirect("login")
+    data["rows"] = get_statements(id)
+    sum_dict = sum_data(data["rows"])
+    data["billed"] = sum_dict.get("billed")
+    data["paid"] = sum_dict.get("paid")
+    # print(len(data["rows"]))
+    return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
 
 @login_required
@@ -101,7 +100,6 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
         return redirect("choose")
-    data = get_data(data)
     if request.method == "POST":
         email = request.POST["email"]
         send_my_email(template="invite", subject="Invitation to the Ark Junior School",
@@ -239,13 +237,11 @@ def contact_us(request: HttpRequest):
 
 def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
 
 
 def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
     if request.method == 'POST':
         phone_number = request.POST.get("phone_no").replace("-", "")
         balance = data["balance"]

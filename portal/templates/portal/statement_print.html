@@ -87,41 +87,37 @@
                   <tbody>
                     <tr>
                       <td></td>
-                      <td>Balance B/F ..................................</td>
-
-                      <td></td>
-                      <td></td>
+                      <td>Balance B/F ...</td>
+                      <td>...</td>
+                      <td>...</td>
                       <td>0.00</td>
                     </tr>
                     {% for row in data.rows %}
-                    {% if row.debit <= 0 and row.credit <= 0 %}
-                    {% else %}
-                    
-                    <tr>
+                    {% if row.debit <= 0 and row.credit <= 0 %} {% else %} <tr>
                       <td>{{ row.date }}</td>
                       <td>{{ row.particular }}</td>
-                      {%  if row.debit <= 0 %}
-                      <td></td>
-                      {% else %}
-                      <td>{{ row.debit }}</td>
-                      {% endif %}                      
-                      {%  if row.credit <= 0 %}
-                      <td></td>
-                      {% else %}
-                      <td>{{ row.credit }}</td>
-                      {% endif %}
-                      <td>{{ row.bal }}</td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    <tr>
-                      <td><b>Balance</b></td>
-                      <td></td>
+                      {% if row.debit <= 0 %} <td>
+                        </td>
+                        {% else %}
+                        <td>{{ row.debit }}</td>
+                        {% endif %}
+                        {% if row.credit <= 0 %} <td>
+                          </td>
+                          {% else %}
+                          <td>{{ row.credit }}</td>
+                          {% endif %}
+                          <td>{{ row.bal }}</td>
+                          </tr>
+                          {% endif %}
+                          {% endfor %}
+                          <tr>
+                            <td><b>Balance</b></td>
+                            <td></td>
 
-                      <td></td>
-                      <td></td>
-                      <td><b>0.00</b> </td>
-                    </tr>
+                            <td></td>
+                            <td></td>
+                            <td><b>{{ data.balance }}</b> </td>
+                          </tr>
                 </table>
               </div>
 
@@ -135,8 +131,8 @@
             <!-- this row will not appear when printing -->
             <div class="row no-print">
               <div class="col-12">
-                <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}" rel="noopener" target="_blank"
-                  class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                <!-- <a onclick="{()=>console.log('Clicked')}" rel="noopener" target="_blank"
+                  class="btn btn-default"><i class="fas fa-print"></i> Print</a> -->
                 <a href="{% url 'statement_print' id %}" onclick="{print_pdf()}"><button type="button"
                     class="btn btn-primary float-right" style="margin-right: 5px;">
                     <i class="fas fa-download"></i> Generate PDF
@@ -152,20 +148,16 @@
   </section>
   <!-- /.content -->
 </div>
-
-
 <script>
+  document.addEventListener("DOMContentLoaded", ()=>
+  {
+    console.log("Loaded")
+    window.print()
+  })
   function print_pdf() {
     window.print()
 
   }
 </script>
-<script>
-  
-
-
-
-</script>
-
 
 {% endblock %}
