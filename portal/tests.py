@@ -165,7 +165,7 @@ class PortalTests(TestCase):
         self.assertFalse("_auth_user_id" in self.client.session)
 
     def test_pay_GET(self):
-        response = self.client.get(reverse("pay"))
+        response = self.client.get(reverse("pay", kwargs={"id":"STU-0225"}))
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, "portal/pay.html")
 

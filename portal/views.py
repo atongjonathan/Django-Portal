@@ -11,7 +11,7 @@ from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
 from . mpesa import Mpesa
-
+from .statement_data import get_statements
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
@@ -77,6 +77,7 @@ def dashboard(request: HttpRequest, id):
         logger.info(f"Unrecognised email {request.user}")
         return redirect("choose")
     data = get_data(data)
+    data["rows"] = get_statements(id)
     return render(request, template_name="portal/dashboard.html", context={"title": "Dashboard", "data": data, "id": data["id"]})
 
 
