@@ -93,10 +93,12 @@
                       <td>0.00</td>
                     </tr>
                     {% for row in data.rows %}
-                    {% if row.debit <= 0 and row.credit <= 0 %} {% else %} <tr>
+                    {% if row.debit <= 0 and row.credit <= 0 %}
+
+                    {% else %} <tr>
                       <td>{{ row.date }}</td>
                       <td>{{ row.particular }}</td>
-                      {% if row.debit <= 0 %} <td>
+                      {% if row.debit <= 0.0 %} <td>
                         </td>
                         {% else %}
                         <td>{{ row.debit }}</td>
