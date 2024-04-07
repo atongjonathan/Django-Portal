@@ -6,6 +6,7 @@ from . data import sample_data
 #     from . example_data import sample_data
 
 from .statement_data import get_statements
+import pandas as pd
 
 
 logger = getLogger(__name__)
@@ -37,10 +38,11 @@ def send_my_email(template, subject, recipient, url=None, user=None):
 
 def sum_data(student_2023):
     float_debit = [float(row["debit"].replace(',', ''))
-                   for row in student_2023 if row["debit"] != ""]
+                   for row in student_2023]
     float_credit = [float(row["credit"].replace(',', ''))
-                    for row in student_2023 if row["credit"] != ""]
-    return {"billed": sum(float_credit), "paid": sum(float_debit)}
+                    for row in student_2023]
+    balance = sum(float_debit) - sum(float_credit)
+    return {"billed": sum(float_debit), "paid": sum(float_credit), "balance":balance}
 
 
 def get_child_data(id, user):
@@ -72,7 +74,7 @@ def get_data(data: dict):
     data["paid"] = sum_dict.get("paid")
     billed = data["billed"]
     paid = data["paid"]
-    balance = paid - billed
+    balance = sum_dict.get("balance") 
     data["balance"] = balance
     data["billed_perc"] = int(billed/(billed)*100)
     data["paid_perc"] = int(paid/(billed)*100)
@@ -80,6 +82,7 @@ def get_data(data: dict):
     data["billed"] = format(billed, ",.2f")
     data["paid"] = format(paid, ",.2f")
     data["balance"] = format(balance, ",.2f")
+    data["rows"] = [row for row in data["rows"] if row["date"].split("/")[2]=="23"]
     return data
 
 

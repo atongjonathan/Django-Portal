@@ -13,11 +13,13 @@ def combine_data():
     return combined_df.drop_duplicates()
 
 
-def get_statements(id):
+def get_statements(id, year=None):
     combined = combine_data()
     student = combined.loc[combined["Customer No__x"]
                            == id].copy()  # Make a copy of the DataFrame
-    student_2023 = student[student['Posting Date_x'].str.contains("2023")]
+
+    # student_2023 = student[~student['Posting Date_x'].str.contains("2023")] if year is not None else student[student['Posting Date_x'].str.contains("2023")]
+    student_2023 = student
     student_2023.drop(columns=["Posting Date_y", "Customer No__y",
                                "Customer No__x", "Amount", "Entry No_"], inplace=True)
     student_2023.rename(columns={'Posting Date_x': 'date', 'Description': 'particular',

@@ -90,10 +90,10 @@
                       <td>Balance B/F ...</td>
                       <td>...</td>
                       <td>...</td>
-                      <td>0.00</td>
+                      <td></td>
                     </tr>
                     {% for row in data.rows %}
-                    {% if row.debit <= 0 and row.credit <= 0 %}
+                    {% if "/23" not in row.date %}
 
                     {% else %} <tr>
                       <td>{{ row.date }}</td>
