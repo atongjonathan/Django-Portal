@@ -22,9 +22,11 @@ def get_statements(id):
                                "Customer No__x", "Amount", "Entry No_"], inplace=True)
     student_2023.rename(columns={'Posting Date_x': 'date', 'Description': 'particular',
                                  'Debit Amount': 'debit', 'Credit Amount': 'credit'}, inplace=True)
+    student_2023["date"] = pd.to_datetime(student_2023["date"])
+    df_sorted = student_2023.sort_values(by="date")
+    df_sorted['date'] = df_sorted['date'].dt.strftime('%d/%m/%y')
 
-    return format_data(student_2023)
-
+    return format_data(df_sorted)
 
 
 def format_data(student_2023):
@@ -36,11 +38,7 @@ def format_data(student_2023):
             un_data = row
             un_data["debit"] = un_data["debit"]*-1
             unbilling.append(un_data)
-    student_2023 = [row for row in student_2023 if row not in unbilling] 
-    # for row in student_2023:
-    #     if row in unbilling:
-    #         student_2023.remove(row)
-    #         continue
+    student_2023 = [row for row in student_2023 if row not in unbilling]
     for row in student_2023:
         bal = bal + row["debit"] - row["credit"]
         row["debit"] = format(row["debit"], ',.2f')
@@ -48,7 +46,6 @@ def format_data(student_2023):
             row["credit"], ',.2f')
         row["bal"] = format(bal, ',.2f')
     return student_2023
-
 
 
 # print(get_statements("STU-0227")[1])
