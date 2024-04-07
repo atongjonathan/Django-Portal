@@ -76,11 +76,7 @@ def dashboard(request: HttpRequest, id):
 @login_required
 def statement_print(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data["rows"] = get_statements(id)
-    sum_dict = sum_data(data["rows"])
-    data["billed"] = sum_dict.get("billed")
-    data["paid"] = sum_dict.get("paid")
-    print(json.dumps(data, indent=4))
+
     return render(request, "portal/statement_print.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
 

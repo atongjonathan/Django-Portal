@@ -22,13 +22,25 @@ def get_statements(id):
                                "Customer No__x", "Amount", "Entry No_"], inplace=True)
     student_2023.rename(columns={'Posting Date_x': 'date', 'Description': 'particular',
                                  'Debit Amount': 'debit', 'Credit Amount': 'credit'}, inplace=True)
+
     return format_data(student_2023)
 
 
 
-def format_data(student_2023: pd.DataFrame):
+def format_data(student_2023):
     bal = 0
     student_2023 = student_2023.to_dict("records")
+    unbilling = []
+    for row in student_2023:
+        if row["debit"] < 0:
+            un_data = row
+            un_data["debit"] = un_data["debit"]*-1
+            unbilling.append(un_data)
+    student_2023 = [row for row in student_2023 if row not in unbilling] 
+    # for row in student_2023:
+    #     if row in unbilling:
+    #         student_2023.remove(row)
+    #         continue
     for row in student_2023:
         bal = bal + row["debit"] - row["credit"]
         row["debit"] = format(row["debit"], ',.2f')
@@ -39,4 +51,4 @@ def format_data(student_2023: pd.DataFrame):
 
 
 
-
+# print(get_statements("STU-0227")[1])

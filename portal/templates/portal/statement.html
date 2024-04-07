@@ -98,7 +98,7 @@
                     {% else %} <tr>
                       <td>{{ row.date }}</td>
                       <td>{{ row.particular }}</td>
-                      {% if row.debit <= 0.0 %} <td>
+                      {% if row.debit <= 0 %} <td>
                         </td>
                         {% else %}
                         <td>{{ row.debit }}</td>

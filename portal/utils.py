@@ -72,7 +72,7 @@ def get_data(data: dict):
     data["paid"] = sum_dict.get("paid")
     billed = data["billed"]
     paid = data["paid"]
-    balance = billed - paid
+    balance = paid - billed
     data["balance"] = balance
     data["billed_perc"] = int(billed/(billed)*100)
     data["paid_perc"] = int(paid/(billed)*100)
