@@ -7,6 +7,7 @@ from . data import sample_data
 
 from .statement_data import get_statements
 import pandas as pd
+from datetime import datetime
 
 
 logger = getLogger(__name__)
@@ -72,9 +73,13 @@ def get_data(data: dict):
     sum_dict = sum_data(data["rows"])
     data["billed"] = sum_dict.get("billed")
     data["paid"] = sum_dict.get("paid")
-    billed = data["billed"]
-    paid = data["paid"]
-    balance = sum_dict.get("balance") 
+
+    balance = sum_dict.get("balance")
+    subtractions_dict = subtractions(data["rows"])
+    billed = subtractions_dict["billed"]
+    paid = subtractions_dict["paid"]
+    print(billed, paid)
+    data["bf"] = balance - subtractions_dict.get("balance") 
     data["balance"] = balance
     data["billed_perc"] = int(billed/(billed)*100)
     data["paid_perc"] = int(paid/(billed)*100)
@@ -82,8 +87,16 @@ def get_data(data: dict):
     data["billed"] = format(billed, ",.2f")
     data["paid"] = format(paid, ",.2f")
     data["balance"] = format(balance, ",.2f")
-    data["rows"] = [row for row in data["rows"] if row["date"].split("/")[2]=="23"]
     return data
 
+
+def subtractions(data):
+    data_2023 = []
+    for row in data:
+        date_obj = datetime.strptime(row["date"], "%d/%m/%y")
+        if date_obj.year == 2023:
+            data_2023.append(row)
+    
+    return sum_data(data_2023)
 
 DB = real_db()
