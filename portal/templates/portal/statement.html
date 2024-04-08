@@ -98,12 +98,12 @@
                     {% else %} <tr>
                       <td>{{ row.date }}</td>
                       <td>{{ row.particular }}</td>
-                      {% if row.debit <= 0 %} <td>
+                      {% if row.debit <= '0.00' %} <td>
                         </td>
                         {% else %}
                         <td>{{ row.debit }}</td>
                         {% endif %}
-                        {% if row.credit <= 0 %} <td>
+                        {% if row.credit <= '0.00' %} <td>
                           </td>
                           {% else %}
                           <td>{{ row.credit }}</td>

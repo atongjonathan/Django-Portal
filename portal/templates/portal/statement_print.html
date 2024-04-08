@@ -90,18 +90,20 @@
                       <td>Balance B/F ...</td>
                       <td>...</td>
                       <td>...</td>
-                      <td>0.00</td>
+                      <td>{{ data.bf }}</td>
                     </tr>
                     {% for row in data.rows %}
-                    {% if row.debit <= 0 and row.credit <= 0 %} {% else %} <tr>
+                    {% if "/23" not in row.date %}
+
+                    {% else %} <tr>
                       <td>{{ row.date }}</td>
                       <td>{{ row.particular }}</td>
-                      {% if row.debit <= 0 %} <td>
+                      {% if row.debit <= '0.00' %} <td>
                         </td>
                         {% else %}
                         <td>{{ row.debit }}</td>
                         {% endif %}
-                        {% if row.credit <= 0 %} <td>
+                        {% if row.credit <= '0.00' %} <td>
                           </td>
                           {% else %}
                           <td>{{ row.credit }}</td>
@@ -111,11 +113,11 @@
                           {% endif %}
                           {% endfor %}
                           <tr>
-                            <td><b>Balance</b></td>
+                            <td><b>Total</b></td>
                             <td></td>
 
-                            <td></td>
-                            <td></td>
+                            <td>{{ data.paid }}</td>
+                            <td>{{ data.billed }}</td>
                             <td><b>{{ data.balance }}</b> </td>
                           </tr>
                 </table>
