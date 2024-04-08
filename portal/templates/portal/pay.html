@@ -170,7 +170,7 @@
                             <input name="amount" id="default-amount" type="radio">
                             <div class="due">
                               <label for="amount">Other Amount</label>
-                              <input name="custom_amount" class="input-text" type="text" placeholder="Ksh."  pattern="[0-9]+">
+                              <input name="custom_amount" class="input-text" type="number" min="1" placeholder="Ksh."  pattern="[0-9]+">
                             </div>
                           </div>
                         </div>
@@ -464,7 +464,7 @@
 
     $(".options").on("click", function () {
       var clickedValue = $(this).find('input[type="radio"]').val();
-      $(this).addClass("active").siblings().removeClass("active");
+      $(this).addClass("active-option").siblings().removeClass("active-option");
       $(this).find('input[type="radio"]').prop("checked", true);
       let textInputExists = $(this).find('input[type="text"]').length > 0;
 
