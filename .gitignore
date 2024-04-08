@@ -12,3 +12,4 @@ stderr.log
 tmp/
 .hintrc
 *.csv
+data.py
