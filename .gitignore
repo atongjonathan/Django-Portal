@@ -12,4 +12,4 @@ stderr.log
 tmp/
 .hintrc
 *.csv
-data.py
+portal/data.py
