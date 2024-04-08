@@ -153,7 +153,7 @@ class PortalTests(TestCase):
         self.assertTemplateUsed(response, "portal/contact_us.html")
 
     def test_logout(self):
-        self._login_client
+        self._login_client()
         response = self.client.get(reverse("logout"))
         self.assertTrue(302, response.status_code)
         self.assertRedirects(response, reverse("logged_out"))
@@ -165,9 +165,18 @@ class PortalTests(TestCase):
         self.assertFalse("_auth_user_id" in self.client.session)
 
     def test_pay_GET(self):
-        response = self.client.get(reverse("pay", kwargs={"id":"STU-0225"}))
+        self._login_client()
+        response = self.client.get(reverse("pay", kwargs={"id": "STU-0225"}))
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, "portal/pay.html")
 
+    def test_pay_POST(self):
+        self._login_client()
+        response = self.client.post(reverse("pay", kwargs={
+                                    "id": "STU-0225"}), {"phone_no": "254-708-683-896", "custom_amount": "1"})
+        self.assertTrue(200, response.status_code)
+        self.assertTemplateUsed(response, "portal/pay.html")
+        self.assertIn("message", response.context)
+        self.assertEqual(response.context["message"], "Request Sent")
 
 # Create your tests here.
