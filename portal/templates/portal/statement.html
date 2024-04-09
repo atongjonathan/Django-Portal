@@ -26,10 +26,18 @@
 
   .invoice {
     margin-left: 10px;
+    padding-right: 20px;
   }
 
   u {
     margin-bottom: 20px;
+  }
+  .subheader-2
+  {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 10px;
   }
 </style>
 
@@ -67,10 +75,18 @@
                   </div>
                 </div>
 
-                <div class="subheader">
-                  <p>REG. NO: {{ data.id }}</p>
-                  <p>NAME: {{ data.name }}</p>
-                  <p>PROGRAMME: {{ data.programme }}</p>
+                <div class="subheader subheader-2">
+                  <div class="left">
+                    <p> <b>REG. NO:</b>  {{ data.id }}</p>
+                    <p> <b>NAME:</b>  {{ data.name }}</p>
+                    <p> <b>PROGRAMME:</b>  {{ data.programme }}</p>
+                    <p style="display: inline;"><b>DATE: <div style="display: inline;" id="date"></div> </b> </p>
+                  </div>
+                  <div style="margin: botton 5px;" class="right">
+                    <p> <b>Start Date:</b>  01/01/2023</p>
+                    <p> <b>End Date:</b>  25/11/2023</p>
+                  </div>
+                  
                 </div>
 
                 <table id="table" class="table table-striped">
@@ -150,13 +166,16 @@
   </section>
   <!-- /.content -->
 </div>
-
 <script>
-  function print_pdf() {
+  
+  var currentDate = new Date();
 
-    window.print()
-
-  }
+var day = currentDate.getDate();
+var month = currentDate.getMonth();
+var year = currentDate.getFullYear();
+document.getElementById("date").innerText = `${day}/${month}/${year}`;
 </script>
+
+
 
 {% endblock %}
