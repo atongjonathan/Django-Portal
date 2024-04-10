@@ -1,7 +1,6 @@
 {% extends 'portal/layout.html' %}
 {% block content-wrapper %}
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'portal/custom/css/pay.css' %}">
 <!-- Theme style -->
 <div class="content-wrapper">
@@ -48,9 +47,9 @@
     <div class="pay-box">
 
       <div class="col-md-6">
-        <li class="mpesa">
+        <div class="mpesa">
           <img src="https://png.co.ke/wp-content/uploads/2023/02/Mpesa-Logo.png" alt="">
-        </li>
+        </div>
         <div class="register-box-body">
           <p class="login-box-msg">Pay Fees</p>
           <div class="box box-primary">
@@ -74,7 +73,7 @@
                   <li><a href="#">Account No <span class="pull-right text-yellow">
                         {{ data.id }}</span></a>
                   </li>
-                  <li><a href="#">Balance <span class="pull-right text-yellow">
+                  <li><a href="#">Current Balance <span class="pull-right text-yellow">
                         {{ data.balance }}</span></a>
                   </li>
 
@@ -82,38 +81,51 @@
                     <div class="pay-form">
                       <form action="{% url 'pay' data.id %}" method="post">
                         {% csrf_token %}
-                        <div class="form-group">
+                        <div class="form-group" title="Number used to pay">
                           <label for="number">Paying Phone Number:</label>
                           <div class="input-group">
                             <div class="input-group-addon">
                               <i class="fa fa-phone"></i>
                             </div>
-                            <input name="phone_no" type="text" class="form-control"
+                            <input id="number" name="phone_no" type="text" class="form-control"
                               data-inputmask='"mask": "999-999-999-999"' data-mask placeholder="254-XXX-XXX-XXX"
                               pattern="^\254\ [0-9]{3}-[0-9]{3}-[0-9]{3}$" required>
 
                           </div>
                         </div>
-                        <div class="input-group option">
+                        <!-- <div class="input-group option">
                           <div class="options active-option">
-                            <input name="amount" id="default-amount" type="radio" checked>
-                            <div class="due">
+                            <input class="form-control" name="amount" id="default-amount" type="radio" checked required>
+                            <div class="form-group due">
                               <label for="amount">Total Amount Due</label>
-                              <!-- <input type="text" value=""> -->
-                              <p>Ksh. {{data.balance}}</p>
+                              <input name="custom_amount" class="input-text form-control" type="text" min="1"
+                                value="{{data.balance}}" disabled pattern="[^-].*">
                             </div>
 
 
 
+                          </div> -->
+                          <div class="form-group">
+                            <div class="form-group" title="Amount to pay">
+                              <label for="amount">Amount</label>
+                              {% if balance < 0 %}
+                              <input id="amount" type="number" name="amount" class="form-control" min="1" required placeholder="Ksh. ">
+                              {% else %}
+                              <input id="amount" type="number" name="amount" class="form-control" min="1" value="{{ balance }}" required>
+                              {% endif %}
+                            </div>
+
                           </div>
-                          <div class="options">
-                            <input name="amount" id="default-amount" type="radio">
+                          
+                          <!-- <div class="options">
+                            <input name="amount" id="default-amount" type="radio" required>
                             <div class="due">
                               <label for="amount">Other Amount</label>
-                              <input name="custom_amount" class="input-text" type="number" min="1" placeholder="Ksh."  pattern="[0-9]+">
+                              <input name="custom_amount" class="input-text" type="number" min="1" placeholder="Ksh."
+                                pattern="[0-9]+" required>
                             </div>
-                          </div>
-                        </div>
+                          </div> -->
+                        <!-- </div> -->
 
                         <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
 
@@ -392,10 +404,10 @@
 
 
 <script>
-  
+
   $(document).ready(function () {
 
-    
+
 
     $('input[data-mask]').inputmask();
     $('input[amount-mask]').inputmask();

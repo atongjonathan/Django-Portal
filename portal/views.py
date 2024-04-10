@@ -238,24 +238,20 @@ def modal(request: HttpRequest, id):
 
 def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
+    balance = data["balance"]
+    balance = balance.split(".")[0].replace(",", "")
     if request.method == 'POST':
         phone_number = request.POST.get("phone_no").replace("-", "")
-        balance = data["balance"]
-        custom_amount = request.POST.get("custom_amount")
-        if custom_amount:
-            amount = custom_amount
-        else:
-            amount = balance
-        amount = amount.split(".")[0].replace(",", "")
+        amount = request.POST.get("amount")
         mpesa = Mpesa()
         try:
-            response = mpesa.initiate_stk_push(phone_number, int(float(amount)))
-            print(response)
+            response = mpesa.initiate_stk_push(phone_number, float(amount))
+            logger.info(response)
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
         except Exception as e:
             logger.error(f"An error occured wen initiaiting stk exception '{e}'")
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
-    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":int(float(balance))})
 
 
 # HTTP Error 400
