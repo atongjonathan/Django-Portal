@@ -1,0 +1,42 @@
+.img {
+    width: 60%;
+    height: 60%;
+    margin: 0 auto;
+}
+
+.img>img {
+    width: 100%;
+}
+
+footer {
+    text-align: center;
+}
+
+.preloader {
+    display: none;
+}
+
+.user-panel>.info {
+    padding-left: 8px;
+}
+
+.wrapper {
+    height: auto;
+    min-height: 100%;
+}
+
+.sidebaer {
+    height: auto;
+}
+
+.treeview-menu {
+    display: none;
+}
+/* Ivite CSS */
+.invite-div {
+    width: 200px;
+    height: 200px;
+    background-color: blue;
+    display: flex;
+    margin: 130px auto;
+  }
