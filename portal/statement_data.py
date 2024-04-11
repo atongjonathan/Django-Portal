@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-
+import json
 
 def combine_data():
     with open(os.path.join(os.path.dirname(__file__), "static/portal/db", "ARK JUNIOR KITENGELA_Cust_ Ledg_ Entry.csv")) as file:
@@ -11,6 +11,35 @@ def combine_data():
         columns={'Cust_ Ledger Entry No_': 'Entry No_'})
     combined_df = pd.merge(renamed_detailed, normal, on='Entry No_')
     return combined_df.drop_duplicates()
+
+
+def get_child_data():
+    with open(os.path.join(os.path.dirname(__file__), "static/portal/db", "ARK JUNIOR KITENGELA$Customer.csv")) as file:
+        customer = pd.read_csv(file)
+
+    customer.rename(columns={
+        'No_': 'id',
+        'Name': 'name',
+        'Customer Posting Group': 'group',
+        'E-Mail': 'email',
+        'Gender': 'gender',
+        'Date Of Birth': 'dob',
+        'Current Programme': 'programme',
+        'Current Stage': 'stage',
+        'Fathers Name': 'f_name',
+        'Fathers Email': 'f_email',
+        'Fathers ID NO': 'f_id',
+        'Fathers Nationality': 'f_nation',
+        'Fathers Occupation': 'f_occupation',
+        'Fathers Tel No': 'f_tel',
+        'Mothers Name': 'm_name',
+        'Mothers Email': 'm_email',
+        'Mothers ID NO': 'm_id',
+        'Mothers Nationality': 'm_nation',
+        'Mothers Occupation': 'm_occupation',
+        'Mothers Tel No': 'm_tel',
+    }, inplace=True)
+    return customer.to_dict("records")
 
 
 def get_statements(id):
@@ -44,3 +73,5 @@ def format_data(student_2023):
             row["credit"], ',.2f')
         row["bal"] = format(bal, ',.2f')
     return student_2023
+
+# print(json.dumps( get_child_data(), indent=4))
