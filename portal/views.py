@@ -90,6 +90,23 @@ def statement(request: HttpRequest, id):
     # print(len(data["rows"]))
     return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
+def pay(request: HttpRequest, id):
+    data = get_child_data(id, request.user)
+    balance = data["balance"]
+    balance = balance.replace(",", "")
+    if request.method == 'POST':
+        phone_number = request.POST.get("phone_no").replace("-", "")
+        amount = request.POST.get("amount")
+        mpesa = Mpesa()
+        try:
+            response = mpesa.initiate_stk_push(phone_number, float(amount))
+            logger.info(response)
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
+        except Exception as e:
+            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
+
 
 @login_required
 def invite(request: HttpRequest, id):
@@ -102,11 +119,6 @@ def invite(request: HttpRequest, id):
                       recipient=email, user=str(request.user))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
-
-
-@login_required
-def structure(request: HttpRequest):
-    return render(request, "portal/structure.html", {"title": "Fee Structure", })
 
 
 # Authentication Views
@@ -203,9 +215,6 @@ def set_password(request: HttpRequest, uidb64, token):
         # return render(request, "portal/change.html", {"message":True})
 
 
-def test(request: HttpRequest):
-    return render(request, 'portal/test.html')
-
 
 def logged_out(request: HttpRequest):
     return render(request, "portal/logged_out.html", {"title": "Logged Out"})
@@ -235,23 +244,6 @@ def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
 
-
-def pay(request: HttpRequest, id):
-    data = get_child_data(id, request.user)
-    balance = data["balance"]
-    balance = balance.split(".")[0].replace(",", "")
-    if request.method == 'POST':
-        phone_number = request.POST.get("phone_no").replace("-", "")
-        amount = request.POST.get("amount")
-        mpesa = Mpesa()
-        try:
-            response = mpesa.initiate_stk_push(phone_number, float(amount))
-            logger.info(response)
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
-        except Exception as e:
-            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
-    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":int(float(balance))})
 
 
 # HTTP Error 400
