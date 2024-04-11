@@ -78,7 +78,7 @@ def get_data(data: dict):
     subtractions_dict = subtractions(data["rows"])
     billed = subtractions_dict["billed"]
     paid = subtractions_dict["paid"]
-    data["bf"] = balance - subtractions_dict.get("balance") 
+    data["bf"] = -(balance - subtractions_dict.get("balance")) 
     data["balance"] = balance
     data["billed_perc"] = int(billed/(billed)*100)
     data["paid_perc"] = int(paid/(billed)*100)
