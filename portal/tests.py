@@ -173,7 +173,7 @@ class PortalTests(TestCase):
     def test_pay_POST(self):
         self._login_client()
         response = self.client.post(reverse("pay", kwargs={
-                                    "id": "STU-0225"}), {"phone_no": "254-708-683-896", "custom_amount": "1"})
+                                    "id": "STU-0225"}), {"phone_no": "254-708-683-896", "amount": "1"})
         self.assertTrue(200, response.status_code)
         self.assertTemplateUsed(response, "portal/pay.html")
         self.assertIn("message", response.context)
