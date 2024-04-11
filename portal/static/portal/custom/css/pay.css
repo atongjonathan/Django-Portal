@@ -1,59 +1,59 @@
 .pay-box {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-  }
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
 
-  .options {
-    width: 45%;
-    display: flex;
-    justify-content: center;
-    column-gap: 20px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
+.options {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 
-  .active-option {
-    border: 1px solid #367fa9;
-    color: #3c8dbc;
-  }
+.active-option {
+  border: 1px solid #367fa9;
+  color: #3c8dbc;
+}
 
-  .mpesa {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    /* background-color: red; */
-  }
+.mpesa {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  /* background-color: red; */
+}
 
-  .mpesa img {
-    /* width: 100%; */
-    height: 100%;
-  }
+.mpesa img {
+  /* width: 100%; */
+  height: 100%;
+}
 
-  input[type=radio] {
-    accent-color: #3c8dbc;
-  }
+input[type=radio] {
+  accent-color: #3c8dbc;
+}
 
-  .due {
-    display: flex;
-    flex-direction: column;
-  }
+.due {
+  display: flex;
+  flex-direction: column;
+}
 
-  .option {
-    display: flex;
-    justify-content: space-evenly;
-  }
+.option {
+  display: flex;
+  justify-content: space-evenly;
+}
 
-  .pay-btn {
-    margin-top: 15px;
-  }
+.pay-btn {
+  margin-top: 15px;
+}
 
-  .pay-form {
-    padding: 10px 15px;
-  }
+.pay-form {
+  padding: 10px 15px;
+}
 
-  .input-text {
-    width: 100%;
-  }
+.input-text {
+  width: 100%;
+}

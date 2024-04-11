@@ -17,19 +17,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'portal/dist/css/adminlte.min.css' %}">
   <link rel="icon" href="{% static 'portal/dist/img/AdminLTELogo.png' %}">
+  <link rel="stylesheet" href="{% static 'portal/custom/css/register.css' %}">
 </head>
-<style>
-  body {
-    /* background-image:url("{% static 'portal/dist/img/AdminLTELogo.png' %}") !important; */
-    background-size: cover;
-  }
-
-  .logo-img {
-
-    width: 40%;
-    margin: 5px auto;
-  }
-</style>
 
 <body class="hold-transition register-page">
   <div class="register-box">
@@ -107,50 +96,8 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
 
-  <script>
-    $(function () {
-      $('#quickForm').validate({
-        rules: {
-          email: {
-            required: true,
-            email: true,
-          },
-          password: {
-            minlength: 5
-          },
-          confirm_password: {
-            minlength: 5,
-            equalTo: "#password"
-          },
-        },
-        messages: {
-          email: {
-            required: "Please enter a email address",
-            email: "Please enter a valid email address"
-          },
-          password: {
-            required: "Please provide a password",
-            minlength: "Your password must be at least 5 characters long"
-          },
-          confirm_password: {
-            required: "Please confirm your password",
-            equalTo: "Please enter the same password again."
-          },
-        },
-        errorElement: 'span',
-        errorPlacement: function (error, element) {
-          error.addClass('invalid-feedback');
-          element.closest('.form-group').append(error);
-        },
-        highlight: function (element, errorClass, validClass) {
-          $(element).addClass('is-invalid');
-        },
-        unhighlight: function (element, errorClass, validClass) {
-          $(element).removeClass('is-invalid');
-        }
-      });
-    });
-  </script>
+
+  <script src="{% static 'portal/custom/js/register.js' %}"></script>
 </body>
 
 </html>

@@ -9,7 +9,6 @@
   <section class="content-header">
     <h1>
       Invite
-      <!-- <small>Version 2.0</small> -->
     </h1>
     <ol class="breadcrumb">
       <li><a href="{% url 'choose' %}"><i class="fa-solid fa-hand-pointer"></i> Choose</a></li>
@@ -112,34 +111,5 @@
 
 
 </div>
-<script>
-  function displayCurrentTime() {
-    var months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
-
-    var currentDate = new Date();
-
-    var day = currentDate.getDate();
-    var month = months[currentDate.getMonth()];
-    var hours = currentDate.getHours();
-    var minutes = currentDate.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-
-    // Convert hours to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-
-    var formattedTime = day + " " + month + " " + hours + ":" +
-      (minutes < 10 ? '0' : '') + minutes + " " + ampm;
-
-    document.getElementById("current-time").innerText = formattedTime;
-  }
-
-  window.onload = function () {
-    displayCurrentTime();
-    setInterval(displayCurrentTime, 1000);
-  };
-</script>
+<script src="{% static 'portal/custom/js/invite.js' %}"></script>
 {% endblock %}

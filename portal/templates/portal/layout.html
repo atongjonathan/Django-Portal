@@ -105,10 +105,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- Control Sidebar Toggle Button -->
-                        <!-- <li>
-                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                        </li> -->
                     </ul>
                 </div>
 
@@ -201,19 +197,6 @@
                         </ul>
                     </li>
 
-                    <!-- <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-check-circle-o text-success"></i>
-                        <span>Students Clearance</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none;">
-                        <li><a href=""><i class="fa fa-circle-o"></i>Student Clearance</a></li>
-    
-                    </ul>
-                </li> -->
                     <li id="sttt" class="treeview">
                         <a href="#">
                             <i class="fa fa-cogs  text-blue"></i>
@@ -247,9 +230,6 @@
 
 
         <footer class="main-footer">
-            <!-- <div class="pull-right hidden-xs">
-              <b>Version</b> 2.4.0
-            </div> -->
             <strong>Copyright © 2024 <a href="">ItsFixed Communications</a>.</strong> All rights
             reserved.
         </footer>
@@ -268,6 +248,7 @@
     <!-- Scripts -->
 
     <!-- jQuery 3 -->
+    <script src="{% static 'portal/plugins/jquery/jquery.min.js' %}"></script>
     <script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -288,24 +269,8 @@
 
 </body>
 
-<script>
-    $(document).ready(function () {
-        $("#search").on("keyup", function () {
-            var searchText = $(this).val().toLowerCase();
+<script src="{% static 'portal/custom/js/layout.js' %}"></script>
 
-            $(".treeview").each(function () {
-                var hasMatchingLink = false;
-                $(this).find(".treeview-menu a").each(function () {
-                    if ($(this).text().toLowerCase().indexOf(searchText) > -1) {
-                        hasMatchingLink = true;
-                    }
-                });
-
-                $(this).toggle(hasMatchingLink);
-            });
-        });
-    });
-</script>
 
 
 

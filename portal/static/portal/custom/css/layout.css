@@ -32,6 +32,7 @@ footer {
 .treeview-menu {
     display: none;
 }
+
 /* Ivite CSS */
 .invite-div {
     width: 200px;
@@ -39,4 +40,4 @@ footer {
     background-color: blue;
     display: flex;
     margin: 130px auto;
-  }
+}

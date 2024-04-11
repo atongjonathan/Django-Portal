@@ -40,16 +40,16 @@
 
                 <div class="subheader subheader-2">
                   <div class="left">
-                    <p> <b>REG. NO:</b>  {{ data.id }}</p>
-                    <p> <b>NAME:</b>  {{ data.name }}</p>
-                    <p> <b>PROGRAMME:</b>  {{ data.programme }}</p>
+                    <p> <b>REG. NO:</b> {{ data.id }}</p>
+                    <p> <b>NAME:</b> {{ data.name }}</p>
+                    <p> <b>PROGRAMME:</b> {{ data.programme }}</p>
                     <p style="display: inline;"><b>DATE: <div style="display: inline;" id="date"></div> </b> </p>
                   </div>
                   <div style="margin: botton 5px;" class="right">
-                    <p> <b>Start Date:</b>  01/01/2023</p>
-                    <p> <b>End Date:</b>  25/11/2023</p>
+                    <p> <b>Start Date:</b> 01/01/2023</p>
+                    <p> <b>End Date:</b> 25/11/2023</p>
                   </div>
-                  
+
                 </div>
 
                 <table id="table" class="table table-striped">
@@ -88,27 +88,29 @@
                           <td>{{ row.credit }}</td>
                           {% endif %}
                           <td>{{ row.bal }}</td>
-                          </tr>
-                          {% endif %}
-                          {% endfor %}
-                          <tr>
-                            <td><b>Total</b></td>
-                            <td></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    <tr>
+                      <td><b>Total</b></td>
+                      <td></td>
 
-                            <td>{{ data.paid }}</td>
-                            <td>{{ data.billed }}</td>
-                            <td><b>{{ data.balance }}</b> </td>
-                          </tr>
+                      <td>{{ data.paid }}</td>
+                      <td>{{ data.billed }}</td>
+                      <td><b>{{ data.balance }}</b> </td>
+                    </tr>
                 </table>
               </div>
 
             </div>
 
             <div class="row text-center">
-              <p><b>PAYMENTS SHOULD BE MADE TO THE ARK JUNIOR SCHOOL LTD-KITENGELA BRANCH, KCB BANK KENYA LTD, SALAMA HOUSE
-                BRANCH<br> A/C NO 1286244609 OR MPESA PAYBILL NO 522522, ACCOUNT NO 1286244609 <br> <p class="no-print" >OR VISIT THE <a href="{% url 'pay' id %}">PAYING FEES PAGE</a></p> 
+              <p><b>PAYMENTS SHOULD BE MADE TO THE ARK JUNIOR SCHOOL LTD-KITENGELA BRANCH, KCB BANK KENYA LTD, SALAMA
+                  HOUSE
+                  BRANCH<br> A/C NO 1286244609 OR MPESA PAYBILL NO 522522, ACCOUNT NO 1286244609 <br>
+                  <p class="no-print">OR VISIT THE <a href="{% url 'pay' id %}">PAYING FEES PAGE</a></p>
                 </b> </p>
-              
+
             </div>
 
 
@@ -119,8 +121,8 @@
               <div class="col-12">
                 <!-- <a onclick="{()=>console.log('Clicked')}" rel="noopener" target="_blank"
                   class="btn btn-default"><i class="fas fa-print"></i> Print</a> -->
-                <div onclick="{window.print()}"><button type="button"
-                    class="btn btn-primary float-right" style="margin-right: 5px;">
+                <div onclick="{window.print()}"><button type="button" class="btn btn-primary float-right"
+                    style="margin-right: 5px;">
                     <i class="fas fa-download"></i> Generate PDF
                   </button></div>
 
@@ -134,15 +136,8 @@
   </section>
   <!-- /.content -->
 </div>
-<script>
-  
-  var currentDate = new Date();
+<script src="{% static 'portal/custom/js/statement.js' %}"></script>
 
-var day = currentDate.getDate();
-var month = currentDate.getMonth();
-var year = currentDate.getFullYear();
-document.getElementById("date").innerText = `${day}/${month}/${year}`;
-</script>
 
 
 

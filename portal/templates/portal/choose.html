@@ -92,17 +92,7 @@
 
   <!-- Add this script after including jQuery library -->
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let children = document.querySelectorAll(".flex-item");
-      children.forEach(element => {
-        element.addEventListener("click", () => {
-          const button = element.querySelector('button');
-          button.click()
-        });
-      });
-    });
-  </script>
+  <script src="{% static 'portal/custom/js/choose.js' %}"></script>
 
 </body>
 

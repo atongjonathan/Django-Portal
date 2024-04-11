@@ -1,11 +1,4 @@
-<script>
-
-  
-  window.print()
-
-
-</script>
 {% extends 'portal/statement.html' %}
-<script>
-  console.log("Hello")
-</script>
+{% load static %}
+<script src="{% static 'portal/custom/js/statement_print.js' %}"></script>
+

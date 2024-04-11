@@ -1,10 +1,10 @@
 body {
-    /* background-image:url("{% static 'portal/dist/img/AdminLTELogo.png' %}") !important; */
-    background-size: cover;
-  }
+  /* background-image:url("{% static 'portal/dist/img/AdminLTELogo.png' %}") !important; */
+  background-size: cover;
+}
 
-  .logo-img {
+.logo-img {
 
-    width: 40%;
-    margin: 5px auto;
-  }
+  width: 40%;
+  margin: 5px auto;
+}
