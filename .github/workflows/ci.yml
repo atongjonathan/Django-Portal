@@ -20,6 +20,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Run Django Unit tests # run main.py
+      - name: Run Django Unit tests
+        env:
+          DARAJA_CREDENTIALS: ${{ secrets.DARAJA_CREDENTIALS }}
+          PRODUCTION_HOSTS: ${{ secrets.PRODUCTION_HOSTS }}
         run: python manage.py test
           

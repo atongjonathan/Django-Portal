@@ -11,6 +11,8 @@ from portal.utils import *
 from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
 from . mpesa import Mpesa
+from .statement_data import get_statements
+import json
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
@@ -18,14 +20,6 @@ basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno
 logger = getLogger(__name__)
 
 
-def get_data(data: dict):
-    billed = int(data["billed"].replace(",", "").split(".")[0])
-    paid = int(data["paid"].replace(",", "").split(".")[0])
-    balance = int(data["balance"].replace(",", "").split(".")[0])
-    data["billed_perc"] = int(billed/(billed)*100)
-    data["paid_perc"] = int(paid/(billed)*100)
-    data["balance_perc"] = int(balance/(billed)*100)
-    return data
 
 
 def register(request: HttpRequest):
@@ -76,23 +70,42 @@ def dashboard(request: HttpRequest, id):
     if data is None:
         logger.info(f"Unrecognised email {request.user}")
         return redirect("choose")
-    data = get_data(data)
     return render(request, template_name="portal/dashboard.html", context={"title": "Dashboard", "data": data, "id": data["id"]})
 
 
 @login_required
 def statement_print(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
-    return render(request, "portal/statement_print.html", {"title": "Fee Statement", "id": id, "data": data})
+
+    return render(request, "portal/statement_print.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
 
 @login_required
 def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    if data:
-        return render(request, "portal/statement.html", {"title": "Fee Statement", "id": id, "data": data})
-    return redirect("login")
+    data["rows"] = get_statements(id)
+    # sum_dict = sum_data(data["rows"])
+    # data["billed"] = sum_dict.get("billed")
+    # data["paid"] = sum_dict.get("paid")
+    # print(len(data["rows"]))
+    return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
+
+def pay(request: HttpRequest, id):
+    data = get_child_data(id, request.user)
+    balance = data["balance"]
+    balance = balance.replace(",", "")
+    if request.method == 'POST':
+        phone_number = request.POST.get("phone_no").replace("-", "")
+        amount = request.POST.get("amount")
+        mpesa = Mpesa()
+        try:
+            response = mpesa.initiate_stk_push(phone_number, float(amount))
+            logger.info(response)
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
+        except Exception as e:
+            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
 
 
 @login_required
@@ -100,18 +113,12 @@ def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
         return redirect("choose")
-    data = get_data(data)
     if request.method == "POST":
         email = request.POST["email"]
         send_my_email(template="invite", subject="Invitation to the Ark Junior School",
                       recipient=email, user=str(request.user))
         return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
-
-
-@login_required
-def structure(request: HttpRequest):
-    return render(request, "portal/structure.html", {"title": "Fee Structure", })
 
 
 # Authentication Views
@@ -208,9 +215,6 @@ def set_password(request: HttpRequest, uidb64, token):
         # return render(request, "portal/change.html", {"message":True})
 
 
-def test(request: HttpRequest):
-    return render(request, 'portal/test.html')
-
 
 def logged_out(request: HttpRequest):
     return render(request, "portal/logged_out.html", {"title": "Logged Out"})
@@ -238,31 +242,8 @@ def contact_us(request: HttpRequest):
 
 def modal(request: HttpRequest, id):
     data = get_child_data(id, request.user)
-    data = get_data(data)
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
 
-
-def pay(request: HttpRequest, id):
-    data = get_child_data(id, request.user)
-    data = get_data(data)
-    if request.method == 'POST':
-        phone_number = request.POST.get("phone_no").replace("-", "")
-        balance = data["balance"]
-        custom_amount = request.POST.get("custom_amount")
-        if custom_amount:
-            amount = custom_amount
-        else:
-            amount = balance
-        amount = amount.split(".")[0].replace(",", "")
-        mpesa = Mpesa()
-        try:
-            response = mpesa.initiate_stk_push(phone_number, int(float(amount)))
-            print(response)
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
-        except Exception as e:
-            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
-    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id})
 
 
 # HTTP Error 400
