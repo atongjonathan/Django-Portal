@@ -177,6 +177,6 @@ class PortalTests(TestCase):
         self.assertTrue(200, response.status_code)
         self.assertTemplateUsed(response, "portal/pay.html")
         self.assertIn("message", response.context)
-        self.assertEqual(response.context["message"], "Request Sent")
+        self.assertEqual(response.context["message"], "Request has been sent to your phone")
 
 # Create your tests here.
