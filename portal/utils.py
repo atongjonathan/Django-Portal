@@ -1,15 +1,30 @@
 import requests
 from logging import getLogger
-try:
-    from . data import sample_data
-except ModuleNotFoundError:
-    from . example_data import sample_data
-
+from . data import sample_data
 from .statement_data import get_statements
 import pandas as pd
 from datetime import datetime
 
-
+sample_data.append({
+    "id": "STU-0225",
+    "name": "JOHN SMITH",
+    "programme": "CBC",
+    "stage": "GRADE2T1",
+    "no": "",
+    "f_name": "CID KAGENOU",
+    "f_occupation": "ACCOUNTANT",
+    "f_tel": "07123456789",
+    "f_email": "test@gmail.com",
+    "f_id": "12345678",
+    "f_nation": "KENYAN",
+    "m_name": "ALPHA SMITH",
+    "m_occupation": "TEACHER",
+    "m_tel": "0712345678",
+    "m_email": "existing@gmail.com",
+    "balance": "-3,500.00",
+    "billed": "156,000.00",
+    "paid": "159,500.00"
+})
 logger = getLogger(__name__)
 
 
@@ -43,7 +58,7 @@ def sum_data(student_2023):
     float_credit = [float(row["credit"].replace(',', ''))
                     for row in student_2023]
     balance = sum(float_debit) - sum(float_credit)
-    return {"billed": sum(float_debit), "paid": sum(float_credit), "balance":balance}
+    return {"billed": sum(float_debit), "paid": sum(float_credit), "balance": balance}
 
 
 def get_child_data(id, user):
@@ -78,11 +93,11 @@ def get_data(data: dict):
     subtractions_dict = subtractions(data["rows"])
     billed = subtractions_dict["billed"]
     paid = subtractions_dict["paid"]
-    data["bf"] = -(balance - subtractions_dict.get("balance")) 
+    data["bf"] = -(balance - subtractions_dict.get("balance"))
     data["balance"] = balance
-    data["billed_perc"] = int(billed/(billed)*100) if billed !=0 else 0
-    data["paid_perc"] = int(paid/(billed)*100) if billed !=0 else 0
-    data["balance_perc"] = int(balance/(billed)*100) if billed !=0 else 0
+    data["billed_perc"] = int(billed/(billed)*100) if billed != 0 else 0
+    data["paid_perc"] = int(paid/(billed)*100) if billed != 0 else 0
+    data["balance_perc"] = int(balance/(billed)*100) if billed != 0 else 0
     data["billed"] = format(billed, ",.2f")
     data["paid"] = format(paid, ",.2f")
     data["balance"] = format(balance, ",.2f")
@@ -96,7 +111,8 @@ def subtractions(data):
         date_obj = datetime.strptime(row["date"], "%d/%m/%y")
         if date_obj.year == 2023:
             data_2023.append(row)
-    
+
     return sum_data(data_2023)
+
 
 DB = real_db()
