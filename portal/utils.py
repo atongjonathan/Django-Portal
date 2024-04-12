@@ -1,9 +1,13 @@
 import requests
 from logging import getLogger
-from . data import sample_data
 from .statement_data import get_statements
-import pandas as pd
 from datetime import datetime
+
+
+try:
+    from . data import sample_data
+except ModuleNotFoundError:
+    sample_data = []
 
 sample_data.append({
     "id": "STU-0225",

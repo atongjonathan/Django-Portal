@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import json
 
+
 def combine_data():
     with open(os.path.join(os.path.dirname(__file__), "static/portal/db", "ARK JUNIOR KITENGELA_Cust_ Ledg_ Entry.csv")) as file:
         normal = pd.read_csv(file)
@@ -43,16 +44,27 @@ def get_child_data():
 
 
 def get_statements(id):
-    combined = combine_data()
-    student_2023 = combined.loc[combined["Customer No__x"]
-                                == id].copy()  # Make a copy of the DataFrame
-    student_2023.drop(columns=["Posting Date_y", "Customer No__y",
-                               "Customer No__x", "Amount", "Entry No_"], inplace=True)
-    student_2023.rename(columns={'Posting Date_x': 'date', 'Description': 'particular',
-                                 'Debit Amount': 'debit', 'Credit Amount': 'credit'}, inplace=True)
-    student_2023["date"] = pd.to_datetime(student_2023["date"])
-    df_sorted = student_2023.sort_values(by="date")
-    df_sorted['date'] = df_sorted['date'].dt.strftime('%d/%m/%y')
+    try:
+        combined = combine_data()
+        student_2023 = combined.loc[combined["Customer No__x"]
+                                    == id].copy()  # Make a copy of the DataFrame
+        student_2023.drop(columns=["Posting Date_y", "Customer No__y",
+                                   "Customer No__x", "Amount", "Entry No_"], inplace=True)
+        student_2023.rename(columns={'Posting Date_x': 'date', 'Description': 'particular',
+                                     'Debit Amount': 'debit', 'Credit Amount': 'credit'}, inplace=True)
+        student_2023["date"] = pd.to_datetime(student_2023["date"])
+        df_sorted = student_2023.sort_values(by="date")
+        df_sorted['date'] = df_sorted['date'].dt.strftime('%d/%m/%y')
+    except FileNotFoundError:
+        sample_data = [
+            {
+                "date":"01/05/19",
+                "debit":5000.0,
+                "credit":0.0,
+                "particular":"Enrollment Fee"
+            }
+        ]
+        df_sorted = pd.DataFrame(sample_data)        
     return format_data(df_sorted)
 
 
