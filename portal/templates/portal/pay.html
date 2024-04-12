@@ -2,6 +2,7 @@
 {% block content-wrapper %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'portal/custom/css/pay.css' %}">
+
 <!-- Theme style -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -17,11 +18,6 @@
   <!-- Main content -->
   <section class="content">
     <div class="col-md-12 balance-box">
-      {% if message %}
-      <div class="alert alert-warning">
-        <strong>{{message}}</strong>
-      </div>
-      {% endif %}
       <!-- /.info-box -->
       <div class="info-box bg-aqua">
         <span class="info-box-icon"><i class="fa fa-shopping-cart"></i></span>
@@ -92,43 +88,46 @@
 
                           </div>
                         </div>
-
-
-
-
-                          </div>
-                          <div class="form-group">
-                            <div class="form-group" title="Amount to pay">
-                              <label for="amount">Amount</label>
-                              {% if balance < 0 %}
-                              <input id="amount" type="number" name="amount" class="form-control" min="1" required placeholder="Ksh. ">
+                        <div class="form-group">
+                          <div class="form-group" title="Amount to pay">
+                            <label for="amount">Amount</label>
+                            {% if balance < 0 %} <input id="amount" type="number" name="amount" class="form-control" min="1"
+                              required placeholder="Ksh. ">
                               {% else %}
-                              <input id="amount" type="number" name="amount" class="form-control" min="1" value="{{ balance }}" required>
+                              <input id="amount" type="number" name="amount" class="form-control" min="1"
+                                value="{{ balance }}" required>
                               {% endif %}
-                            </div>
-
                           </div>
-          
+    
+                        </div>
 
-                        <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
 
-                      </form>
+
+
                     </div>
-
+                    
                   </li>
 
 
+                    <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
 
-
-
-                </ul>
+                    </form>
               </div>
+
+              </li>
+
+
+
+
+
+              </ul>
             </div>
-            <!-- /.row -->
           </div>
+          <!-- /.row -->
         </div>
       </div>
     </div>
+</div>
 
 
 
@@ -150,7 +149,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"
   integrity="sha512-efAcjYoYT0sXxQRtxGY37CKYmqsFVOIwMApaEbrxJr4RwqVVGw8o+Lfh/+59TU07+suZn1BWq4fDl5fdgyCNkw=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{% static 'portal/custom/js/pay.js' %}"></script>
+<script src="{% static 'portal/custom/js/pay.js' %}"></script>
+
+{% if message %}
+<script>
+  document.addEventListener("DOMContentLoaded", ()=>
+  {
+    toastr.info('{{ message }}')
+
+  })
+</script>
+{% endif %}
+
+
 
 
 {% endblock %}

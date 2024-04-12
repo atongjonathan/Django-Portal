@@ -84,10 +84,6 @@ def statement_print(request: HttpRequest, id):
 def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data["rows"] = get_statements(id)
-    # sum_dict = sum_data(data["rows"])
-    # data["billed"] = sum_dict.get("billed")
-    # data["paid"] = sum_dict.get("paid")
-    # print(len(data["rows"]))
     return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
 def pay(request: HttpRequest, id):
@@ -101,10 +97,10 @@ def pay(request: HttpRequest, id):
         try:
             response = mpesa.initiate_stk_push(phone_number, float(amount))
             logger.info(response)
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request has been sent to your phone"})
         except Exception as e:
             logger.error(f"An error occured wen initiaiting stk exception '{e}'")
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
+            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send, Try again later!"})
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
 
 
