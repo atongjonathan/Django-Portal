@@ -49,13 +49,12 @@ class Mpesa():
         }
         return headers
 
-    def initiate_stk_push(self, PHONE_NO, amount):
+    def initiate_stk_push(self, PHONE_NO, amount, callback_url):
         # amount = 1
         phone = PHONE_NO
         passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
         business_short_code = '174379'
         process_request_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
-        callback_url = 'https://atongjona2.pythonanywhere.com/'
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         password = base64.b64encode(
             (business_short_code + passkey + timestamp).encode()).decode()

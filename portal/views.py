@@ -12,7 +12,19 @@ from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
 from . mpesa import Mpesa
 from .statement_data import get_statements
+from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+def allow_any_host(view_func):
+    def wrapped_view(request, *args, **kwargs):
+        # Allow requests from any host
+        response = view_func(request, *args, **kwargs)
+        response['Access-Control-Allow-Origin'] = '*'  # Allow requests from any origin
+        return response
+    return wrapped_view
+
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
@@ -90,12 +102,14 @@ def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     balance = data["balance"]
     balance = balance.replace(",", "")
+    callback_url = "https://portal.itsfixed.africa"+"/callback"
+    # print(callback_url, type(callback_url))
     if request.method == 'POST':
         phone_number = request.POST.get("phone_no").replace("-", "")
         amount = request.POST.get("amount")
         mpesa = Mpesa()
         try:
-            response = mpesa.initiate_stk_push(phone_number, float(amount))
+            response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
             logger.info(response)
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request has been sent to your phone"})
         except Exception as e:
@@ -103,6 +117,22 @@ def pay(request: HttpRequest, id):
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send, Try again later!"})
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
 
+@csrf_exempt
+@allow_any_host
+def receive_callback(request:HttpRequest):
+    print("Testing")
+    if request.method == 'POST':
+        data = request.POST
+        print(data)
+        try:
+            data = request.POST  # Assuming the callback data is in JSON format
+            print("Received callback data:", data)
+            return JsonResponse({"data":data})
+        except Exception as e:
+            print("Error processing callback:", str(e))
+            return JsonResponse({"error": "Error processing callback", "status_code":500})
+    else:
+        return JsonResponse({"message":"Callback working"})
 
 @login_required
 def invite(request: HttpRequest, id):
