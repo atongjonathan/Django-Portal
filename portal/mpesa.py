@@ -79,16 +79,12 @@ class Mpesa():
             # Any additional information/comment that can be sent along with the request from your system
             'TransactionDesc': transaction_desc
         }
-        try:
-            response = requests.post(
+        response = requests.post(
                 process_request_url, headers=self.headers, json=json)
-        except Exception as e:
-            logger.error(f"An error occured when calling stkpush api {e}")
-        try:
-            response_data = response.json()
-            return response_data
-        except Exception as e:
-            logger.error(f"An error occured in accessing json response {e}")
+        response.raise_for_status()
+        response_data = response.json()
+        return response_data
+
 
     def query_status(self, requestID):
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"

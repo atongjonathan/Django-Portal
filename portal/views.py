@@ -109,7 +109,6 @@ def pay(request: HttpRequest, id):
         mpesa = Mpesa()
         try:
             response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
-            response.raise_for_status()
             logger.info(response)
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request has been sent to your phone"})
         except Exception as e:
