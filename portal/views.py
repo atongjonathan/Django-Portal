@@ -102,13 +102,14 @@ def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     balance = data["balance"]
     balance = balance.replace(",", "")
-    callback_url = request.get_host()+"/callback"
+    callback_url = "https://portal.itsfixed.africa/"+"callback"
     if request.method == 'POST':
         phone_number = request.POST.get("phone_no").replace("-", "")
         amount = request.POST.get("amount")
         mpesa = Mpesa()
         try:
             response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
+            response.raise_for_status()
             logger.info(response)
             return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request has been sent to your phone"})
         except Exception as e:
