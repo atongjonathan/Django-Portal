@@ -2,7 +2,29 @@
 {% block content-wrapper %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'portal/custom/css/pay.css' %}">
+<style>
+  @-moz-keyframes spin {
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
 
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spin {
+    animation: spin 1000ms linear infinite;
+  }
+</style>
 <!-- Theme style -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -100,33 +122,50 @@
                           </div>
 
                         </div>
+                        <div class="form-group">
+                          <!-- <div class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                          </div> -->
+                          <div id="normal">
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                          </div>
 
+                          <div id="loading" class="overlay box" style="border: none;display: none;">
+                            <i class="fa fa-refresh fa-spin spin"></i>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn" disabled>Pay
+                              Amount</button>
+                          </div>
 
-
-
+                        </div>
                     </div>
 
-                  </li>
 
 
-                  <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
 
-                  </form>
+
               </div>
 
               </li>
 
 
 
-
-
-              </ul>
+              </form>
             </div>
+
+            </li>
+
+
+
+
+
+            </ul>
           </div>
-          <!-- /.row -->
         </div>
+        <!-- /.row -->
       </div>
     </div>
+</div>
 </div>
 
 
@@ -153,14 +192,21 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    function danger() {
+      toastr.error('Request failed, Try again Later')
+      return true;
+    }
     let form = document.getElementById("form")
     let url = window.location.href
+    let loading = document.getElementById("loading")
+    let normal = document.getElementById("normal")
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      normal.style.display = "none"
+      loading.style.display = "block"
       let amount = document.getElementById("amount").value
       let number = document.getElementById("number").value
       let csrf_token = document.querySelectorAll("input")[1].value
-      console.log(csrf_token)
       fetch("", {
 
         method: 'POST',
@@ -172,8 +218,37 @@
       })
         // .then((response) => response.json())
         .then((response) => (response.json()))
-        .then((data)=> console.log(data))
-        .catch((err)=> console.log("Error occured",err))
+        .then((data) => {
+          if (data.success) {
+            toastr.info('Request has been sent to your phone')
+            let requestId = data.transaction_id
+            setTimeout(() => {
+              url = window.location.origin + "/query/" + requestId
+              fetch(url)
+                .then((response) => (response.json()))
+                .then((data) => {
+                  if (data.ResultCode == 0)
+                  {
+                    toastr.success(data.ResultDesc)
+                  }
+                  else
+                  {
+                    toastr.info(data.status)
+                  }
+                  normal.style.display = "block"
+                  loading.style.display = "none"
+                })
+
+            }, 20000);
+          }
+          else {
+            toastr.error('Request failed, Try again Later')
+          }
+        })
+        .catch((err) => {
+          toastr.error('Request failed, Try again Later')
+        })
+
     })
   })
 </script>

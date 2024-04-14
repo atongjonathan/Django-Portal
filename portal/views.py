@@ -17,11 +17,14 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from datetime import datetime
+
+
 def allow_any_host(view_func):
     def wrapped_view(request, *args, **kwargs):
         # Allow requests from any host
         response = view_func(request, *args, **kwargs)
-        response['Access-Control-Allow-Origin'] = '*'  # Allow requests from any origin
+        # Allow requests from any origin
+        response['Access-Control-Allow-Origin'] = '*'
         return response
     return wrapped_view
 
@@ -30,8 +33,6 @@ basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
-
-
 
 
 def register(request: HttpRequest):
@@ -97,6 +98,8 @@ def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data["rows"] = get_statements(id)
     return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
+
+
 @login_required
 def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
@@ -110,24 +113,30 @@ def pay(request: HttpRequest, id):
         mpesa = Mpesa()
         try:
             response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
-            print("Post",datetime.now())
             return JsonResponse({"success": True, "transaction_id": response.get("CheckoutRequestID")})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance": float(balance)})
 
+
 @csrf_exempt
-def receive_callback(request:HttpRequest):
+def receive_callback(request: HttpRequest):
     if request.method == 'POST':
-        print("Callback", datetime.now())
         try:
             data = json.loads(request.body.decode('utf-8'))
+            logger.info(f"Callback recieved: {data}")
             return JsonResponse(data)
         except Exception as e:
-            print("Error processing callback:", str(e))
-            return JsonResponse({"error": "Error processing callback", "status_code":500})
+            logger.error(f"Error processing callback: {str(e)}")
+            return JsonResponse({"error": "Error processing callback", "status_code": 500})
     else:
-        return JsonResponse({"message":"Callback working"})
+        return JsonResponse({"message": "Callback working"})
+
+def query(request:HttpRequest, requestID):
+    mpesa = Mpesa()
+    status = mpesa.query_status(requestID)
+    logger.info("Querying", status)
+    return JsonResponse(status) 
 
 @login_required
 def invite(request: HttpRequest, id):
@@ -236,7 +245,6 @@ def set_password(request: HttpRequest, uidb64, token):
         # return render(request, "portal/change.html", {"message":True})
 
 
-
 def logged_out(request: HttpRequest):
     return render(request, "portal/logged_out.html", {"title": "Logged Out"})
 
@@ -266,13 +274,12 @@ def modal(request: HttpRequest, id):
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
 
 
-
 # HTTP Error 400
 def page_not_found(request, exception):
     return render(request, "portal/error_404.html")
 
 
 def my_bad(request):
-    send_my_email("error", "Error 500 on portal website",
-                  recipient="atongjonathan@gmail.com")
+    # send_my_email("error", "Error 500 on portal website",
+    #               recipient="atongjonathan@gmail.com")
     return render(request, "portal/error_500.html")
