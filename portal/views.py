@@ -16,7 +16,7 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from datetime import datetime
 def allow_any_host(view_func):
     def wrapped_view(request, *args, **kwargs):
         # Allow requests from any host
@@ -97,32 +97,31 @@ def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data["rows"] = get_statements(id)
     return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
-
+@login_required
 def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     balance = data["balance"]
     balance = balance.replace(",", "")
-    callback_url = "https://portal.itsfixed.africa/"+"callback"
+    callback_url = "https://portal.itsfixed.africa/callback"
     if request.method == 'POST':
-        phone_number = request.POST.get("phone_no").replace("-", "")
-        amount = request.POST.get("amount")
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get("phone_no").replace("-", "")
+        amount = data.get("amount")
         mpesa = Mpesa()
         try:
             response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
-            logger.info(response)
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request has been sent to your phone"})
+            print("Post",datetime.now())
+            return JsonResponse({"success": True, "transaction_id": response.get("CheckoutRequestID")})
         except Exception as e:
-            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send, Try again later!"})
-    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
+            return JsonResponse({"success": False, "error": str(e)})
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance": float(balance)})
 
 @csrf_exempt
 def receive_callback(request:HttpRequest):
-    print("Testing")
     if request.method == 'POST':
+        print("Callback", datetime.now())
         try:
             data = json.loads(request.body.decode('utf-8'))
-            print("Received callback data:", data)
             return JsonResponse(data)
         except Exception as e:
             print("Error processing callback:", str(e))

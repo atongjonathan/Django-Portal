@@ -74,7 +74,7 @@
 
                   <li>
                     <div class="pay-form">
-                      <form action="{% url 'pay' data.id %}" method="post">
+                      <form id="form" action="" method="post">
                         {% csrf_token %}
                         <div class="form-group" title="Number used to pay">
                           <label for="number">Paying Phone Number:</label>
@@ -84,34 +84,34 @@
                             </div>
                             <input id="number" name="phone_no" type="text" class="form-control"
                               data-inputmask='"mask": "999-999-999-999"' data-mask placeholder="254-XXX-XXX-XXX"
-                              pattern="^\254\ [0-9]{3}-[0-9]{3}-[0-9]{3}$" required>
+                              required>
 
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="form-group" title="Amount to pay">
                             <label for="amount">Amount</label>
-                            {% if balance < 0 %} <input id="amount" type="number" name="amount" class="form-control" min="1"
-                              required placeholder="Ksh. ">
+                            {% if balance < 0 %} <input id="amount" type="number" name="amount" class="form-control"
+                              min="1" required placeholder="Ksh. ">
                               {% else %}
                               <input id="amount" type="number" name="amount" class="form-control" min="1"
                                 value="{{ balance }}" required>
                               {% endif %}
                           </div>
-    
+
                         </div>
 
 
 
 
                     </div>
-                    
+
                   </li>
 
 
-                    <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                  <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
 
-                    </form>
+                  </form>
               </div>
 
               </li>
@@ -151,15 +151,32 @@
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static 'portal/custom/js/pay.js' %}"></script>
 
-{% if message %}
 <script>
-  document.addEventListener("DOMContentLoaded", ()=>
-  {
-    toastr.info('{{ message }}')
+  document.addEventListener("DOMContentLoaded", () => {
+    let form = document.getElementById("form")
+    let url = window.location.href
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      let amount = document.getElementById("amount").value
+      let number = document.getElementById("number").value
+      let csrf_token = document.querySelectorAll("input")[1].value
+      console.log(csrf_token)
+      fetch("", {
 
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf_token,
+        },
+        body: JSON.stringify({ 'amount': amount, "phone_no": number })
+      })
+        // .then((response) => response.json())
+        .then((response) => (response.json()))
+        .then((data)=> console.log(data))
+        .catch((err)=> console.log("Error occured",err))
+    })
   })
 </script>
-{% endif %}
 
 
 
