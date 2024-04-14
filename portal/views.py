@@ -102,8 +102,7 @@ def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     balance = data["balance"]
     balance = balance.replace(",", "")
-    callback_url = "https://portal.itsfixed.africa"+"/callback"
-    # print(callback_url, type(callback_url))
+    callback_url = request.get_host()+"/callback"
     if request.method == 'POST':
         phone_number = request.POST.get("phone_no").replace("-", "")
         amount = request.POST.get("amount")
@@ -118,16 +117,13 @@ def pay(request: HttpRequest, id):
     return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
 
 @csrf_exempt
-@allow_any_host
 def receive_callback(request:HttpRequest):
     print("Testing")
     if request.method == 'POST':
-        data = request.POST
-        print(data)
         try:
-            data = request.POST  # Assuming the callback data is in JSON format
+            data = json.loads(request.body.decode('utf-8'))
             print("Received callback data:", data)
-            return JsonResponse({"data":data})
+            return JsonResponse(data)
         except Exception as e:
             print("Error processing callback:", str(e))
             return JsonResponse({"error": "Error processing callback", "status_code":500})

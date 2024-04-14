@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"]
 DATA = os.environ.get("sample_data")
 
 
-DARAJA_CREDENTIALS =  os.environ.get("DARAJA_CREDENTIALS")
+DARAJA_CREDENTIALS = os.environ.get("DARAJA_CREDENTIALS")
 ACCESS_TOKEN = "gLMNOGaCcSp4p6gGwAybXY0jgocK"
 
 
@@ -135,5 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 AUTH_USER_MODEL = 'portal.Parent'
-
-
