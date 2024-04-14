@@ -280,6 +280,6 @@ def page_not_found(request, exception):
 
 
 def my_bad(request):
-    # send_my_email("error", "Error 500 on portal website",
-    #               recipient="atongjonathan@gmail.com")
+    send_my_email("error", "Error 500 on portal website",
+                  recipient="atongjonathan@gmail.com")
     return render(request, "portal/error_500.html")
