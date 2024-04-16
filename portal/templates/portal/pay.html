@@ -201,33 +201,36 @@
     fetch(url)
       .then((query_response) => (query_response.json()))
       .then((query_data) => {
-        console.log("Query ", query_data)
+        // console.log("Query ", query_data)
         if (query_data.ResponseCode == "0") {
-          console.log("Code is not successful", query_data.ResponseCode)
+          // console.log("Code is not successful", query_data.ResponseCode)
           if (query_data.ResultDesc == "The service request is processed successfully.") {
             toastr.success("The service request is processed successfully.")
+            resetBtn()
           }
           else {
-            console.log("Code is not successful", query_data.ResponseCode)
+            // console.log("Code is not successful", query_data.ResponseCode)
             toastr.warning(query_data.ResultDesc)
+            resetBtn()
           }
         }
         else if (query_data.errorCode) {
           setTimeout(() => {
-            console.log("Retrying")
+            // console.log("Retrying")
             query(url)
 
           }, 5000)
         }
         else {
-          console.log("Code is not 0", query_data.ResultDesc)
+          // console.log("Code is not 0", query_data.ResultDesc)
           toastr.info(query_data.errorMessage)
+          resetBtn()
         }
-        resetBtn()
+        
       })
       .catch((err) => {
-        console.log("An error occured on query")
-        console.log(err)
+        // console.log("An error occured on query")
+        // console.log(err)
         toastr.error('Request failed, Try again Later')
         resetBtn()
       })
@@ -265,7 +268,7 @@
               // console.log("Querying...")
               url = window.location.origin + "/query/" + requestId
               query(url)
-            }, 15000);
+            }, 5000);
           }
           else {
             // console.log("Data is not success")
