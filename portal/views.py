@@ -112,7 +112,8 @@ def pay(request: HttpRequest, id):
         amount = data.get("amount")
         mpesa = Mpesa()
         try:
-            response = mpesa.initiate_stk_push(phone_number, float(amount), callback_url)
+            response = mpesa.initiate_stk_push(
+                phone_number, float(amount), callback_url)
             return JsonResponse({"success": True, "transaction_id": response.get("CheckoutRequestID")})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
@@ -132,11 +133,21 @@ def receive_callback(request: HttpRequest):
     else:
         return JsonResponse({"message": "Callback working"})
 
-def query(request:HttpRequest, requestID):
+
+def query(request: HttpRequest, requestID):
     mpesa = Mpesa()
     status = mpesa.query_status(requestID)
     logger.info("Querying", status)
-    return JsonResponse(status) 
+    return JsonResponse(status)
+
+@csrf_exempt
+def send_email(request: HttpRequest):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        response = send_my_email(**data)
+        return JsonResponse(response)
+    return JsonResponse({"message": "Email API"})
+
 
 @login_required
 def invite(request: HttpRequest, id):

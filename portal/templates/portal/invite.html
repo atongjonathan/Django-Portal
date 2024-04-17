@@ -82,11 +82,11 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-              <form action="{% url 'invite' id %}" method="post">
+              <form id="mail-form" action="" method="post">
                 {% csrf_token %}
                 <div class="input-group">
-                  <input name="email" type="email" name="message" placeholder="Enter the email to invite the parent ..."
-                    class="form-control">
+                  <input id="email" name="email" type="email" name="message"
+                    placeholder="Enter the email to invite the parent ..." class="form-control">
                   <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning btn-flat">Send</button>
                   </span>
@@ -111,5 +111,32 @@
 
 
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("Email Script working")
+    let form = document.getElementById("mail-form")
+    form.addEventListener("submit", (event) => {
+      console.log("Form Submitted")
+      event.preventDefault();
+      let email = document.getElementById("email").value
+      email_data = { template: "invite", subject: "Invitation to the Ark Junior School", recipient: email, user: "{{ request.user }}" }
+      fetch("{% url 'email' %}", {
+
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(email_data)
+      })
+        // .then((response) => response.json())
+        .then((response) => (response.json()))
+        .then((data) => {
+          console.log(data)
+
+        })
+
+    })
+  })
+</script>
 <script src="{% static 'portal/custom/js/invite.js' %}"></script>
 {% endblock %}
