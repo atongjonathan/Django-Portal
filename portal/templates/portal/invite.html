@@ -57,8 +57,7 @@
                   <div class="direct-chat-text">
                     Can you recommend a great school for me to enroll my child ?
                   </div>
-                  {% if message %}
-                  <div class="direct-chat-msg right">
+                  <div id="reply" class="direct-chat-msg right" style="display: none;">
                     <div class="direct-chat-info clearfix">
                       <span class="direct-chat-name pull-right">{{ request.user }}</span>
                       <span id="current-time" class="direct-chat-timestamp pull-left"></span>
@@ -69,9 +68,9 @@
                       alt="message user image">
                     <!-- /.direct-chat-img -->
                     <div class="direct-chat-text">
-                      Yes I would love to, check out The Ark Junior School it won't disappoint.
+                      Yes I would love to, check out The Ark Junior School it is great.
                     </div>
-                    {% endif %}
+
                     <!-- /.direct-chat-text -->
                   </div>
                   <!-- /.direct-chat-text -->
@@ -111,32 +110,5 @@
 
 
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("Email Script working")
-    let form = document.getElementById("mail-form")
-    form.addEventListener("submit", (event) => {
-      console.log("Form Submitted")
-      event.preventDefault();
-      let email = document.getElementById("email").value
-      email_data = { template: "invite", subject: "Invitation to the Ark Junior School", recipient: email, user: "{{ request.user }}" }
-      fetch("{% url 'email' %}", {
-
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(email_data)
-      })
-        // .then((response) => response.json())
-        .then((response) => (response.json()))
-        .then((data) => {
-          console.log(data)
-
-        })
-
-    })
-  })
-</script>
 <script src="{% static 'portal/custom/js/invite.js' %}"></script>
 {% endblock %}
