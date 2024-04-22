@@ -35,7 +35,6 @@ function displayCurrentTime() {
       event.preventDefault();
       let email = document.getElementById("email").value
       email_data = { template: "invite", subject: "Invitation to the Ark Junior School", email: email, user: "{{ request.user }}" }
-      console.log(email_data)
       fetch("", {
 
         method: 'POST',
@@ -47,7 +46,6 @@ function displayCurrentTime() {
         // .then((response) => response.json())
         .then((response) => (response.json()))
         .then((data) => {
-          console.log(data)
           if (data.message)
           {
             reply_div.style.display = "block"
@@ -55,7 +53,7 @@ function displayCurrentTime() {
           }
           else
           {
-            toastr.warning("Invite not sent try again later")
+            toastr.warning("Invite not sent, please try again later")
           }
 
 
