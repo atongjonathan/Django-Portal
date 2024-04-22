@@ -122,11 +122,11 @@ class PortalTests(TestCase):
     def test_invite_POST(self):
         self._login_client()
         response = self.client.post(
-            reverse("invite", kwargs={"id": "STU-0225"}), data={"email": "test@gmail.com"})
+            reverse("invite", kwargs={"id": "STU-0225"}), data={"email": "test@gmail.com"}, content_type="application/json")
         self.assertTrue(response.status_code, 200)
-        self.assertTemplateUsed(response, "portal/invite.html")
-        self.assertIn("message", response.context)
-        self.assertTrue(response.context.get("message"))
+        data = response.json()
+        self.assertTemplateNotUsed(response, "portal/invite.html")
+        self.assertIn("message", data)
 
     def test_sendmail_GET(self):
         self._login_client()
