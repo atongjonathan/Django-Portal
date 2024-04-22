@@ -56,8 +56,9 @@ def register(request: HttpRequest):
             })
         parent.save()
         logger.info(f"Parent {parent.username} saved!")
-        send_my_email(template="welcome",
+        response = send_my_email(template="welcome",
                       subject="Welcome to the Ark Kunior Parents Portal", recipient=email)
+        logger.info(response)
         login(request, user=parent)
         logger.info(f"User {request.user} logged in")
         return redirect("choose")
@@ -144,21 +145,27 @@ def query(request: HttpRequest, requestID):
 def send_email(request: HttpRequest):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        print("Data", data)
         response = send_my_email(**data)
+
+        print("Dict data", **data)
         return JsonResponse(response)
     return JsonResponse({"message": "Email API"})
 
 
+@csrf_exempt    
 @login_required
 def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
         return redirect("choose")
     if request.method == "POST":
-        email = request.POST["email"]
-        send_my_email(template="invite", subject="Invitation to the Ark Junior School",
+        request_body = json.loads(request.body.decode("utf-8"))
+        email = request_body.get("email")
+        response = send_my_email(template="invite", subject="Invitation to the Ark Junior School",
                       recipient=email, user=str(request.user))
-        return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
+        logger.info(response)
+        return JsonResponse(response)
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
 
@@ -196,8 +203,9 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             reset_url = f'{request.get_host()}/reset/{uidb64}/{token}/'
-            send_my_email(template="forgot", subject="Forgot Password",
+            response = send_my_email(template="forgot", subject="Forgot Password",
                           recipient=email, url=reset_url)
+            logger.info(response)
             return render(request, "portal/forgot.html", {"success": "Email Sent"})
         return render(request, "portal/forgot.html", {"title": "Forgot Password", "fail": "Invalid Email"})
     return render(request, "portal/forgot.html")
@@ -231,17 +239,20 @@ def set_password(request: HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
-            send_my_email(
+            response = send_my_email(
                 template="changed", subject="Password Changed", recipient=str(request.user))
+            logger.info(response)
             logger.info(f"Password changed by user {request.user}")
+        
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            send_my_email(template="changed",
+            response = send_my_email(template="changed",
                           subject="Password Changed", recipient=str(user))
+            logger.info(response)
             logger.info(f"Password reset by user {user.get_username()}")
 
         # Update the session to avoid requiring reauthentication
@@ -266,8 +277,9 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change/{uidb64}/{token}/'
-        send_my_email(template="forgot", subject="Forgot Password",
+        response = send_my_email(template="forgot", subject="Forgot Password",
                       recipient=str(request.user), url=reset_url)
+        logger.info(response)
         return render(request, "portal/proceed.html",  {"title": "Send Email", "message": "Email Sent"})
     return render(request, "portal/proceed.html",  {"title": "Send Email"})
 
@@ -291,6 +303,7 @@ def page_not_found(request, exception):
 
 
 def my_bad(request):
-    # send_my_email("error", "Error 500 on portal website",
+    # response = send_my_email("error", "Error 500 on portal website",
     #               recipient="atongjonathan@gmail.com")
+    # logger.info(response)
     return render(request, "portal/error_500.html")

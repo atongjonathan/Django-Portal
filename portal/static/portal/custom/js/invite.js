@@ -34,8 +34,9 @@ function displayCurrentTime() {
       console.log("Form Submitted")
       event.preventDefault();
       let email = document.getElementById("email").value
-      email_data = { template: "invite", subject: "Invitation to the Ark Junior School", recipient: email, user: "{{ request.user }}" }
-      fetch("{% url 'email' %}", {
+      email_data = { template: "invite", subject: "Invitation to the Ark Junior School", email: email, user: "{{ request.user }}" }
+      console.log(email_data)
+      fetch("", {
 
         method: 'POST',
         headers: {
@@ -46,6 +47,7 @@ function displayCurrentTime() {
         // .then((response) => response.json())
         .then((response) => (response.json()))
         .then((data) => {
+          console.log(data)
           if (data.message)
           {
             reply_div.style.display = "block"
