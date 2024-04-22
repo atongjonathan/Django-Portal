@@ -58,7 +58,7 @@ def register(request: HttpRequest):
         logger.info(f"Parent {parent.username} saved!")
         response = send_my_email(template="welcome",
                       subject="Welcome to the Ark Kunior Parents Portal", recipient=email)
-        logger.info(response)
+        logger.info(f"Email Response: {response}")
         login(request, user=parent)
         logger.info(f"User {request.user} logged in")
         return redirect("choose")
@@ -164,7 +164,7 @@ def invite(request: HttpRequest, id):
         email = request_body.get("email")
         response = send_my_email(template="invite", subject="Invitation to the Ark Junior School",
                       recipient=email, user=str(request.user))
-        logger.info(response)
+        logger.info(f"Email Response: {response}")
         return JsonResponse(response)
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
@@ -205,7 +205,7 @@ def forgot(request: HttpRequest):
             reset_url = f'{request.get_host()}/reset/{uidb64}/{token}/'
             response = send_my_email(template="forgot", subject="Forgot Password",
                           recipient=email, url=reset_url)
-            logger.info(response)
+            logger.info(f"Email Response: {response}")
             return render(request, "portal/forgot.html", {"success": "Email Sent"})
         return render(request, "portal/forgot.html", {"title": "Forgot Password", "fail": "Invalid Email"})
     return render(request, "portal/forgot.html")
@@ -241,7 +241,7 @@ def set_password(request: HttpRequest, uidb64, token):
             request.user.save()
             response = send_my_email(
                 template="changed", subject="Password Changed", recipient=str(request.user))
-            logger.info(response)
+            logger.info(f"Email Response: {response}")
             logger.info(f"Password changed by user {request.user}")
         
         else:
@@ -252,7 +252,7 @@ def set_password(request: HttpRequest, uidb64, token):
             user.save()
             response = send_my_email(template="changed",
                           subject="Password Changed", recipient=str(user))
-            logger.info(response)
+            logger.info(f"Email Response: {response}")
             logger.info(f"Password reset by user {user.get_username()}")
 
         # Update the session to avoid requiring reauthentication
@@ -279,7 +279,7 @@ def proceed(request: HttpRequest):
         reset_url = f'{request.get_host()}/change/{uidb64}/{token}/'
         response = send_my_email(template="forgot", subject="Forgot Password",
                       recipient=str(request.user), url=reset_url)
-        logger.info(response)
+        logger.info(f"Email Response: {response}")
         return render(request, "portal/proceed.html",  {"title": "Send Email", "message": "Email Sent"})
     return render(request, "portal/proceed.html",  {"title": "Send Email"})
 
@@ -305,5 +305,5 @@ def page_not_found(request, exception):
 def my_bad(request):
     # response = send_my_email("error", "Error 500 on portal website",
     #               recipient="atongjonathan@gmail.com")
-    # logger.info(response)
+    # logger.info(f"Email Response: {response}")
     return render(request, "portal/error_500.html")
