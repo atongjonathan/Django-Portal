@@ -57,8 +57,7 @@
                   <div class="direct-chat-text">
                     Can you recommend a great school for me to enroll my child ?
                   </div>
-                  {% if message %}
-                  <div class="direct-chat-msg right">
+                  <div id="reply" class="direct-chat-msg right" style="display: none;">
                     <div class="direct-chat-info clearfix">
                       <span class="direct-chat-name pull-right">{{ request.user }}</span>
                       <span id="current-time" class="direct-chat-timestamp pull-left"></span>
@@ -69,9 +68,9 @@
                       alt="message user image">
                     <!-- /.direct-chat-img -->
                     <div class="direct-chat-text">
-                      Yes I would love to, check out The Ark Junior School it won't disappoint.
+                      Yes I would love to, check out The Ark Junior School it is great.
                     </div>
-                    {% endif %}
+
                     <!-- /.direct-chat-text -->
                   </div>
                   <!-- /.direct-chat-text -->
@@ -82,11 +81,11 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-              <form action="{% url 'invite' id %}" method="post">
+              <form id="mail-form" action="" method="post">
                 {% csrf_token %}
                 <div class="input-group">
-                  <input name="email" type="email" name="message" placeholder="Enter the email to invite the parent ..."
-                    class="form-control">
+                  <input id="email" name="email" type="email" name="message"
+                    placeholder="Enter the email to invite the parent ..." class="form-control">
                   <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning btn-flat">Send</button>
                   </span>

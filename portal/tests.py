@@ -122,11 +122,11 @@ class PortalTests(TestCase):
     def test_invite_POST(self):
         self._login_client()
         response = self.client.post(
-            reverse("invite", kwargs={"id": "STU-0225"}), data={"email": "test@gmail.com"})
+            reverse("invite", kwargs={"id": "STU-0225"}), data={"email": "test@gmail.com"}, content_type="application/json")
         self.assertTrue(response.status_code, 200)
-        self.assertTemplateUsed(response, "portal/invite.html")
-        self.assertIn("message", response.context)
-        self.assertTrue(response.context.get("message"))
+        data = response.json()
+        self.assertTemplateNotUsed(response, "portal/invite.html")
+        self.assertIn("message", data)
 
     def test_sendmail_GET(self):
         self._login_client()
@@ -173,10 +173,11 @@ class PortalTests(TestCase):
     def test_pay_POST(self):
         self._login_client()
         response = self.client.post(reverse("pay", kwargs={
-                                    "id": "STU-0225"}), {"phone_no": "254-708-683-896", "amount": "1"})
+                                    "id": "STU-0225"}), {"phone_no": "254-708-683-896", "amount": "1"}, content_type="application/json")
         self.assertTrue(200, response.status_code)
-        self.assertTemplateUsed(response, "portal/pay.html")
-        self.assertIn("message", response.context)
-        self.assertEqual(response.context["message"], "Request Sent")
+        data = response.json()
+        self.assertTemplateNotUsed(response, "portal/pay.html")
+        self.assertIn("success", data)
+        self.assertTrue(data.get("success"))
 
 # Create your tests here.

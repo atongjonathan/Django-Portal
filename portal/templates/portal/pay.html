@@ -2,6 +2,29 @@
 {% block content-wrapper %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'portal/custom/css/pay.css' %}">
+<style>
+  @-moz-keyframes spin {
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spin {
+    animation: spin 1000ms linear infinite;
+  }
+</style>
 <!-- Theme style -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -17,11 +40,6 @@
   <!-- Main content -->
   <section class="content">
     <div class="col-md-12 balance-box">
-      {% if message %}
-      <div class="alert alert-warning">
-        <strong>{{message}}</strong>
-      </div>
-      {% endif %}
       <!-- /.info-box -->
       <div class="info-box bg-aqua">
         <span class="info-box-icon"><i class="fa fa-shopping-cart"></i></span>
@@ -78,7 +96,7 @@
 
                   <li>
                     <div class="pay-form">
-                      <form action="{% url 'pay' data.id %}" method="post">
+                      <form id="form" action="" method="post">
                         {% csrf_token %}
                         <div class="form-group" title="Number used to pay">
                           <label for="number">Paying Phone Number:</label>
@@ -87,48 +105,68 @@
                               <i class="fa fa-phone"></i>
                             </div>
                             <input id="number" name="phone_no" type="text" class="form-control"
-                              data-inputmask='"mask": "999-999-999-999"' data-mask placeholder="254-XXX-XXX-XXX"
-                              pattern="^\254\ [0-9]{3}-[0-9]{3}-[0-9]{3}$" required>
+                              data-inputmask='"mask": "254-999-999-999"' data-mask placeholder="254-XXX-XXX-XXX" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}"
+                              required>
 
                           </div>
                         </div>
-
-
-
-
-                          </div>
-                          <div class="form-group">
-                            <div class="form-group" title="Amount to pay">
-                              <label for="amount">Amount</label>
-                              {% if balance < 0 %}
-                              <input id="amount" type="number" name="amount" class="form-control" min="1" required placeholder="Ksh. ">
+                        <div class="form-group">
+                          <div class="form-group" title="Amount to pay">
+                            <label for="amount">Amount</label>
+                            {% if balance < 0 %} <input id="amount" type="number" name="amount" class="form-control"
+                              min="1" required placeholder="Ksh. ">
                               {% else %}
-                              <input id="amount" type="number" name="amount" class="form-control" min="1" value="{{ balance }}" required>
+                              <input id="amount" type="number" name="amount" class="form-control" min="1"
+                                value="{{ balance }}" required>
                               {% endif %}
-                            </div>
-
                           </div>
-          
 
-                        <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                        </div>
+                        <div class="form-group">
+                          <!-- <div class="overlay">
+                            <i class="fa fa-refresh fa-spin"></i>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                          </div> -->
+                          <div id="normal">
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn">Pay Amount</button>
+                          </div>
 
-                      </form>
+                          <div id="loading" class="overlay box" style="border: none;display: none;">
+                            <i class="fa fa-refresh fa-spin spin"></i>
+                            <button type="submit" class="btn btn-block btn-primary btn-lg pay-btn" disabled>Pay
+                              Amount</button>
+                          </div>
+
+                        </div>
                     </div>
 
-                  </li>
 
 
 
 
-
-                </ul>
               </div>
+
+              </li>
+
+
+
+              </form>
             </div>
-            <!-- /.row -->
+
+            </li>
+
+
+
+
+
+            </ul>
           </div>
         </div>
+        <!-- /.row -->
       </div>
     </div>
+</div>
+</div>
 
 
 
@@ -150,7 +188,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"
   integrity="sha512-efAcjYoYT0sXxQRtxGY37CKYmqsFVOIwMApaEbrxJr4RwqVVGw8o+Lfh/+59TU07+suZn1BWq4fDl5fdgyCNkw=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{% static 'portal/custom/js/pay.js' %}"></script>
+<script src="{% static 'portal/custom/js/pay.js' %}"></script>
+
+
 
 
 {% endblock %}

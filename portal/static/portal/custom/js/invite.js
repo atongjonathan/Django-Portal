@@ -23,7 +23,45 @@ function displayCurrentTime() {
   }
 
   window.onload = function () {
-    console.log("Invite js working")
     displayCurrentTime();
     setInterval(displayCurrentTime, 1000);
   };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    let form = document.getElementById("mail-form")
+    let reply_div = document.getElementById("reply")
+    form.addEventListener("submit", (event) => {
+      console.log("Form Submitted")
+      event.preventDefault();
+      let email = document.getElementById("email").value
+      email_data = { template: "invite", subject: "Invitation to the Ark Junior School", email: email, user: "{{ request.user }}" }
+      fetch("", {
+
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(email_data)
+      })
+        // .then((response) => response.json())
+        .then((response) => (response.json()))
+        .then((data) => {
+          if (data.message)
+          {
+            reply_div.style.display = "block"
+            toastr.success("Invite has been sent")
+          }
+          else
+          {
+            toastr.warning("Invite not sent, please try again later")
+          }
+
+
+        })
+        .catch((err) => {
+          console.log(err)
+          toastr.warning("Request failed, try again later")
+        })
+
+    })
+  })

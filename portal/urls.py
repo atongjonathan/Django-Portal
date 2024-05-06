@@ -26,5 +26,9 @@ urlpatterns = [
          views.change, name='password_change_confirm'),
     path("modal/<id>", views.modal, name="modal"),
     path("pay/<id>", views.pay, name="pay"),
-    
+    path("callback", views.receive_callback, name="callback"),
+    path("query/<requestID>", views.query, name="query"),
+    path("email", views.send_email, name="email")
+
+
 ]

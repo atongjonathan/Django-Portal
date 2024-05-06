@@ -12,14 +12,27 @@ from django.contrib.auth import update_session_auth_hash
 from logging import basicConfig, getLogger, INFO, StreamHandler, FileHandler
 from . mpesa import Mpesa
 from .statement_data import get_statements
+from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from datetime import datetime
+
+
+def allow_any_host(view_func):
+    def wrapped_view(request, *args, **kwargs):
+        # Allow requests from any host
+        response = view_func(request, *args, **kwargs)
+        # Allow requests from any origin
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
+    return wrapped_view
+
 
 basicConfig(format="%(asctime)s | PORTAL | %(levelname)s | %(module)s | %(lineno)s | %(message)s",
             level=INFO, handlers={StreamHandler(), FileHandler("logs.txt")}, datefmt="%b-%d %Y - %I:%M %p")
 
 logger = getLogger(__name__)
-
-
 
 
 def register(request: HttpRequest):
@@ -43,8 +56,9 @@ def register(request: HttpRequest):
             })
         parent.save()
         logger.info(f"Parent {parent.username} saved!")
-        send_my_email(template="welcome",
+        response = send_my_email(template="welcome",
                       subject="Welcome to the Ark Kunior Parents Portal", recipient=email)
+        logger.info(f"Email Response: {response}")
         login(request, user=parent)
         logger.info(f"User {request.user} logged in")
         return redirect("choose")
@@ -84,40 +98,74 @@ def statement_print(request: HttpRequest, id):
 def statement(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     data["rows"] = get_statements(id)
-    # sum_dict = sum_data(data["rows"])
-    # data["billed"] = sum_dict.get("billed")
-    # data["paid"] = sum_dict.get("paid")
-    # print(len(data["rows"]))
     return render(request, "portal/statement.html", {"title": f"Fee Statement - {id}", "id": id, "data": data})
 
+
+@login_required
 def pay(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     balance = data["balance"]
     balance = balance.replace(",", "")
+    callback_url = "https://portal.itsfixed.africa/callback"
     if request.method == 'POST':
-        phone_number = request.POST.get("phone_no").replace("-", "")
-        amount = request.POST.get("amount")
+        data = json.loads(request.body.decode('utf-8'))
+        phone_number = data.get("phone_no").replace("-", "")
+        amount = data.get("amount")
         mpesa = Mpesa()
         try:
-            response = mpesa.initiate_stk_push(phone_number, float(amount))
-            logger.info(response)
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Sent"})
+            response = mpesa.initiate_stk_push(
+                phone_number, float(amount), callback_url)
+            return JsonResponse({"success": True, "transaction_id": response.get("CheckoutRequestID")})
         except Exception as e:
-            logger.error(f"An error occured wen initiaiting stk exception '{e}'")
-            return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "message":"Request Failed to Send"})
-    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance":float(balance)})
+            return JsonResponse({"success": False, "error": str(e)})
+    return render(request, "portal/pay.html", {"title": "Pay Fees", "data": data, "id": id, "balance": float(balance)})
 
 
+@csrf_exempt
+def receive_callback(request: HttpRequest):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            logger.info(f"Callback recieved: {data}")
+            return JsonResponse(data)
+        except Exception as e:
+            logger.error(f"Error processing callback: {str(e)}")
+            return JsonResponse({"error": "Error processing callback", "status_code": 500})
+    else:
+        return JsonResponse({"message": "Callback working"})
+
+
+def query(request: HttpRequest, requestID):
+    mpesa = Mpesa()
+    status = mpesa.query_status(requestID)
+    logger.info("Querying", status)
+    return JsonResponse(status)
+
+@csrf_exempt
+def send_email(request: HttpRequest):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        print("Data", data)
+        response = send_my_email(**data)
+
+        print("Dict data", **data)
+        return JsonResponse(response)
+    return JsonResponse({"message": "Email API"})
+
+
+@csrf_exempt    
 @login_required
 def invite(request: HttpRequest, id):
     data = get_child_data(id, request.user)
     if data is None:
         return redirect("choose")
     if request.method == "POST":
-        email = request.POST["email"]
-        send_my_email(template="invite", subject="Invitation to the Ark Junior School",
+        request_body = json.loads(request.body.decode("utf-8"))
+        email = request_body.get("email")
+        response = send_my_email(template="invite", subject="Invitation to the Ark Junior School",
                       recipient=email, user=str(request.user))
-        return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data, "message": True})
+        logger.info(f"Email Response: {response}")
+        return JsonResponse(response)
     return render(request, "portal/invite.html", {"title": "Invite", "id": id, "data": data})
 
 
@@ -155,8 +203,9 @@ def forgot(request: HttpRequest):
             token = default_token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
             reset_url = f'{request.get_host()}/reset/{uidb64}/{token}/'
-            send_my_email(template="forgot", subject="Forgot Password",
+            response = send_my_email(template="forgot", subject="Forgot Password",
                           recipient=email, url=reset_url)
+            logger.info(f"Email Response: {response}")
             return render(request, "portal/forgot.html", {"success": "Email Sent"})
         return render(request, "portal/forgot.html", {"title": "Forgot Password", "fail": "Invalid Email"})
     return render(request, "portal/forgot.html")
@@ -190,17 +239,20 @@ def set_password(request: HttpRequest, uidb64, token):
         if request.user.is_authenticated:
             request.user.set_password(new_password)
             request.user.save()
-            send_my_email(
+            response = send_my_email(
                 template="changed", subject="Password Changed", recipient=str(request.user))
+            logger.info(f"Email Response: {response}")
             logger.info(f"Password changed by user {request.user}")
+        
         else:
             uid = force_str(urlsafe_base64_decode(uidb64))
             Parent = get_user_model()
             user = Parent.objects.get(pk=uid)
             user.set_password(new_password)
             user.save()
-            send_my_email(template="changed",
+            response = send_my_email(template="changed",
                           subject="Password Changed", recipient=str(user))
+            logger.info(f"Email Response: {response}")
             logger.info(f"Password reset by user {user.get_username()}")
 
         # Update the session to avoid requiring reauthentication
@@ -215,7 +267,6 @@ def set_password(request: HttpRequest, uidb64, token):
         # return render(request, "portal/change.html", {"message":True})
 
 
-
 def logged_out(request: HttpRequest):
     return render(request, "portal/logged_out.html", {"title": "Logged Out"})
 
@@ -226,8 +277,9 @@ def proceed(request: HttpRequest):
         token = default_token_generator.make_token(request.user)
         uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
         reset_url = f'{request.get_host()}/change/{uidb64}/{token}/'
-        send_my_email(template="forgot", subject="Forgot Password",
+        response = send_my_email(template="forgot", subject="Forgot Password",
                       recipient=str(request.user), url=reset_url)
+        logger.info(f"Email Response: {response}")
         return render(request, "portal/proceed.html",  {"title": "Send Email", "message": "Email Sent"})
     return render(request, "portal/proceed.html",  {"title": "Send Email"})
 
@@ -245,13 +297,13 @@ def modal(request: HttpRequest, id):
     return render(request, "portal/modal.html", {"title": "Modal Us", "data": data, "id": id})
 
 
-
 # HTTP Error 400
 def page_not_found(request, exception):
     return render(request, "portal/error_404.html")
 
 
 def my_bad(request):
-    send_my_email("error", "Error 500 on portal website",
-                  recipient="atongjonathan@gmail.com")
+    # response = send_my_email("error", "Error 500 on portal website",
+    #               recipient="atongjonathan@gmail.com")
+    # logger.info(f"Email Response: {response}")
     return render(request, "portal/error_500.html")

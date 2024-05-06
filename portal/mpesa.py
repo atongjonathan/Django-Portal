@@ -49,13 +49,12 @@ class Mpesa():
         }
         return headers
 
-    def initiate_stk_push(self, PHONE_NO, amount):
+    def initiate_stk_push(self, PHONE_NO, amount, callback_url):
         # amount = 1
         phone = PHONE_NO
         passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
         business_short_code = '174379'
         process_request_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
-        callback_url = 'https://atongjona2.pythonanywhere.com/'
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         password = base64.b64encode(
             (business_short_code + passkey + timestamp).encode()).decode()
@@ -80,16 +79,12 @@ class Mpesa():
             # Any additional information/comment that can be sent along with the request from your system
             'TransactionDesc': transaction_desc
         }
-        try:
-            response = requests.post(
+        response = requests.post(
                 process_request_url, headers=self.headers, json=json)
-        except Exception as e:
-            logger.error(f"An error occured when calling stkpush api {e}")
-        try:
-            response_data = response.json()
-            return response_data
-        except Exception as e:
-            logger.error(f"An error occured in accessing json response {e}")
+        response.raise_for_status()
+        response_data = response.json()
+        return response_data
+
 
     def query_status(self, requestID):
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"

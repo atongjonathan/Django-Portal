@@ -26,14 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l)7c*j3ydy4f16s8jc54wrv=57-8v=c!oavk8u57qjp&jtl8td'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "portal.itsfixed.africa", "www.portal.itsfixed.africa"]
+ALLOWED_HOSTS = ["*"]
 
 DATA = os.environ.get("sample_data")
 
 
-DARAJA_CREDENTIALS =  os.environ.get("DARAJA_CREDENTIALS")
+DARAJA_CREDENTIALS = os.environ.get("DARAJA_CREDENTIALS")
 ACCESS_TOKEN = "gLMNOGaCcSp4p6gGwAybXY0jgocK"
 
 
@@ -135,5 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 AUTH_USER_MODEL = 'portal.Parent'
-
-
