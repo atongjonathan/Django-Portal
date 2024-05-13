@@ -1,4 +1,5 @@
 function displayCurrentTime() {
+
     var months = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -21,6 +22,14 @@ function displayCurrentTime() {
 
     document.getElementById("current-time").innerText = formattedTime;
   }
+  function addItem(text) {
+    // Create a new div element
+    var newItem = document.getElementById('reply');
+    // Set the inner text
+    newItem.innerText = text;
+    // Append the new item to the container
+    document.getElementById('replies').appendChild(newItem);
+}
 
   window.onload = function () {
     displayCurrentTime();
@@ -31,7 +40,6 @@ function displayCurrentTime() {
     let form = document.getElementById("mail-form")
     let reply_div = document.getElementById("reply")
     form.addEventListener("submit", (event) => {
-      console.log("Form Submitted")
       event.preventDefault();
       let email = document.getElementById("email").value
       email_data = { template: "invite", subject: "Invitation to the Ark Junior School", email: email, user: "{{ request.user }}" }
