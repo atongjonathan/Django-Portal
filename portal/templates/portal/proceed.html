@@ -25,7 +25,15 @@
           {%if message %}
           <a href=""><button type="submit" class="btn btn-primary btn-block" disabled>Proceed ?</button></a>
           {% else %}
-          <a href=""><button type="submit" class="btn btn-primary btn-block">Proceed ?</button></a>
+          <!-- <div id="normal">
+            <a href=""><button type="submit" class="btn btn-primary btn-block">Proceed ?</button></a>
+          </div> -->
+
+          <div id="loading" class="overlay box" style="border: none;display: none;">
+            <i class="fa fa-refresh fa-spin spin"></i>
+            <a href=""><button type="submit" class="btn btn-primary btn-block">Proceed ?</button></a>
+          </div>
+          
           {% endif %}
 
         </div>
@@ -35,6 +43,7 @@
   </div>
   <!-- /.login-card-body -->
 </div>
+<script src="{% static 'portal/custom/js/proceed.js' %}"></script>
 </div>
 
 
