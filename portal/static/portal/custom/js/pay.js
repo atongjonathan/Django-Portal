@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }, 5000);
         }
         else {
-          // console.log("Data is not success")
+          console.log(data)
           toastr.error('Request failed, Try again Later')
           resetBtn()
         }
