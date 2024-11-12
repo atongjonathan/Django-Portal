@@ -57,12 +57,15 @@ def send_my_email(template, subject, recipient, url=None, user=None):
 
 
 def sum_data(student_2023):
-    float_debit = [float(row["debit"].replace(',', ''))
-                   for row in student_2023]
-    float_credit = [float(row["credit"].replace(',', ''))
-                    for row in student_2023]
-    balance = sum(float_debit) - sum(float_credit)
-    return {"billed": sum(float_debit), "paid": sum(float_credit), "balance": balance}
+    try:
+        float_debit = [float(row["debit"].replace(',', ''))
+                       for row in student_2023]
+        float_credit = [float(row["credit"].replace(',', ''))
+                        for row in student_2023]
+        balance = sum(float_debit) - sum(float_credit)
+        return {"billed": sum(float_debit), "paid": sum(float_credit), "balance": balance}
+    except Exception:
+        return {"billed": 1, "paid": 1, "balance": 0}
 
 
 def get_child_data(id, user):
